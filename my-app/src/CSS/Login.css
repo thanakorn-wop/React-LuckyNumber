@@ -1,0 +1,17 @@
+
+.login{
+    width: 500px;
+    height: 320px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -250px;
+    /* border:solid red 1px; */
+    background-color: rgb(26, 45, 54);
+}
+.textbox{
+   margin: 20px 20px;
+  
+  
+}

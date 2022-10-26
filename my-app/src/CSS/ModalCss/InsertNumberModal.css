@@ -1,0 +1,11 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.luckynumber{
+    position: absolute;
+    border: solid 2px yellow;
+    width: 45%;
+    top:100px;
+    left: 450px;  
+}

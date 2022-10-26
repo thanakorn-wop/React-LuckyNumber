@@ -1,0 +1,12 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.paymentmodal{
+    
+    position: absolute;
+    border: solid 2px yellow;
+    width: 45%;
+    top:150px;
+    left: 450px;  
+}

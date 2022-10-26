@@ -1,0 +1,36 @@
+*{
+    background-color: rgb(26, 45, 54);
+    margin:0px;
+    padding: 0px;
+}
+.Box-Menu{
+   
+    width: 90%;
+    margin-top: 15px;
+}
+.Menu{
+    display: flex;
+    justify-content:space-between;
+    
+ 
+
+}
+
+li{
+    list-style:none;
+}
+li a{
+    text-decoration:none;
+    color: white;
+}
+.Link ul{
+    display: flex;
+}
+ul{
+    margin-top: 10px;
+}
+ul li{
+    margin-left: 15px;
+   
+
+}
