@@ -2,31 +2,42 @@ import React, { useState } from "react";
 import "../CSS/Report.css"
 import EditinfoModal from "./Modal/EditinfoModal";
 import "../CSS/ModalCss/EditinfoModal.css"
-
+import DatePicker from "react-datepicker";
 function Report ()
 {
     const [isOpen ,setIsOpen] = useState(false);
     const [cost,setCost] = useState(0);
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
+    const [DateMonth, setDateMonth] = useState(new Date());
     
     const monthjsx = 
     (
         month.map(data =>{
-            return <option>{data}</option>
+            return <option key={data}>{data}</option>
          })
     )
+    function searchData()
+    {
+
+    }
     return(
         <div className="pathreport">
             <div className="boxreport">
                 <div className="title">
                     <h3>Report</h3>
                 </div>
-                <div>  
-                    <button type="button" className="btn btn-warning" style={{"marginLeft":"135px","marginBottom":"10px"}} onClick={()=>setIsOpen(true)}>แก้ไขข้อมูล</button>
-                    <select>
-                        <option>--เลือก--</option>
-                        {monthjsx}        
-                    </select>
+                <div style={{"display":"flex"}}>  
+                    <div>
+                        
+                          <button type="button" className="btn btn-warning" style={{"marginLeft":"135px","marginBottom":"10px"}} onClick={()=>setIsOpen(true)}>แก้ไขข้อมูล</button>
+                    </div>
+                    <div style={{"marginLeft":"10px"}}>
+                    <button type="button" className="btn btn-warning" onClick={()=>searchData()}>ค้นหา</button>
+                    </div>
+                    <div style={{"marginLeft":"10px","width":"10%"}}>
+                        <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} />
+                    </div>
+                  
                 </div>
                 
                 <table className="table">

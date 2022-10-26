@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../../CSS/ModalCss/InsertNumberModal.css"
+import DatePicker from "react-datepicker";
 function InsertNumberModal (props)
 {
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
+    const [DateMonth, setDateMonth] = useState(new Date());
     const [luckyNumber, setLuckyNumber] = useState({
         id: "",
         threeFontNumber: "", 
@@ -39,14 +41,7 @@ function InsertNumberModal (props)
         <div className="boxbody">
             <div style={{"marginLeft":"10px","marginRight":"20px"}}>
             <div className="text">  <label>วันที่</label></div>
-            <div>  <input type="text" className="form-control " name = "date" onChange={(e)=>handleChange(e)}/></div>
-            <div className="text">  <label>เดือน</label></div>
-            <div>  
-                <select>
-                    <option>--เลือก--</option>
-                    {monthjsx}        
-                 </select>
-            </div>
+            <div>    <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div>
            
             <div className="text">  <label>เลขหน้า 3 ตัว</label></div>
             <div>  <input type="text" className="form-control "   name = "threeFontNumber"  onChange={(e)=>handleChange(e)}/></div>

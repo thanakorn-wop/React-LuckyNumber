@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "../../CSS/ModalCss/NumberModalCss.css"
-import Calendar from 'react-calendar';
-
-
+import Calendar from 'moedim';
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 function NumberModal(props)
 {
+  
     // const [value, onChange] = useState(new Date());
+  
     const [userData, setUserData] = useState({
         id: "",
         date: "",
@@ -17,7 +19,7 @@ function NumberModal(props)
 
 
     });
-
+    const [DateMonth, setDateMonth] = useState(new Date());
    
     // console.log("check 1 = ",closepopup);
     if(props.show !== true)
@@ -47,7 +49,9 @@ function NumberModal(props)
                 <div className="boxbody">
                     <div style={{"marginLeft":"10px","marginRight":"20px"}}>
                     <div className="text">  <label>วันที่</label></div>
-                    <div>  <input type="text" className="form-control " name = "date" onChange={(e)=>handleChange(e)}/></div>
+                    <div className="datepicker" style={{"color":"red"}}>   
+                        <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} />
+                    </div>
                     <div className="text">  <label>การแทง</label></div>
                     <div> 
                         <select className="form-select form-select-sm "  name = "option"   style={{"width":"15%"}} onChange={(e)=>handleChange(e)}>

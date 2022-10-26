@@ -5,6 +5,7 @@ import * as urlConstant from "../components/Constant/UrlConstant"
 import InsertNumberModal from "./Modal/InsertNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import InfoUserModal from "./Modal/infoUserModal"
+import DatePicker from "react-datepicker";
 import axios from 'axios';
 function Lottary()
 {
@@ -13,6 +14,7 @@ function Lottary()
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
+    const [DateMonth, setDateMonth] = useState(new Date());
     
     const [ newData,setNewData] = useState({
         id: "",
@@ -61,22 +63,41 @@ function Lottary()
     return(
         <div className="mainpage">
             <div className="boxpage" >
-                
-           
                     <div className="title" style={{"textAlign":"center","marginTop":"20px"}}>
-                       <h3>รายการหวย</h3>
+                       <h3>รายการหวย ประจำวันที่ 16/10/2565</h3>
                     </div>
-                    <div className="info"> 
-                        <table >
+                    <div className="info" style={{"marginTop":"40px"}}> 
+                        <table className="tabletext" style={{"width":"50%","margin":"0 auto"}} >
                             <thead>
-                                <tr >
-                                    <td > <button type="button" className="btn btn-light" style={{"marginLeft":"20px"}} onClick={()=>ValidityState()}>เพิ่มข้อมูล</button> </td>
-                                    <td > <button type="button" className="btn btn-light" style={{"marginLeft":"20px"}} onClick={()=>setLuckyModal(true)}>เลขถูก</button> </td>
-                                    <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></td>
+                                <tr  >
+                                    <td style={{}} > <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button> </td>
+                                    <td style={{}} > <button type="button" className="btn btn-light" onClick={()=>setLuckyModal(true)}>เลขถูก</button> </td>
+                                    <td style={{}}>  <button type="button" className="btn btn-primary" style={{}} >ค้นหา</button>  </td>
+                                    <td style={{}}>
+                                        <select>
+                                            <option>เลือก</option>
+                                            <option>ยังไม่จ่าย</option>
+                                            <option>จ่ายแล้ว</option>
+                                        </select>
+                                    </td>
+                                    <td >
+                                        <div style={{"width":"50%"}}>
+                                        <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table style={{"margin":"20px auto"}}>
+                            <thead>
+                              
+                                <tr>
+                                <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></td>
                                     <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></td>
                                     <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : 111 </label></td>
                                     <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : 222</label></td>
                                     <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : 33</label></td>
+                             
                                 </tr>
                             </thead>
                         </table>
@@ -85,7 +106,7 @@ function Lottary()
                     <div>
                         <table style={{"border":"solid 2px yellow","width":"80%","margin":"0 auto","marginTop":"50px"}}  className="table table-striped">
                            <thead >
-                            <tr style={{"border":"solid 2px yellow"}}>
+                            <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เลข</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคา (บาท)</td>
@@ -110,7 +131,7 @@ function Lottary()
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
-                                        <button type="button" className="btn btn-light"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไขการจ่าย</button>
+                                        <button type="button" className="btn btn-info"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไขการจ่าย</button>
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
@@ -136,8 +157,7 @@ function Lottary()
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button></div>
                                     </div>
-                                    
-                                     
+    
                                 </td>
                                 
                             </tr>
@@ -177,6 +197,21 @@ function Lottary()
                 {
                   isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
                 }
+<nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px"}}>
+  <ul className="pagination" >
+    <li className="page-item disabled">
+      <a className="page-link">Previous</a>
+    </li>
+    <li className="page-item"><a className="page-link" href="#">1</a></li>
+    <li className="page-item active" aria-current="page">
+      <a className="page-link" href="#">2</a>
+    </li>
+    <li className="page-item"><a className="page-link" href="#">3</a></li>
+    <li className="page-item">
+      <a className="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
             </div>
         
 

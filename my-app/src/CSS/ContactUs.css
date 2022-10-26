@@ -1,0 +1,15 @@
+.ContactUsPage{
+    background-color: rgb(26, 45, 54);
+    width: 80%;
+    margin:0 auto;
+   
+    /* position: absolute; */
+    /* top: 20%;
+    left: 30%;
+    margin-top: -100px;
+    margin-left: -250px; */
+    margin-top: 30px;
+  
+    border: solid white 2px;
+    /* height: 700px; */
+}
