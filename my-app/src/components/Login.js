@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import "../CSS/Login.css"
 import * as urlConstant from "../components/Constant/UrlConstant"
+import { useNavigate } from "react-router-dom";
+
 function Login()
 {
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
+    let navigate = useNavigate();
     console.log("befor",test)
     function handleChange(e)
     {
@@ -46,7 +49,7 @@ function Login()
                      else{
                          sessionStorage.setItem("token", res.data.token);
                          console.log("check session  = ",sessionStorage.getItem("token"))
-                         window.location.assign("/dashboard")
+                         navigate("/dashboard")
                      }
                    }
                    else{

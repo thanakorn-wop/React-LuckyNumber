@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../CSS/Lottary.css"
 import NumberModal from "./Modal/NumberModal"
 import * as urlConstant from "../components/Constant/UrlConstant"
@@ -15,11 +15,28 @@ function Lottary()
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
     const [DateMonth, setDateMonth] = useState(new Date());
+    const [data,setdata] = useState([]);
+    const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
     });
+    useEffect(()=>{
+            try{
+                axios.get(urlConstant.GET_LIST_LOTTARY,{token:sessionUser},{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(resp =>{
+                    if(resp !== null && resp !== undefined)
+                    {
+                         setdata(resp.data);
+                    }
+                })
+            }catch(e){
+                console.error(e)
+            }
+                
+    },[])
     // console.log("check 1 = ",popup.show)
     function ValidityState()
     {
