@@ -26,7 +26,7 @@ public class LoginService {
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
 		UserModal dataUser = new UserModal();
 		Boolean validatepass = false;
-		
+		String status = "A";
 		try {
 			
 			dataUser = loginRepo.findidUser(userLogin.getIduser());
@@ -36,14 +36,20 @@ public class LoginService {
 				  if(validatepass)
 				  {
 					LocalDateTime myDateObj = LocalDateTime.now();
-					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
+					System.out.println("check time = "+formattedDate);
 					if(dataUser.getStatus().equals("I"))
-					    {
-					    	String status = "A";
-					    	dataUser.setStatus(status);
-					    	loginRepo.updateStatusUser(status,formattedDate,userLogin.getIduser(),userLogin.getPassword());
-					    }
+					 {
+					   
+					   dataUser.setStatus(status);
+					   loginRepo.updateStatusLoginUser(status,formattedDate,dataUser.getToken());
+					 }
+					else if(dataUser.getStatus().equals("A"))
+					{
+						loginRepo.updateStatusLoginUser(dataUser.getStatus(),formattedDate,dataUser.getToken());
+					}
+					
 					    arrdataUser.add(dataUser);
 				  }
 				  else {
@@ -76,13 +82,13 @@ public class LoginService {
 			dataUser = loginRepo.findTokenUser(userLogin.getToken());
 			if(!StringUtils.isEmpty(dataUser))
 				 {
-				validateToken = comparePass(userLogin.getToken(),dataUser.getToken());
+				validateToken = validateToken(userLogin.getToken(),dataUser.getToken());
 				  if(validateToken)
 				  {
 					LocalDateTime myDateObj = LocalDateTime.now();
-					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
-					loginRepo.updateStatusUser(status,formattedDate,dataUser.getIduser(),dataUser.getPassword());
+					loginRepo.updateStatusLogoutUser(status,formattedDate,dataUser.getToken());
 					updateStatus = true;
 				  }
 				 
@@ -108,6 +114,19 @@ public class LoginService {
 			return true;
 		}
 		
+		return false;
+	}
+	
+	public Boolean validateToken(String tokenUser , String TokeDB)
+	{
+		GenJwt genjwt = new GenJwt();
+		String decodeTokenDB = genjwt.deCode(TokeDB);
+		String decodeTokenUser = genjwt.deCode(tokenUser);
+		System.out.println("decode = "+tokenUser);
+		if(TokeDB.equals(tokenUser))
+		{
+			return true;
+		}
 		return false;
 	}
 	public UserModal register(LoginReqModel userLogin,String token)

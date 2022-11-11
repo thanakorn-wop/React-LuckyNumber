@@ -38,8 +38,12 @@ public interface   LoginRepo  extends JpaRepository<UserModal,String>     {
 	UserModal findTokenUser(String token);
 	 
 	@Modifying
-	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogin = ?2 WHERE p.iduser = ?3 AND p.password = ?4 ")
-	void updateStatusUser(String status,String date,String iduser,String password);
+	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogin = ?2 WHERE p.token = ?3 ")
+	void updateStatusLoginUser(String status,String date,String token);
+	
+	@Modifying
+	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogout = ?2 WHERE p.token = ?3 ")
+	void updateStatusLogoutUser(String status,String date,String token);
 	//   public List<UserModal> findAllSortedByName();
 //	
 //		public List<UserModal> validateLogin(LoginReqModel userLogin)
