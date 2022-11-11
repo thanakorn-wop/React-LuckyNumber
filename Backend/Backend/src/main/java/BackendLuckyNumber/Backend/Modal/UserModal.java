@@ -25,12 +25,14 @@ public class UserModal {
 	private String timelogout;
 	@Column(name = "status")
 	private String status;
+	@Column(name = "role")
+	private String role;
 
 	public UserModal() {
 	}
-
+	
 	public UserModal(String id, String iduser, String password, String token, String timelogin, String timelogout,
-			String status) {
+			String status, String role) {
 		super();
 		this.id = id;
 		this.iduser = iduser;
@@ -39,6 +41,17 @@ public class UserModal {
 		this.timelogin = timelogin;
 		this.timelogout = timelogout;
 		this.status = status;
+		this.role = role;
+	}
+
+
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getStatus() {
