@@ -39,6 +39,10 @@ function Login()
                      {
                         alert("บัญชีถูกล็อคการใช้งาน")
                      }
+                     else if (res.data.status === "I")
+                     {
+                        alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
+                     }
                      else{
                          sessionStorage.setItem("token", res.data.token);
                          console.log("check session  = ",sessionStorage.getItem("token"))
@@ -77,7 +81,7 @@ function Login()
                     <div className="textbox">
                         <label style={{"color":"white","fontSize":"20px"}}>Password</label>
                         <div>
-                        <input  className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "password" onChange = {(e)=>handleChange(e)} type="text"/>
+                        <input  className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "password" onChange = {(e)=>handleChange(e)} type="password"/>
                         </div>
                       
                     </div>
