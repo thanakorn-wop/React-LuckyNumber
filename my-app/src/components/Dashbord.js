@@ -4,6 +4,7 @@ import { Line } from "react-chartjs-2";
 
 const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
 
+console.log('dashboard = ',sessionStorage.getItem("token"))
 const data = {
   labels: labels,
   datasets: [

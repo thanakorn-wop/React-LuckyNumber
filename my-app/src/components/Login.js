@@ -4,21 +4,17 @@ import "../CSS/Login.css"
 import * as urlConstant from "../components/Constant/UrlConstant"
 function Login()
 {
-    const [user,setUser] = useState({id:""})
+    const [user,setUser] = useState({})
     const [test,settest] = useState(false);
     console.log("befor",test)
     function handleChange(e)
     {
         setUser({...user,[e.target.name]:e.target.value})
-        // console.log(user);
+         console.log(user);
     }
     function submitLogin()
     {
-      
-    
-       
-        
-        if(user.id === undefined || user.id ==="")
+        if(user.iduser === undefined || user.iduser ==="")
         {
             alert("กรุณากรอก ID")
         }
@@ -27,29 +23,67 @@ function Login()
             alert("กรุณากรอก PASSWORD")
         }
         else{
-            const response = axios.post(urlConstant.LOGIN_USER,user,{
+         axios.post(urlConstant.LOGIN_USER,user,{
                 headers: { 'Content-Type': 'application/json' }
+            }).then(res =>{
+                console.log(res.data)
+                console.log(res.data.header)
+                if(res.data !== null && res.data !== undefined)
+                {
+                 
+                   if(res.data.header.statusCode ==="01")
+                   {
+                     // window.location.assign("/dashbord")
+                     console.log(res.data[0])
+                     if(res.data.status == "L")
+                     {
+                        alert("บัญชีถูกล็อคการใช้งาน")
+                     }
+                     else{
+                         sessionStorage.setItem("token", res.data.token);
+                         console.log("check session  = ",sessionStorage.getItem("token"))
+                         window.location.assign("/dashboard")
+                     }
+                   }
+                   else{
+                        if(res.data.iduser != null && res.data.header.statusCode === "00" )
+                        {
+                        alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
+                        }
+                        else{
+                            alert("กรุณาสมัครสมาชิก")
+                        }
+                      
+                   }
+                }
+               
             })
+        
         }
     }
     return(
         <div className="Mainpage">
-            <div className="login" style={{"border":"solid 10px "}}>
+           
+            <div className="login" style={{"border":"solid 10px"}}>
                 <div><h2 style={{"color":"white","textAlign":"center","marginTop":"20px"}}>Login</h2></div>
                 <div className="formLogin">
-                    <div className="textbox">
-                        <label style={{"color":"white"}}>ID</label>
-                        <input className="form-control" name = "id" onChange = {(e)=>handleChange(e)}type="text"/>
+                    <div className="textbox" >
+                        <label style={{"color":"white","fontSize":"20px"}}>ID</label>
+                        <div>
+                        <input className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "iduser" onChange = {(e)=>handleChange(e)}type="text"/>
+                        </div>
+                      
                     </div>
                     <div className="textbox">
-                        <label style={{"color":"white"}}>Password</label>
-                        <input  className="form-control" name = "password" onChange = {(e)=>handleChange(e)} type="text"/>
+                        <label style={{"color":"white","fontSize":"20px"}}>Password</label>
+                        <div>
+                        <input  className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "password" onChange = {(e)=>handleChange(e)} type="text"/>
+                        </div>
+                      
                     </div>
-                    <div style={{"marginLeft":"20px"}}> <button type="button" className="btn btn-light" onClick={()=>submitLogin()}>Login</button></div>
+                    <div className="btnlogin" style={{"textAlign":"center"}} > <button  style={{"width":"92%","marginTop":"15px","fontSize":"20px"}}type="button" className="btn btn-light" onClick={()=>submitLogin()}>Login</button></div>
                 </div>
             </div>
-
-
         </div>
     )
 }

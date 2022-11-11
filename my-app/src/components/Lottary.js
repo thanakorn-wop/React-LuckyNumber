@@ -184,6 +184,21 @@ function Lottary()
                             </tr>
                            </tbody>
                         </table> 
+                     <nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px","position":"absolute","zIndex":"-1"}}>
+                    <ul className="pagination" >
+                        <li className="page-item disabled">
+                        <a className="page-link">Previous</a>
+                        </li>
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item active" aria-current="page">
+                        <a className="page-link" href="#">2</a>
+                        </li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item">
+                        <a className="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                    </nav>
                 </div>
        
                 <NumberModal  onClose={(e) => setpopup(e)}  show={popup} Data={setData} status={submitData}  />
@@ -197,21 +212,7 @@ function Lottary()
                 {
                   isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
                 }
-<nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px"}}>
-  <ul className="pagination" >
-    <li className="page-item disabled">
-      <a className="page-link">Previous</a>
-    </li>
-    <li className="page-item"><a className="page-link" href="#">1</a></li>
-    <li className="page-item active" aria-current="page">
-      <a className="page-link" href="#">2</a>
-    </li>
-    <li className="page-item"><a className="page-link" href="#">3</a></li>
-    <li className="page-item">
-      <a className="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
+                   
             </div>
         
 

@@ -9,7 +9,7 @@ function infoUserModal(props)
             <div style={{"marginLeft":"10px","marginRight":"20px"}}>
             <div className="text">  <label>ID Line :</label></div>
             <div>  <input type="text" className="form-control " value = "Number-zero"  name = "idLine" disabled/></div>
-            <div className="text">  <label>Phone Number :</label></div>
+            <div className="text">  <label>Phone Number </label></div>
             <div>  <input type="text" className="form-control "  value = "0612364400"  name = "phoneNo" disabled/> </div>
             </div>
         </div>

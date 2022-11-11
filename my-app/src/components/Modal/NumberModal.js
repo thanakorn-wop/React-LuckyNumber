@@ -44,8 +44,8 @@ function NumberModal(props)
     }
    
     return(
-        <div className="boxmodal" >
-                <div className="modal-header" style={{"textAlign":"center"}} ><h4>Modal title</h4></div>
+        <div className="boxmodal">
+                <div className="modal-header" ><h4>Modal title</h4></div>
                 <div className="boxbody">
                     <div style={{"marginLeft":"10px","marginRight":"20px"}}>
                     <div className="text">  <label>วันที่</label></div>
