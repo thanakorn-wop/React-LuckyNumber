@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-
+import axios from "axios";
+import * as urlConstant from "../components/Constant/UrlConstant"
+import { useNavigate } from "react-router-dom";
 const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
 
-console.log('dashboard = ',sessionStorage.getItem("token"))
+
 const data = {
   labels: labels,
   datasets: [
@@ -20,6 +22,20 @@ const data = {
 
 function Dashbord()
 {
+  let navaigate = useNavigate();
+  let session =  sessionStorage.getItem("token");
+  if(session == null || session == undefined)
+  {
+    navaigate("/login");
+  }
+  useEffect(()=>{
+    axios.get(urlConstant.GET_DASH_BOARD,{
+      headers: { 'Content-Type': 'application/json' }
+  }).then(res =>{
+     console.log("check resp = ",res.data);
+  })
+
+},[])
     return(
         <div>
             
