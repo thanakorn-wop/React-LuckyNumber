@@ -22,18 +22,33 @@ const data = {
 
 function Dashbord()
 {
-  let navaigate = useNavigate();
   let session =  sessionStorage.getItem("token");
+  const h = new Headers();
+  h.append('Content-Type','application/json')
+  h.append('token',session)
+  let navaigate = useNavigate();
+  
+  const instance = axios.create({
+    headers:{ 'Content-Type': 'application/json' },"token":session
+  });
   if(session == null || session == undefined)
   {
     navaigate("/login");
   }
   useEffect(()=>{
-    axios.get(urlConstant.GET_DASH_BOARD,{
-      headers: { 'Content-Type': 'application/json' }
-  }).then(res =>{
+    
+  try{
+    axios.get("http://localhost:8090/api/getdashboard",null,{headers:{'Content-Type':'application/json','token':session}}).then(res =>{
      console.log("check resp = ",res.data);
+     if(res.data.statusCode ==="403")
+     {
+      navaigate("/login");
+     }
   })
+  }catch(e)
+  {
+    console.error("Error response Dashboard  = ",e);
+  }
 
 },[])
     return(

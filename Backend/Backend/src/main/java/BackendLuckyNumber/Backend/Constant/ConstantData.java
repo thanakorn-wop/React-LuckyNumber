@@ -1,4 +1,4 @@
-package BackendLuckyNumber.Backend.Until;
+package BackendLuckyNumber.Backend.Constant;
 
 public class ConstantData {
 	
@@ -7,6 +7,7 @@ public class ConstantData {
 	public static String STATUS_CODE_200 = "200";
 	public static String STATUS_CODE_404 = "404";
 	public static String STATUS_CODE_403 = "403";
+	public static String STATUS_CODE_401 = "401";
 	public static String STATUS_CODE_400 = "400";
 	public static String STATUS_CODE_500 = "500";
 	public static String STATUS_CODE_SUCCESS_01 = "01";
@@ -14,8 +15,13 @@ public class ConstantData {
 	
 	// message error
 	public static String ERROR_MESSAGE_DUPLICATE_REGISTER= "duplicate_register";
+	public static String ERROR_MESSAGE_UNAUTHORIZED= "UNAUTHORIZED";
+	
 	
 	//message constant 
 	public static String MESSAGE_SUCCESS ="success";
 	public static String MESSAGE_NOT_SUCCESS ="not_success";
+	public static String USER_DETAILS ="userDetails";
+	public static String KEY_WEB_TOKEN = "webToken";
+	
 }

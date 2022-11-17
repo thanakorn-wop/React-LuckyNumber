@@ -12,6 +12,7 @@ import lombok.Data;
 public class UserModal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private String id;
 	@Column(name = "iduser")
 	private String iduser;

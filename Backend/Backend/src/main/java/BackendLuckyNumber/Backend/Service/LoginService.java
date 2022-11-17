@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import BackendLuckyNumber.Backend.GenJwt;
+import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.Repo.Base;
+import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.LoginRepo;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
@@ -21,9 +23,15 @@ public class LoginService {
 	
 	@Autowired LoginRepo loginRepo;
 	@Autowired Base base;
-	public List<UserModal> validateLogin(LoginReqModel userLogin,String token)
+	@Autowired InfoUserRepo infoUserRepo;
+	
+	
+	
+	public List<UserModal> validateLogin(LoginReqModel userLogin)
 	{
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
+		InfoUserModal infoUser = new InfoUserModal();
+		
 		UserModal dataUser = new UserModal();
 		Boolean validatepass = false;
 		String status = "A";
@@ -39,18 +47,15 @@ public class LoginService {
 					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
 					System.out.println("check time = "+formattedDate);
-					if(dataUser.getStatus().equals("I"))
+					if(dataUser.getStatus().equals("I") || dataUser.getStatus().equals("A"))
 					 {
 					   
 					   dataUser.setStatus(status);
 					   loginRepo.updateStatusLoginUser(status,formattedDate,dataUser.getToken());
+					  // infoUser = infoUserRepo.findByIdSeller(dataUser.getId());
+					   //System.out.print(infoUser.getTotalLostPrice());
 					 }
-					else if(dataUser.getStatus().equals("A"))
-					{
-						loginRepo.updateStatusLoginUser(dataUser.getStatus(),formattedDate,dataUser.getToken());
-					}
-					
-					    arrdataUser.add(dataUser);
+					  arrdataUser.add(dataUser);
 				  }
 				  else {
 					  dataUser.setPassword("invalid");
@@ -69,6 +74,25 @@ public class LoginService {
 	
 		return arrdataUser;
 		
+	}
+	
+	public  InfoUserModal getInfoUser(String id)
+	{
+		InfoUserModal infoUser = new InfoUserModal();
+		 try {
+			  infoUser = infoUserRepo.findByIdSeller(id);
+		 }catch(Exception e)
+		 {
+			 System.out.print("Error happen is  = "+e );
+		 }
+		
+		return infoUser;
+	}
+	
+	public UserModal getUser(String username)
+	{
+		UserModal userDetails = loginRepo.findidUser(username);
+	 return userDetails;	
 	}
 	public Boolean validateLogout(LoginReqModel userLogin)
 	{
@@ -129,7 +153,7 @@ public class LoginService {
 		}
 		return false;
 	}
-	public UserModal register(LoginReqModel userLogin,String token)
+	public UserModal register(LoginReqModel userLogin)
 	{
 		UserModal dataUser = new UserModal();
 		GenJwt genjwt = new GenJwt();
@@ -148,7 +172,6 @@ public class LoginService {
 				usermodal.setIduser(userLogin.getIduser());
 				usermodal.setPassword(tokenpass);
 				usermodal.setStatus("I");
-				usermodal.setToken(token);
 				loginRepo.save(usermodal);
 			}
 			

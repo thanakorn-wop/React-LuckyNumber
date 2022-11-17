@@ -10,14 +10,14 @@ import BackendLuckyNumber.Backend.Service.ListLottaryService;
 
 @RestController
 @CrossOrigin(origins = "*")
-public class ListLottaryController {
+public class LottaryController {
 	
 	@Autowired ListLottaryService listLottaryService;
 	
 	@GetMapping("/getlistlottary")
 	public void getListLottary()
 	{
-		
+//		listLottaryService.get
 	}
 
 }

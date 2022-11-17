@@ -13,87 +13,98 @@ import lombok.Data;
 public class InfoUserModal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_list")
-	private String idlist;
-	@Column(name = "number")
-	private String number;
-	@Column(name = "price")
-	private String price;
-	@Column(name = "option_purchase")
-	private String optionpurchase;
-	@Column(name = "status")
-	private String status;
-	@Column(name = "date_buy")
-	private String datebuy;
+	@Column(name = "id_seller")
+	private String idSeller;
+	@Column(name = "cost")
+	private String cost;
+	@Column(name = "total_purchase")
+	private String totalPurchase;
+	@Column(name = "total_lost_price")
+	private String totalLostPrice;
 	@Column(name = "time")
 	private String time;
-	@Column(name = "status_payment")
-	private String statuspayment;
-	@Column(name = "lucky_number")
-	private String luckynumber;
-	@Column(name = "id_seller")
-	private String idseller;
-	public String getIdlist() {
-		return idlist;
+	@Column(name = "balance")
+	private String balance;
+	@Column(name = "id")
+	private String id;
+
+	public InfoUserModal() {
+
 	}
-	public void setIdlist(String idlist) {
-		this.idlist = idlist;
+
+	
+	
+	public InfoUserModal(String idSeller, String cost, String totalPurchase, String totalLostPrice, String time,
+			String balance, String id) {
+		super();
+		this.idSeller = idSeller;
+		this.cost = cost;
+		this.totalPurchase = totalPurchase;
+		this.totalLostPrice = totalLostPrice;
+		this.time = time;
+		this.balance = balance;
+		this.id = id;
 	}
-	public String getNumber() {
-		return number;
+
+	
+	public String getId() {
+		return id;
 	}
-	public void setNumber(String number) {
-		this.number = number;
+
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getPrice() {
-		return price;
+
+
+
+	public String getBalance() {
+		return balance;
 	}
-	public void setPrice(String price) {
-		this.price = price;
+
+	public void setBalance(String balance) {
+		this.balance = balance;
 	}
-	public String getOptionpurchase() {
-		return optionpurchase;
+
+	public String getIdSeller() {
+		return idSeller;
 	}
-	public void setOptionpurchase(String optionpurchase) {
-		this.optionpurchase = optionpurchase;
+
+	public void setIdSeller(String idSeller) {
+		this.idSeller = idSeller;
 	}
-	public String getStatus() {
-		return status;
+
+	public String getCost() {
+		return cost;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+
+	public void setCost(String cost) {
+		this.cost = cost;
 	}
-	public String getDatebuy() {
-		return datebuy;
+
+	public String getTotalPurchase() {
+		return totalPurchase;
 	}
-	public void setDatebuy(String datebuy) {
-		this.datebuy = datebuy;
+
+	public void setTotalPurchase(String totalPurchase) {
+		this.totalPurchase = totalPurchase;
 	}
+
+	public String getTotalLostPrice() {
+		return totalLostPrice;
+	}
+
+	public void setTotalLostPrice(String totalLostPrice) {
+		this.totalLostPrice = totalLostPrice;
+	}
+
 	public String getTime() {
 		return time;
 	}
+
 	public void setTime(String time) {
 		this.time = time;
 	}
-	public String getStatuspayment() {
-		return statuspayment;
-	}
-	public void setStatuspayment(String statuspayment) {
-		this.statuspayment = statuspayment;
-	}
-	public String getLuckynumber() {
-		return luckynumber;
-	}
-	public void setLuckynumber(String luckynumber) {
-		this.luckynumber = luckynumber;
-	}
-	public String getIdseller() {
-		return idseller;
-	}
-	public void setIdseller(String idseller) {
-		this.idseller = idseller;
-	}
-	
-	
 
 }

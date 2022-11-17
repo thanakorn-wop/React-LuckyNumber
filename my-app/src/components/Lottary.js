@@ -6,9 +6,11 @@ import InsertNumberModal from "./Modal/InsertNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import InfoUserModal from "./Modal/infoUserModal"
 import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 function Lottary()
 {
+
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
@@ -17,14 +19,18 @@ function Lottary()
     const [DateMonth, setDateMonth] = useState(new Date());
     const [data,setdata] = useState([]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
-    
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
     });
+    let navigate = useNavigate();
+    if(sessionUser === null || sessionUser === undefined)
+    {
+        navigate("/login")
+    }
     useEffect(()=>{
             try{
-                axios.get(urlConstant.GET_LIST_LOTTARY,{token:sessionUser},{
+                axios.get(urlConstant.GET_LIST_LOTTARY,{
                     headers: { 'Content-Type': 'application/json' }
                 }).then(resp =>{
                     if(resp !== null && resp !== undefined)
