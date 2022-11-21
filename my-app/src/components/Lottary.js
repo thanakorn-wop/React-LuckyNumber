@@ -24,20 +24,25 @@ function Lottary()
         date: "", 
     });
     let navigate = useNavigate();
-    if(sessionUser === null || sessionUser === undefined)
-    {
-        navigate("/login")
-    }
+    console.log("check session = ",sessionUser);
+   
     useEffect(()=>{
             try{
-                axios.get(urlConstant.GET_LIST_LOTTARY,{
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(resp =>{
-                    if(resp !== null && resp !== undefined)
-                    {
-                         setdata(resp.data);
-                    }
-                })
+                if(sessionUser === null || sessionUser === undefined)
+                {
+                    // navigate("/login")
+                }
+                else{
+                    axios.get(urlConstant.GET_LIST_LOTTARY,{
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(resp =>{
+                        if(resp !== null && resp !== undefined)
+                        {
+                             setdata(resp.data);
+                        }
+                    })
+                }
+               
             }catch(e){
                 console.error(e)
             }
