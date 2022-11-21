@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.BadCredentialsException;
-//import org.springframework.security.authentication.DisabledException;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import BackendLuckyNumber.Backend.GenJwt;
 import BackendLuckyNumber.Backend.Header;
+import BackendLuckyNumber.Backend.TokenManager;
+//import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
+//import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 //import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.UserModal;
@@ -37,7 +41,7 @@ import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.JwtResponseModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
-//import BackendLuckyNumber.Backend.Service.JwtUserDetailsService;
+import BackendLuckyNumber.Backend.Service.JwtUserDetailsService;
 import BackendLuckyNumber.Backend.Service.LoginService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import org.apache.commons.lang3.StringUtils;
@@ -48,59 +52,64 @@ import org.apache.commons.lang3.StringUtils;
 @RequestMapping("/api")
 public class LoginController extends ValidateUntil {
 
-//	  @Autowired
-//	   private JwtUserDetailsService userDetailsService;
-//	   @Autowired
-//	   private AuthenticationManager authenticationManager;
+	  @Autowired
+	   private JwtUserDetailsService userDetailsService;
+	   @Autowired
+	   private AuthenticationManager authenticationManager;
 //	   @Autowired
 //	   private TokenManager tokenManager;
+	   
+	   @Autowired
+	   private TokenManager jwt;
 
 	@Autowired
 	LoginService loginService;
 	// @Autowired LoginRepo loginRepo;
 	// @Autowired Base base;
 
-//	 @PostMapping("/test")
-//	 public ResponseEntity createToken(@RequestBody JwtRequestModel
-//			   request) throws Exception {
-//			      try {
-//			         authenticationManager.authenticate(
-//			            new
-//			            UsernamePasswordAuthenticationToken(request.getUsername(),
-//			            request.getPassword())
-//			         );
-//			      } catch (DisabledException e) {
-//			         throw new Exception("USER_DISABLED", e);
-//			      } catch (BadCredentialsException e) {
-//			         throw new Exception("INVALID_CREDENTIALS", e);
-//			      }
-//			      final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-//			      final String jwtToken = tokenManager.generateJwtToken(userDetails);
-//			      System.out.println("check jjj");
-//			      return ResponseEntity.ok(new JwtResponseModel(jwtToken));
-//			   }
+	 @PostMapping("/test")
+	 public ResponseEntity createToken(@RequestBody JwtRequestModel
+			   request,HttpServletRequest req) throws Exception {
+			      try {
+			    	 
+			         authenticationManager.authenticate(
+			            new
+			            UsernamePasswordAuthenticationToken(request.getUsername(),
+			            request.getPassword())
+			         );
+			      } catch (DisabledException e) {
+			         throw new Exception("USER_DISABLED", e);
+			      } catch (BadCredentialsException e) {
+			         throw new Exception("INVALID_CREDENTIALS", e);
+			      }
+			      final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+			      req.getSession().setAttribute("iduser", userDetails.getUsername());
+			      final String jwtToken = jwt.generateJwtToken(userDetails);
+			      System.out.println("check jjj");
+			      return ResponseEntity.ok(new JwtResponseModel(jwtToken));
+			   }
 
-	@GetMapping("/hello")
-	public String hello(@RequestBody LoginReqModel qq, HttpServletRequest req) {
-		GenJwt genjwt = new GenJwt();
-		String token = req.getSession().getAttribute("token").toString();
-		token = genjwt.deCode(token);
-		String data = qq.getToken();
-		data = genjwt.deCode(data);
-		System.out.println("check token = " + token);
-		System.out.println("check data token = " + data);
-		if (data.equals(token)) {
-			System.out.println("true");
-
-		} else {
-			System.out.println("false");
-		}
-		System.out.println("check hello =  " + req.getSession().getAttribute("token"));
-		return "hello";
-	}
+//	@GetMapping("/hello")
+//	public String hello(@RequestBody LoginReqModel qq, HttpServletRequest req) {
+//		GenJwt genjwt = new GenJwt();
+//		String token = req.getSession().getAttribute("token").toString();
+//		token = genjwt.deCode(token);
+//		String data = qq.getToken();
+//		data = genjwt.deCode(data);
+//		System.out.println("check token = " + token);
+//		System.out.println("check data token = " + data);
+//		if (data.equals(token)) {
+//			System.out.println("true");
+//
+//		} else {
+//			System.out.println("false");
+//		}
+//		System.out.println("check hello =  " + req.getSession().getAttribute("token"));
+//		return "hello";
+//	}
 
 	@PostMapping("/validatelogin")
-	public ResponseEntity validatelogin(@RequestBody LoginReqModel userLogin, HttpServletRequest req) throws NoSuchAlgorithmException {
+	public ResponseEntity validatelogin(@RequestBody LoginReqModel userLogin, HttpServletRequest req) throws Exception {
 		//InfoUserModal infoUser = new InfoUserModal();
 		GenJwt genjwt = new GenJwt();
 	//	String token = genjwt.generateNewToken(userLogin.getIduser(),"validatelogin");
@@ -109,7 +118,7 @@ public class LoginController extends ValidateUntil {
 		HttpStatus status = HttpStatus.OK;
 		LoginResModal resp = new LoginResModal();
 		try {
-			List<UserModal> user = loginService.validateLogin(userLogin);
+			List<UserModal> user = loginService.validateLoginService(userLogin);
 			req.getSession().setAttribute(ConstantData.USER_DETAILS, user.get(0));
 			if (null == user.get(0)) {
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
@@ -126,31 +135,38 @@ public class LoginController extends ValidateUntil {
 					status = status.OK;
 
 				} else {
+					Authentication auth  = authenticationManager.authenticate(
+					            new
+					            UsernamePasswordAuthenticationToken(userLogin.getIduser(),
+					           userLogin.getPassword())
+					         );
 					createWebTokenGenerator(req,"validatelogin");
 //					infoUser = loginService.getInfoUser(user.get(0).getId());
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					resp.setHeader(header);
 					resp.setIduser(user.get(0).getIduser());
-					resp.setToken(req.getSession().getAttribute(ConstantData.KEY_WEB_TOKEN).toString());
 					resp.setStatus(user.get(0).getStatus());
 					resp.setTimelogin(user.get(0).getTimelogin());
 					resp.setTimelogout(user.get(0).getTimelogout());
 					req.getSession().setAttribute(ConstantData.USER_DETAILS, resp);	
 					req.getSession().setAttribute("id", user.get(0).getId());
-					System.out.println("req tokenDB = " + req.getSession().getAttribute(ConstantData.KEY_WEB_TOKEN));
-
-
-					System.out.println("req tokenDB = " + req.getSession().getAttribute("tokenDB"));
-					System.out.println("req tokenUser = " + req.getSession().getAttribute("tokenUser"));
-					
+					final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getIduser());
+//				    req.getSession().setAttribute("iduser", userDetails.getUsername());
+				    final String jwtToken = jwt.generateJwtToken(userDetails);
+				    resp.setToken(jwtToken);
+				     
 				}
 
 			}
-		}catch(Exception e)
-		{
-			System.out.print("ERROR Login controller is = "+e);
-		}
+		} catch (DisabledException e) {
+	         throw new Exception("USER_DISABLED", e);
+	      }
+		 catch (BadCredentialsException e) {
+	         throw new Exception("INVALID_CREDENTIALS", e);
+	      }
+		
+		
 		
 		return new ResponseEntity(resp, status);
 	}
