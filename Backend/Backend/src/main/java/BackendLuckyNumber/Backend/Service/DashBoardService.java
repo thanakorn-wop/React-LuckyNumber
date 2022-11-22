@@ -23,7 +23,6 @@ public class DashBoardService {
 			}
 			
 		}catch(Exception e)
-		
 		{
 			System.out.println("ERROR happen at DashBoardService = "+e);
 		}

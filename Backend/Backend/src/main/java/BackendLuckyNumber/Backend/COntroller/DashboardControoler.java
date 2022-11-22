@@ -65,17 +65,17 @@ public class DashboardControoler extends ValidateUntil {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				resp.setHeader(header);
 				resp.setBalance(infoUser.getBalance());
 				resp.setCost(infoUser.getCost());
-				resp.setHeader(header);
 				resp.setTime(infoUser.getTime());
 				resp.setTotalLostPrice(infoUser.getTotalLostPrice());
 				resp.setTotalPurchase(infoUser.getTotalPurchase());
 			} else {
 				status = status.OK;
-				header.setStatusCode(ConstantData.STATUS_CODE_200);
+				header.setStatusCode(ConstantData.STATUS_CODE_401);
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
-				resp.setHeader(header);
+				return new ResponseEntity(header, status);
 			}
 
 		} catch (Exception e) {

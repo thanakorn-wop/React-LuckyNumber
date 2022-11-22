@@ -27,10 +27,13 @@ function Dashbord()
   h.append('Content-Type','application/json')
   h.append('token',session)
   let navaigate = useNavigate();
-  
-  const instance = axios.create({
-    headers:{ 'Content-Type': 'application/json' },"token":session
-  });
+    axios.interceptors.request.use(
+      config =>{
+        config.headers.Authorization = `Bearer ${session}`;
+        return config;
+      }
+    )
+
   if(session == null || session == undefined)
   {
     navaigate("/login");
@@ -38,18 +41,19 @@ function Dashbord()
   useEffect(()=>{
     
   try{
-    axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json', Authorization: 'Bearer '+ session }}).then(res =>{
-     console.log("check resp = ",res.data);
-     if(res.data.statusCode ==="403")
-     {
-      navaigate("/login");
-     }
-  })
+    axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
+      console.log(res.data)
+      if(res.data.statusCode ==='401')
+      {
+        navaigate("/login");
+      }
+    })
+   
   }catch(e)
   {
     console.error("Error response Dashboard  = ",e);
     console.log("check error = ",e.response.status);
-    if(e.response.status ==="401")
+    if(e.resp.status ===401)
     {
      navaigate("/login");
     }

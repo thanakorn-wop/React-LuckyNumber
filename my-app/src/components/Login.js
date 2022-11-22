@@ -17,7 +17,7 @@ function Login()
     }
     function submitLogin()
     {
-        if(user.iduser === undefined || user.iduser ==="")
+        if(user.username === undefined || user.username ==="")
         {
             alert("กรุณากรอก ID")
         }
@@ -77,7 +77,7 @@ function Login()
                     <div className="textbox" >
                         <label style={{"color":"white","fontSize":"20px"}}>ID</label>
                         <div>
-                        <input className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "iduser" onChange = {(e)=>handleChange(e)}type="text"/>
+                        <input className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none"}} name = "username" onChange = {(e)=>handleChange(e)}type="text"/>
                         </div>
                       
                     </div>
