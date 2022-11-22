@@ -11,16 +11,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig<JwtAuthenticationEntryPoint>  extends WebSecurityConfigurerAdapter {
 	   @Autowired
-	   private JwtAuthenticationEntryPoint authenticationEntryPoint;
+	   private AuthenticationEntryPoint authenticationEntryPoint;
 	   @Autowired
 	   private UserDetailsService userDetailsService;
-//	   @Autowired
-//	   private JwtFilter filter;
+	   @Autowired
+	   private JwtFilter filter;
 	   @Bean
 	   public PasswordEncoder passwordEncoder() {
 	      return new BCryptPasswordEncoder();
@@ -44,7 +45,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 	      .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 	      .and()
 	      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-	    //  http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+	     http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 	      http.cors();
 	   }
 	}

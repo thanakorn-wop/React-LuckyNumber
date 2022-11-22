@@ -16,6 +16,7 @@ import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.Repo.Base;
 import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.LoginRepo;
+import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
 
@@ -28,7 +29,7 @@ public class LoginService {
 	
 	
 	
-	public List<UserModal> validateLoginService(LoginReqModel userLogin)
+	public List<UserModal> validateLoginService(JwtRequestModel userLogin)
 	{
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
 		InfoUserModal infoUser = new InfoUserModal();
@@ -39,7 +40,7 @@ public class LoginService {
 		String passUser = "";
 		try {
 			
-			dataUser = loginRepo.findidUser(userLogin.getIduser());
+			dataUser = loginRepo.findidUser(userLogin.getUsername());
 			if(!StringUtils.isEmpty(dataUser))
 				 {
 				  validatepass = b.matches(userLogin.getPassword(),dataUser.getPassword());

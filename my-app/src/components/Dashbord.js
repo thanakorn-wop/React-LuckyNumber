@@ -38,7 +38,7 @@ function Dashbord()
   useEffect(()=>{
     
   try{
-    axios.get("http://localhost:8090/api/testdata",null,{headers:{'Content-Type':'application/json', Authorization: `Bearer ${session}` }}).then(res =>{
+    axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json', Authorization: 'Bearer '+ session }}).then(res =>{
      console.log("check resp = ",res.data);
      if(res.data.statusCode ==="403")
      {

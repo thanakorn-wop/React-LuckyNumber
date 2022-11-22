@@ -15,8 +15,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-//import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Service.JwtUserDetailsService;
+
+//import BackendLuckyNumber.Backend.JWT.JWT;
+
 import io.jsonwebtoken.ExpiredJwtException;
 
 
@@ -26,6 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	   private JwtUserDetailsService userDetailsService;
 	   @Autowired
 	   private TokenManager tokenManager;
+	   
 	   @Override
 	   protected void doFilterInternal(HttpServletRequest request,
 	      HttpServletResponse response, FilterChain filterChain)

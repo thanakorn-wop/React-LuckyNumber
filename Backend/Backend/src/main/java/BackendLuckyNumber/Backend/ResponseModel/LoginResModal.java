@@ -1,11 +1,13 @@
 package BackendLuckyNumber.Backend.ResponseModel;
 
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 
 import BackendLuckyNumber.Backend.Header;
 
-public class LoginResModal {
+public class LoginResModal implements Serializable {
 	private Header header;
 	private String iduser;
 	private String timelogin;

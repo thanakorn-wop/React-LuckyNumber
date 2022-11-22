@@ -22,6 +22,7 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 //import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
+import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.InfoUserRespModal;
 import BackendLuckyNumber.Backend.Service.DashBoardService;
@@ -40,31 +41,26 @@ public class DashboardControoler extends ValidateUntil {
 	private TokenManager jwt;
 
 	@GetMapping("/getdashboard")
-	public ResponseEntity testget(@RequestHeader(value = "Authorization") String token) {
+	public ResponseEntity testget( Authentication auth) {
 //		LoginReqModel qq = (LoginReqModel) auth.getPrincipal();
-		System.out.println("check user =  " + token);
-		if (token != null && token.startsWith("Bearer ")) {
-			token = token.substring(10);
-		}
-
-		String user = jwt.getUsernameFromToken(token);
-		System.out.println("check user =  " + user);
-//		System.out.println("check user =  "+qq.getToken());
+//		System.out.println("check user =  " + token);
+//		if (token != null && token.startsWith("Bearer ")) {
+//			token = token.substring(10);
+//		}
+		// Object user = auth.getPrincipal().toString();
+		UserDetails user = (UserDetails) auth.getPrincipal();
 		InfoUserRespModal resp = new InfoUserRespModal();
 		InfoUserModal infoUser = new InfoUserModal();
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
-//		req.getSession(false);
+	//	Object qq =jwt.getUsernameFromToken(token);
+	//	System.out.println(qq);
 //		userDetailsService.loadUserByUsername(null)
-//		System.out.println("token 1111= " + req.getSession().getAttribute("id"));
-//		System.out.println("token 1111= " + req.getSession().getAttribute(ConstantData.USER_DETAILS));
-//		System.out.println("token 1111= " + req.getSession().getAttribute("iduser"));
-		// System.out.println("token 1111= "+);
-		// System.out.println("token font = "+token);
+//	
 //		 Boolean validateToken = validateToken(req,token);
-
-		if (true) {
-			infoUser = dashBoardService.getInfoUser(user);
+	
+		try {
+			infoUser = dashBoardService.getInfoUser(user.getUsername());
 			if (null != infoUser) {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
@@ -82,13 +78,10 @@ public class DashboardControoler extends ValidateUntil {
 				resp.setHeader(header);
 			}
 
-		} else {
-			header.setMessage(ConstantData.ERROR_MESSAGE_UNAUTHORIZED);
-			header.setStatusCode(ConstantData.STATUS_CODE_403);
-			status = status.FORBIDDEN;
-			return new ResponseEntity(header, status);
-
+		} catch (Exception e) {
+			System.out.println("ERROR DASHBOARD = " + e);
 		}
+
 		return new ResponseEntity(resp, status);
 	}
 

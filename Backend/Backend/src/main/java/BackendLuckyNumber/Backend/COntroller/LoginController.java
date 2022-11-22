@@ -56,8 +56,7 @@ public class LoginController extends ValidateUntil {
 	   private JwtUserDetailsService userDetailsService;
 	   @Autowired
 	   private AuthenticationManager authenticationManager;
-//	   @Autowired
-//	   private TokenManager tokenManager;
+
 	   
 	   @Autowired
 	   private TokenManager jwt;
@@ -109,7 +108,7 @@ public class LoginController extends ValidateUntil {
 //	}
 
 	@PostMapping("/validatelogin")
-	public ResponseEntity validatelogin(@RequestBody LoginReqModel userLogin, HttpServletRequest req) throws Exception {
+	public ResponseEntity validatelogin(@RequestBody JwtRequestModel userLogin, HttpServletRequest req) throws Exception {
 		//InfoUserModal infoUser = new InfoUserModal();
 		GenJwt genjwt = new GenJwt();
 	//	String token = genjwt.generateNewToken(userLogin.getIduser(),"validatelogin");
@@ -129,7 +128,7 @@ public class LoginController extends ValidateUntil {
 				if (user.get(0).getPassword().equals("invalid")) {
 					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-					resp.setIduser(userLogin.getIduser());
+					resp.setIduser(userLogin.getUsername());
 					resp.setHeader(header);
 					System.out.println("ok");
 					status = status.OK;
@@ -137,7 +136,7 @@ public class LoginController extends ValidateUntil {
 				} else {
 					Authentication auth  = authenticationManager.authenticate(
 					            new
-					            UsernamePasswordAuthenticationToken(userLogin.getIduser(),
+					            UsernamePasswordAuthenticationToken(userLogin.getUsername(),
 					           userLogin.getPassword())
 					         );
 					createWebTokenGenerator(req,"validatelogin");
@@ -151,7 +150,7 @@ public class LoginController extends ValidateUntil {
 					resp.setTimelogout(user.get(0).getTimelogout());
 					req.getSession().setAttribute(ConstantData.USER_DETAILS, resp);	
 					req.getSession().setAttribute("id", user.get(0).getId());
-					final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getIduser());
+					final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
 //				    req.getSession().setAttribute("iduser", userDetails.getUsername());
 				    final String jwtToken = jwt.generateJwtToken(userDetails);
 				    resp.setToken(jwtToken);
