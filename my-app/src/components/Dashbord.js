@@ -1,37 +1,25 @@
-import React, { useContext, useEffect } from "react";
-import Chart from "chart.js/auto";
+import React, { useContext, useEffect, useState } from "react";
+import Chart, { DatasetController } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./Authen";
 
-const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
-
-
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: "My First dataset",
-      backgroundColor: "black",
-      borderColor: "yellow",
-      data: [0, 10, 5, 2, 20, 30, 45,1,20,40,50,60],
-      
-    },
-  ],
-};
-
 function Dashbord()
 {
   let session =  sessionStorage.getItem("token");
+  const [dataSet, setDataSet] = useState([]);
+  const [balanceEachMonth,setBalanaceEachMonth] = useState([]);
+  const qq = [];
+
+  //console.log("check array = ",balanceEachMonth);
   if(session === null || session === undefined || session ==="")
   {
     window.location.assign("/login")
   }
-
    const {auth,setauth} = useContext(AuthContext);
-   console.log("auth = ",auth);
+  // console.log("auth = ",auth);
   // console.log(auth.accessToken)
   let navaigate = useNavigate();
     axios.interceptors.request.use(
@@ -40,35 +28,72 @@ function Dashbord()
         return config;
       }
     )
-
- 
   useEffect(()=>{
-    
   try{
     axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
-      console.log(res.data)
+      console.log(" tt = ",res.data)
       if(res.data.statusCode ==='401')
       {
         navaigate("/login");
+      }else{
+        setDataSet(res.data.dataList)
       }
     })
    
   }catch(e)
   {
-    console.error("Error response Dashboard  = ",e);
-    console.log("check error = ",e.response.status);
+    // console.error("Error response Dashboard  = ",e);
+    // console.log("check error = ",e.response.status);
     if(e.res.status ===401)
     {
      navaigate("/login");
     }
   }
-
 },[])
+
+let sum = 0;
+let arr = [];
+let strmonth = "";
+// dataSet.map((data,index)=>{
+//   console.log(data.time.split("-"));
+// })
+if(dataSet !== [] || dataSet !== null || dataSet !== undefined)
+{
+  for(let i = 1 ; i <=12; i++)
+  {
+    dataSet.map((data,index)=>{
+       strmonth = data.time.split("-");
+       if(i == strmonth[1])
+       {
+        sum = sum+Number(data.balance);
+       }
+    })
+    arr.push(sum);
+    sum = 0;
+  }
+}
+console.log("check arr after loop = ",arr);
+const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
+const data = {
+  labels: labels,
+  datasets: [
+    {
+      label: "My First dataset",
+      backgroundColor: "yellow",
+      borderColor: "black",
+      data: arr,
+      
+    },
+  ],
+};
+
     return(
-        <div>
-            
-            <div style={{"height":"50px","width":"50%","margin":"0 auto","marginTop":"10%"}}>
-            <Line data={data} />
+        <div className="container" style={{"marginTop":"5%"}}>
+            <div className="titile" style={{"textAlign":"center"}}>
+                <h3>กราฟสถิติการทำรายได้ตลอดทั้งปี</h3>
+            </div>
+            <div style={{"width":"80%","margin":"0 auto","position":"relative","top":"20px"}}>
+            <Line data={data} style={{"backgroundColor":"rgb(248,245,252)"}} />
             </div>
         
            
