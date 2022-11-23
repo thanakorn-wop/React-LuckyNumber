@@ -1,5 +1,8 @@
 package BackendLuckyNumber.Backend.COntroller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
+import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.ResponseModel.InfoUserRespModal;
 import BackendLuckyNumber.Backend.Service.DashBoardService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
@@ -41,43 +45,30 @@ public class DashboardControoler extends ValidateUntil {
 	private TokenManager jwt;
 
 	@GetMapping("/getdashboard")
-	public ResponseEntity testget( Authentication auth) {
-//		LoginReqModel qq = (LoginReqModel) auth.getPrincipal();
-//		System.out.println("check user =  " + token);
-//		if (token != null && token.startsWith("Bearer ")) {
-//			token = token.substring(10);
-//		}
-		// Object user = auth.getPrincipal().toString();
-		UserDetails user = (UserDetails) auth.getPrincipal();
+	public ResponseEntity testget(Authentication auth) {
+
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		InfoUserRespModal resp = new InfoUserRespModal();
-		InfoUserModal infoUser = new InfoUserModal();
+		List<InfoUserModal> infoUser = new ArrayList<>();
+		System.out.println(user.getInfoUser().getIduser());
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
-	//	Object qq =jwt.getUsernameFromToken(token);
-	//	System.out.println(qq);
-//		userDetailsService.loadUserByUsername(null)
-//	
-//		 Boolean validateToken = validateToken(req,token);
-	
+
 		try {
-			infoUser = dashBoardService.getInfoUser(user.getUsername());
-			if (null != infoUser) {
+			infoUser = (List<InfoUserModal>) dashBoardService.getInfoUser(user.getInfoUser().getId());
+			if (null != infoUser && infoUser.size() >0) {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
 				resp.setHeader(header);
-				resp.setBalance(infoUser.getBalance());
-				resp.setCost(infoUser.getCost());
-				resp.setTime(infoUser.getTime());
-				resp.setTotalLostPrice(infoUser.getTotalLostPrice());
-				resp.setTotalPurchase(infoUser.getTotalPurchase());
+				resp.setDataList(infoUser);
 			} else {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_401);
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 				return new ResponseEntity(header, status);
 			}
-
+ 
 		} catch (Exception e) {
 			System.out.println("ERROR DASHBOARD = " + e);
 		}

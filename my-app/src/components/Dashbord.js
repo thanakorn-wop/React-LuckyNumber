@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./Authen";
+
 const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
 
 
@@ -23,9 +25,14 @@ const data = {
 function Dashbord()
 {
   let session =  sessionStorage.getItem("token");
-  const h = new Headers();
-  h.append('Content-Type','application/json')
-  h.append('token',session)
+  if(session === null || session === undefined || session ==="")
+  {
+    window.location.assign("/login")
+  }
+
+   const {auth,setauth} = useContext(AuthContext);
+   console.log("auth = ",auth);
+  // console.log(auth.accessToken)
   let navaigate = useNavigate();
     axios.interceptors.request.use(
       config =>{
@@ -34,10 +41,7 @@ function Dashbord()
       }
     )
 
-  if(session == null || session == undefined)
-  {
-    navaigate("/login");
-  }
+ 
   useEffect(()=>{
     
   try{
@@ -53,7 +57,7 @@ function Dashbord()
   {
     console.error("Error response Dashboard  = ",e);
     console.log("check error = ",e.response.status);
-    if(e.resp.status ===401)
+    if(e.res.status ===401)
     {
      navaigate("/login");
     }

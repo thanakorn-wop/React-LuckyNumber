@@ -19,6 +19,11 @@ function Navbar()
                 headers: { 'Content-Type': 'application/json' }
             }).then(res =>{
                 console.log(res)
+                if(res.status.ok == 200)
+                {
+                    sessionStorage.removeItem("token");
+                    window.location.assign("/login")
+                }
             })
         }catch(e){
             console.log(e)
@@ -37,11 +42,11 @@ function Navbar()
                     <div className="Logo"><label style={{"fontSize":"24px","marginLeft":"15px"}}>Nueng</label></div>
                     <div className="Link">
                         <ul>
-                            <li><a href="/dashboard" > หน้าหลัก </a></li>
-                            <li><a href="/calculate" > คิดหวย </a></li>
-                            <li><a href="/report" > ยอดสรุป </a></li>
-                            <li><a href="/contactus" > Contact us </a></li>
-                            <li><a href="/login" onClick={()=> logout()} > ออกจากระบบ </a></li>
+                            <li><a href="dashboard" > หน้าหลัก </a></li>
+                            <li><a href="calculate" > คิดหวย </a></li>
+                            <li><a href="report" > ยอดสรุป </a></li>
+                            <li><a href="contactus" > Contact us </a></li>
+                            <li><a href="login" onClick={()=> logout()} > ออกจากระบบ </a></li>
                            
                         </ul>
                     </div>

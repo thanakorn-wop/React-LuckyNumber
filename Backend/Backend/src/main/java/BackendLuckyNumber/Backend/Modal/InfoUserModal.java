@@ -33,7 +33,6 @@ public class InfoUserModal {
 	}
 
 	
-	
 	public InfoUserModal(String idSeller, String cost, String totalPurchase, String totalLostPrice, String time,
 			String balance, String id) {
 		super();

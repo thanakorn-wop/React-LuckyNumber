@@ -80,18 +80,18 @@ public class LoginService {
 		
 	}
 	
-	public  InfoUserModal getInfoUser(String id)
-	{
-		InfoUserModal infoUser = new InfoUserModal();
-		 try {
-			  infoUser = infoUserRepo.findByIdSeller(id);
-		 }catch(Exception e)
-		 {
-			 System.out.print("Error happen is  = "+e );
-		 }
-		
-		return infoUser;
-	}
+//	public  InfoUserModal getInfoUser()
+//	{
+//		InfoUserModal infoUser = new InfoUserModal();
+//		 try {
+//			  infoUser = infoUserRepo.findByIdSeller();
+//		 }catch(Exception e)
+//		 {
+//			 System.out.print("Error happen is  = "+e );
+//		 }
+//		
+//		return infoUser;
+//	}
 	
 	public UserModal getUser(String username)
 	{

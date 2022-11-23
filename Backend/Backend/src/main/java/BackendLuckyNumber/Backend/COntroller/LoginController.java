@@ -134,12 +134,12 @@ public class LoginController extends ValidateUntil {
 					status = status.OK;
 
 				} else {
-					Authentication auth  = authenticationManager.authenticate(
-					            new
-					            UsernamePasswordAuthenticationToken(userLogin.getUsername(),
-					           userLogin.getPassword())
-					         );
-					createWebTokenGenerator(req,"validatelogin");
+//					Authentication auth  = authenticationManager.authenticate(
+//					            new
+//					            UsernamePasswordAuthenticationToken(userLogin.getUsername(),
+//					           userLogin.getPassword())
+//					         );
+//					createWebTokenGenerator(req,"validatelogin");
 //					infoUser = loginService.getInfoUser(user.get(0).getId());
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
@@ -164,7 +164,10 @@ public class LoginController extends ValidateUntil {
 		 catch (BadCredentialsException e) {
 	         throw new Exception("INVALID_CREDENTIALS", e);
 	      }
-		
+		catch(Exception e)
+		{
+			throw new Exception("NULL Pointer LOGIN CONTROOLER ");
+		}
 		
 		
 		return new ResponseEntity(resp, status);

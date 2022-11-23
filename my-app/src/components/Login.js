@@ -1,15 +1,19 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../CSS/Login.css"
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
-
+import {AuthContext} from "../components/Authen"
 function Login()
 {
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
+    let {setauth} = useContext(AuthContext);
+  
+
+    sessionStorage.setItem("token","");
     let navigate = useNavigate();
-    console.log("befor",test)
+  
     function handleChange(e)
     {
         setUser({...user,[e.target.name]:e.target.value})
@@ -47,9 +51,13 @@ function Login()
                         alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
                      }
                      else{
-                         sessionStorage.setItem("token", res.data.token);
-                         console.log("check session  = ",sessionStorage.getItem("token"))
-                         navigate("/dashboard")
+                        const accessToken = res.data.token;
+
+                      //  setAuth = accessToken;
+                      setauth(accessToken)
+                        sessionStorage.setItem("token", res.data.token);
+                        console.log("check session  = ",sessionStorage.getItem("token"))
+                        navigate("/dashboard")
                      }
                    }
                    else{

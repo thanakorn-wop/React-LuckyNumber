@@ -1,5 +1,8 @@
 package BackendLuckyNumber.Backend.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +15,11 @@ public class DashBoardService {
  
 	@Autowired InfoUserRepo infoUserRepo;
 	
-	public InfoUserModal getInfoUser(String id)
+	public 	List<InfoUserModal> getInfoUser(String id)
 	{
-		InfoUserModal infoUser = new InfoUserModal();
+		
 		try {
-			infoUser = infoUserRepo.findByIdSeller(id);
+			List<InfoUserModal> infoUser  = infoUserRepo.findByIdSeller(id);
 			if(null != infoUser)
 			{
 				return infoUser;
@@ -26,7 +29,7 @@ public class DashBoardService {
 		{
 			System.out.println("ERROR happen at DashBoardService = "+e);
 		}
-		return infoUser;
+		return null;
 	}
 	
 	

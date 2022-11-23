@@ -1,5 +1,7 @@
 package BackendLuckyNumber.Backend.Repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +17,7 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	
 	
 
-	@Query(value = " SELECT p FROM info_user p  WHERE p.id = ?1  ")
-	InfoUserModal findByIdSeller(String id);
+	@Query(value = " SELECT p FROM info_user p WHERE p.id = ?1 ")
+	List<InfoUserModal> findByIdSeller(String id);
 
 }

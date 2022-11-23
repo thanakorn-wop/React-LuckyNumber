@@ -7,23 +7,28 @@ import Navbar from './components/Navbar';
 import Lottary from './components/Lottary';
 import Report from './components/Report';
 import ContactUs from './components/ContactUs';
+import {AuthContext} from "./components/Authen"
+import { useState } from 'react';
+import Outlet from './components/Outlet';
 function App() {
+  const [auth , setauth] = useState();
   return (
     <> 
  
  <BrowserRouter>
-
- <Navbar/>
+ {/* <Navbar/> */}
+  <AuthContext.Provider value = {{auth,setauth}}>
+    <Outlet/>
           <Routes>
-      
+          <Route path='login' element={< Login />}></Route>
+              {/* <Route path='/' element={< Outlet />}> */}
               <Route path='dashboard' element={< Dashbord />}></Route>
               <Route path='calculate' element={< Lottary />}></Route>
               <Route path='report' element={< Report />}></Route>
               <Route path='contactus' element={< ContactUs />}></Route>
-              <Route path='/login' element={< Login />}></Route>
+              {/* </Route> */}
           </Routes>
-
-      
+      </AuthContext.Provider>
     </BrowserRouter>
     </>
 
