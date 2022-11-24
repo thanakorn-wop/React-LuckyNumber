@@ -5,6 +5,7 @@ import phone from "../Icons/telephone-call.png"
 function ContactUs()
 {
     let session =  sessionStorage.getItem("token");
+    const mssage = "ในกรณีที่ลูกค้าถูกทางเราจะจัดการโอนเงินให้ภายในหลัง 6 โมงเย็นเป็นต้นไป เลขดัง ต้องสามารถรอข้ามงวดได้ กรุณาแจ้งให้ลูกค้าของท่านได้ทราบ";
     if(session === null || session === undefined || session ==="")
     {
       window.location.assign("/login")
@@ -19,6 +20,7 @@ function ContactUs()
                   <div className="alertbox">
                     <div className="textbox" >
                             <h3 style={{"color":"red","textShadow":"2px 2px 5px black"}}>คำเตือนโปรดอ่าน</h3>
+                            <h4>{mssage}</h4>
                     </div>
 
                   </div>

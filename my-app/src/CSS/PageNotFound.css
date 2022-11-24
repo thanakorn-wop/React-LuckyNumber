@@ -1,0 +1,17 @@
+.container{
+width: 500px;
+height: 200px;
+position: absolute;
+top: 50%;
+left: 45%;
+margin-top: -100px;
+margin-left: -100px;
+background-color: white;
+}
+.trerrorpage,.tderrorpage, .x{
+    background-color: white;
+}
+.errpage{
+    position: relative;
+    top: 20px;
+}

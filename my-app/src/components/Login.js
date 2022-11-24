@@ -8,10 +8,10 @@ function Login()
 {
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
-    const data = [1,2,3,4]
+    // const data = [1,2,3,4]
     let {setauth} = useContext(AuthContext);
 
-    console.log(data);
+    // console.log(data);
     sessionStorage.setItem("token","");
     let navigate = useNavigate();
   

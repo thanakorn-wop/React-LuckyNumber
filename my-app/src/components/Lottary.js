@@ -24,21 +24,21 @@ function Lottary()
         id: "",
         date: "", 
     });
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
     console.log("check session = ",sessionUser);
    
     let session =  sessionStorage.getItem("token");
+    axios.interceptors.request.use(
+        config =>{
+          config.headers.Authorization = `Bearer ${session}`;
+          return config;
+        }
+      )
     if(session === null || session === undefined || session ==="")
     {
       window.location.assign("/login")
     }
     useEffect(()=>{
-            try{
-                if(sessionUser === null || sessionUser === undefined)
-                {
-                    // navigate("/login")
-                }
-                else{
                     axios.get(urlConstant.GET_LIST_LOTTARY,{
                         headers: { 'Content-Type': 'application/json' }
                     }).then(resp =>{
@@ -46,13 +46,7 @@ function Lottary()
                         {
                              setdata(resp.data);
                         }
-                    })
-                }
-               
-            }catch(e){
-                console.error(e)
-            }
-                
+                    })   
     },[])
     // console.log("check 1 = ",popup.show)
     function ValidityState()

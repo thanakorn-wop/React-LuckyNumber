@@ -32,7 +32,7 @@ function Dashbord()
       const {status,data,config} = error.response;
       if(status === 404)
       {
-        console.log("page not found")
+        window.location.assign("pagenotfound")
       }
       if(status === 400)
       {
@@ -101,21 +101,27 @@ const data = {
   labels: labels,
   datasets: [
     {
-      label: "My First dataset",
-      backgroundColor: "yellow",
-      borderColor: "black",
+      label: "Balance",
+      backgroundColor: "red",
+      borderColor: "blue",
       data: arr,
+     
       
     },
   ],
 };
 
     return(
-        <div className="container" style={{"marginTop":"5%"}}>
+        <div className="dashboardpage" style={{"marginTop":"5%","display":"flex","flexDirection":"column","textAlign":"center"}}>
             <div className="titile" style={{"textAlign":"center"}}>
                 <h3>กราฟสถิติการทำรายได้ตลอดทั้งปี</h3>
             </div>
-            <div style={{"width":"80%","margin":"0 auto","position":"relative","top":"20px"}}>
+            <div className="bc">
+              <select>
+                <option>sss</option>
+              </select>
+            </div>
+            <div style={{"width":"60%","margin":"0 auto","position":"relative","top":"20px"}}>
             <Line data={data} style={{"backgroundColor":"rgb(248,245,252)"}} />
             </div>
         

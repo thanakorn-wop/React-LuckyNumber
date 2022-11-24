@@ -10,6 +10,7 @@ import ContactUs from './components/ContactUs';
 import {AuthContext} from "./components/Authen"
 import { useState } from 'react';
 import Outlet from './components/Outlet';
+import PangeNotFound from './components/Error/PageNotFound';
 function App() {
   const [auth , setauth] = useState();
   return (
@@ -18,8 +19,10 @@ function App() {
  <BrowserRouter>
  {/* <Navbar/> */}
   <AuthContext.Provider value = {{auth,setauth}}>
+
     <Outlet/>
           <Routes>
+          <Route path='pagenotfound' element={< PangeNotFound />}></Route>
           <Route path='login' element={< Login />}></Route>
               {/* <Route path='/' element={< Outlet />}> */}
               <Route path='dashboard' element={< Dashbord />}></Route>
