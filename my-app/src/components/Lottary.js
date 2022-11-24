@@ -11,6 +11,7 @@ import axios from 'axios';
 function Lottary()
 {
 
+
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
@@ -26,6 +27,11 @@ function Lottary()
     let navigate = useNavigate();
     console.log("check session = ",sessionUser);
    
+    let session =  sessionStorage.getItem("token");
+    if(session === null || session === undefined || session ==="")
+    {
+      window.location.assign("/login")
+    }
     useEffect(()=>{
             try{
                 if(sessionUser === null || sessionUser === undefined)

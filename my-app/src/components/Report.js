@@ -10,6 +10,12 @@ function Report ()
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
     const [DateMonth, setDateMonth] = useState(new Date());
     
+
+    let session =  sessionStorage.getItem("token");
+    if(session === null || session === undefined || session ==="")
+    {
+      window.location.assign("/login")
+    }
     const monthjsx = 
     (
         month.map(data =>{
@@ -20,6 +26,8 @@ function Report ()
     {
 
     }
+
+
     return(
         <div className="pathreport">
             <div className="boxreport">

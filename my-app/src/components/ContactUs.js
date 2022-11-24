@@ -4,6 +4,11 @@ import line from "../Icons/line.png"
 import phone from "../Icons/telephone-call.png"
 function ContactUs()
 {
+    let session =  sessionStorage.getItem("token");
+    if(session === null || session === undefined || session ==="")
+    {
+      window.location.assign("/login")
+    }
     return(
         <div className="boxContectUs">
             <div className="ContactUsPage">

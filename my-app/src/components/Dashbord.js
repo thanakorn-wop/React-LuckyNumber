@@ -28,6 +28,29 @@ function Dashbord()
         return config;
       }
     )
+    axios.interceptors.response.use(undefined,(error) =>{
+      const {status,data,config} = error.response;
+      if(status === 404)
+      {
+        console.log("page not found")
+      }
+      if(status === 400)
+      {
+        console.log("bad request")
+      }
+      if(status ===500)
+      {
+        console.log("error server");
+      }
+      if(status === 401)
+      {
+           window.location.assign("/login")
+      }
+      if(status ===403)
+      {
+        window.location.assign("/login")
+      }
+    })
   useEffect(()=>{
   try{
     axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
