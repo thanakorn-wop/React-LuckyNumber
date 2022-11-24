@@ -6,10 +6,10 @@ function InsertNumberModal (props)
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
     const [DateMonth, setDateMonth] = useState(new Date());
     const [luckyNumber, setLuckyNumber] = useState({
-        id: "",
-        threeFontNumber: "", 
-        threeBackNumber: "",
-        twoBackNumber: ""
+        threetop: "", 
+        threedown: "",
+        twotop: "",
+        twodown:""
       
     });
     
@@ -22,7 +22,7 @@ function InsertNumberModal (props)
     const handleChange = (e) => {
         const value = e.target.value;
         setLuckyNumber({...luckyNumber,[ e.target.name]: value});
-        console.sole.log(luckyNumber)
+        console.log(luckyNumber)
     }
     const saveData = (e)=>{
         // console.log(e.target.name)
@@ -44,11 +44,13 @@ function InsertNumberModal (props)
             <div>    <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div>
            
             <div className="text">  <label>เลขหน้า 3 ตัว</label></div>
-            <div>  <input type="text" className="form-control "   name = "threeFontNumber"  onChange={(e)=>handleChange(e)}/></div>
+            <div>  <input type="text" className="form-control "   name = "threetop"  onChange={(e)=>handleChange(e)}/></div>
             <div className="text">  <label>เลขท้าย 3 ตัว</label></div>
-            <div>  <input type="text" className="form-control "   name = "threeBackNumber"  onChange={(e)=>handleChange(e)}/></div>
+            <div>  <input type="text" className="form-control "   name = "threedown"  onChange={(e)=>handleChange(e)}/></div>
             <div className="text">  <label>เลขท้าย 2 ตัว</label></div>
-            <div>  <input type="text" className="form-control "   name = "twoBackNumber"  onChange={(e)=>handleChange(e)}/></div>
+            <div>  <input type="text" className="form-control "   name = "twotop"  onChange={(e)=>handleChange(e)}/></div>
+            <div className="text">  <label>เลขท้าย 2 ตัว</label></div>
+            <div>  <input type="text" className="form-control "   name = "twodown"  onChange={(e)=>handleChange(e)}/></div>
         
             </div>
         </div>

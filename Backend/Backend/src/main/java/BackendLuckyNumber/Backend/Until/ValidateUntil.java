@@ -10,6 +10,7 @@ import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.GenJwt;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
+import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 public class ValidateUntil {
 	
@@ -20,6 +21,15 @@ public class ValidateUntil {
 		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) ? true:false;
 		return validate;
 	}
+	
+	public  Boolean validateRequestInsetNumberLucky(LuckyNumberReq req)
+	{
+		Boolean validate = StringUtils.isNotBlank(req.getThreetop()) && StringUtils.isNotBlank(req.getThreedown())
+							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())? true:false;
+		return validate;
+	}
+	
+	
 	public  Boolean validateToken(HttpServletRequest req, String token)
 	{
 		 Boolean statusToken = false;

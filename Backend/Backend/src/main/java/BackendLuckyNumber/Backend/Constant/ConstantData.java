@@ -21,7 +21,12 @@ public class ConstantData {
 	//message constant 
 	public static String MESSAGE_SUCCESS ="success";
 	public static String MESSAGE_NOT_SUCCESS ="not_success";
+
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";
+	
+	//message duplciate 
+	public static String DUPLICATE_DATA ="duplicate data";
+	
 	
 }

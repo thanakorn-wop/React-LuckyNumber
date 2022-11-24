@@ -245,23 +245,5 @@ public class LoginController extends ValidateUntil {
 		return new ResponseEntity(resp, status);
 	}
 
-//	public Boolean validateRequest(LoginReqModel userLogin)
-//	{
-//		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) ? true:false;
-//		return validate;
-//	}
-//	public Boolean validateToken(String tokenDB,String token)
-//	{
-//		
-//		 GenJwt genjwt = new GenJwt();
-//		 tokenDB = genjwt.deCode(tokenDB);
-//		 token = genjwt.deCode(token);
-//		 Boolean statusToken = false;
-//		 if(tokenDB.equals(token))
-//		 {
-//			 statusToken = true;
-//		 }
-//		
-//		return statusToken;
-//	}
+
 }

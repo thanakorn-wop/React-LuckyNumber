@@ -18,15 +18,14 @@ function Lottary()
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
     const [DateMonth, setDateMonth] = useState(new Date());
-    const [data,setdata] = useState([]);
+    const [dataSet,setDataSet] = useState([]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
     });
-    // let navigate = useNavigate();
-    console.log("check session = ",sessionUser);
-   
+    // let navigate = useNavigate()
+  
     let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
         config =>{
@@ -44,7 +43,7 @@ function Lottary()
                     }).then(resp =>{
                         if(resp !== null && resp !== undefined)
                         {
-                             setdata(resp.data);
+                            setDataSet(resp.data);
                         }
                     })   
     },[])
@@ -159,7 +158,7 @@ function Lottary()
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
-                                        <button type="button" className="btn btn-info"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไขการจ่าย</button>
+                                        <button type="button" className="btn btn-info"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไข</button>
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
@@ -180,7 +179,7 @@ function Lottary()
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
-                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
+                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>แก้ไข</button>
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button></div>
@@ -201,7 +200,7 @@ function Lottary()
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
-                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
+                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>แก้ไข</button>
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button></div>
