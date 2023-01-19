@@ -54,19 +54,18 @@ function Dashbord()
   useEffect(()=>{
   try{
     axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
-      console.log(" tt = ",res.data)
+      console.log(" tt = ",session)
       if(res.data.statusCode ==='401')
       {
         navaigate("/login");
       }else{
+        console.log("check data ",res.data.dataList.years)
         setDataSet(res.data.dataList)
       }
     })
    
   }catch(e)
   {
-    // console.error("Error response Dashboard  = ",e);
-    // console.log("check error = ",e.response.status);
     if(e.res.status ===401)
     {
      navaigate("/login");
@@ -80,22 +79,33 @@ let strmonth = "";
 // dataSet.map((data,index)=>{
 //   console.log(data.time.split("-"));
 // })
+Object.keys(dataSet).map((key,index)=>{
+   if(key !== "years" && key !== 'id_month' && key !== "id")
+   {
+     arr.push(dataSet[key])
+   }
+})
+console.log("check arr = ",arr);
 if(dataSet !== [] || dataSet !== null || dataSet !== undefined)
 {
-  for(let i = 1 ; i <=12; i++)
-  {
-    dataSet.map((data,index)=>{
-       strmonth = data.time.split("-");
-       if(i == strmonth[1])
-       {
-        sum = sum+Number(data.balance);
-       }
-    })
-    arr.push(sum);
-    sum = 0;
-  }
+  //console.log("check data list = ",dataSet)
+  // for(let i = 1 ; i <=12; i++)
+  // {
+  //   dataSet.map((data,index)=>{
+  //      strmonth = data.time.split("-");
+  //      if(i == strmonth[1])
+  //      {
+  //       sum = sum+Number(data.balance);
+  //      }
+  //   })
+  //   arr.push(sum);
+  //   sum = 0;
+  // }
+  // dataSet.map((data,index)=>{
+  //   console.log("check month = ",data);
+  // })
 }
-console.log("check arr after loop = ",arr);
+//console.log("check arr after loop = ",arr);
 const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
 const data = {
   labels: labels,

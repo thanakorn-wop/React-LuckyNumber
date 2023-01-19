@@ -35,7 +35,7 @@ function Login()
                 headers: { 'Content-Type': 'application/json' }
             }).then(res =>{
                 console.log(res.data)
-                console.log(res.data.header)
+              //  console.log(res.data.header)
                 if(res.data !== null && res.data !== undefined)
                 {
                  
@@ -62,7 +62,7 @@ function Login()
                      }
                    }
                    else{
-                        if(res.data.iduser != null && res.data.header.statusCode === "00" )
+                        if(res.data.iduser != null  )
                         {
                         alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
                         }
