@@ -25,7 +25,8 @@ public class ValidateUntil {
 	public  Boolean validateRequestInsetNumberLucky(LuckyNumberReq req)
 	{
 		Boolean validate = StringUtils.isNotBlank(req.getThreetop()) && StringUtils.isNotBlank(req.getThreedown())
-							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())? true:false;
+							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())
+							&& StringUtils.isNotBlank(req.getDate())? true:false;
 		return validate;
 	}
 	

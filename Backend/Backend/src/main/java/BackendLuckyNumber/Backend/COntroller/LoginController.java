@@ -88,24 +88,7 @@ public class LoginController extends ValidateUntil {
 			      return ResponseEntity.ok(new JwtResponseModel(jwtToken));
 			   }
 
-//	@GetMapping("/hello")
-//	public String hello(@RequestBody LoginReqModel qq, HttpServletRequest req) {
-//		GenJwt genjwt = new GenJwt();
-//		String token = req.getSession().getAttribute("token").toString();
-//		token = genjwt.deCode(token);
-//		String data = qq.getToken();
-//		data = genjwt.deCode(data);
-//		System.out.println("check token = " + token);
-//		System.out.println("check data token = " + data);
-//		if (data.equals(token)) {
-//			System.out.println("true");
-//
-//		} else {
-//			System.out.println("false");
-//		}
-//		System.out.println("check hello =  " + req.getSession().getAttribute("token"));
-//		return "hello";
-//	}
+
 
 	@PostMapping("/validatelogin")
 	public ResponseEntity validatelogin(@RequestBody JwtRequestModel userLogin, HttpServletRequest req) throws Exception {
@@ -113,12 +96,12 @@ public class LoginController extends ValidateUntil {
 		GenJwt genjwt = new GenJwt();
 	//	String token = genjwt.generateNewToken(userLogin.getIduser(),"validatelogin");
 	//	token = genjwt.encodeData(token);
-		Header header = new Header();
+ 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		LoginResModal resp = new LoginResModal();
 		try {
 			List<UserModal> user = loginService.validateLoginService(userLogin);
-			req.getSession().setAttribute(ConstantData.USER_DETAILS, user.get(0));
+		//	req.getSession().setAttribute(ConstantData.USER_DETAILS, user.get(0));
 			if (null == user.get(0)) {
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
@@ -128,12 +111,21 @@ public class LoginController extends ValidateUntil {
 				if (user.get(0).getPassword().equals("invalid")) {
 					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+					resp.setStatus(user.get(0).getStatus());
 					resp.setIduser(userLogin.getUsername());
 					resp.setHeader(header);
 					System.out.println("ok");
 					status = status.OK;
 
 				} else {
+					if(user.get(0).getStatus().equals("L"))
+					{
+						header.setMessage(ConstantData.MESSAGE_USER_LOCK);
+						header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+						resp.setStatus(user.get(0).getStatus());
+						resp.setIduser(userLogin.getUsername());
+						resp.setHeader(header);
+					}
 //					Authentication auth  = authenticationManager.authenticate(
 //					            new
 //					            UsernamePasswordAuthenticationToken(userLogin.getUsername(),
@@ -154,7 +146,8 @@ public class LoginController extends ValidateUntil {
 //				    req.getSession().setAttribute("iduser", userDetails.getUsername());
 				    final String jwtToken = jwt.generateJwtToken(userDetails);
 				    resp.setToken(jwtToken);
-				     
+				     req.getSession().setAttribute("testToken", "TEST TOKEN ");
+				     System.out.println("check before login token = "+req.getSession().getAttribute("testToken"));
 				}
 
 			}

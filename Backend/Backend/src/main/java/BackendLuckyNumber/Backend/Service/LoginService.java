@@ -14,7 +14,7 @@ import BackendLuckyNumber.Backend.GenJwt;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.Repo.Base;
-import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
+//import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.LoginRepo;
 import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
@@ -25,7 +25,7 @@ public class LoginService {
 	
 	@Autowired LoginRepo loginRepo;
 	@Autowired Base base;
-	@Autowired InfoUserRepo infoUserRepo;
+	//@Autowired InfoUserRepo infoUserRepo;
 	
 	
 	
@@ -59,7 +59,9 @@ public class LoginService {
 					  // infoUser = infoUserRepo.findByIdSeller(dataUser.getId());
 					   //System.out.print(infoUser.getTotalLostPrice());
 					 }
-					  arrdataUser.add(dataUser);
+					// case status == lock, user will not be able to access web site
+						  arrdataUser.add(dataUser);
+					
 				  }
 				  else {
 					  dataUser.setPassword("invalid");
