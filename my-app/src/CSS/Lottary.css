@@ -29,3 +29,15 @@
 .buttom2{
     margin-left: 5px;
 }
+.paynow{
+ 
+    background-color: rgb(55, 13, 224);
+    border-radius: 5px;
+    padding: 5px;
+   
+}
+.notpay{
+    background-color: red;
+    border-radius: 5px;
+    padding: 5px;
+}

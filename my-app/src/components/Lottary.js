@@ -20,6 +20,7 @@ function Lottary()
     const [DateMonth, setDateMonth] = useState(new Date());
     const [dataSet,setDataSet] = useState([]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
+    const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
@@ -87,6 +88,60 @@ function Lottary()
         }
     }
     // console.log(popup)
+    //todo validate the  saving status from InsertLuckyNumber model
+    function SaveInsertNumber(e,DataLuckyNumber)
+    {
+        console.log("save InsertNUmber = ",e,DataLuckyNumber);
+        if(e === "save")
+        {  // todo validate field  of Insert LuckyNumber Model
+            if(DataLuckyNumber.threetop === null || DataLuckyNumber.threetop === undefined || DataLuckyNumber.threetop === "" )
+            {
+                alert("กรุณาใส่เลข เลขหน้า 3 ตัว");
+            }
+            else if(DataLuckyNumber.threedown === null || DataLuckyNumber.threedown === undefined || DataLuckyNumber.threedown === "" )
+            {
+                alert("กรุณาใส่เลข เลขหท้าย 3 ตัว");
+            }
+            else if(DataLuckyNumber.twotop === null || DataLuckyNumber.twotop === undefined || DataLuckyNumber.twotop === "" )
+            {
+                alert("กรุณาใส่เลขเลขท้าย 2 ตัว");
+            }
+            else if(DataLuckyNumber.twodown=== null || DataLuckyNumber.twodown === undefined || DataLuckyNumber.twodown === "" )
+            {
+                alert("กรุณาใส่เลข เลขท้าย 2 ตัว");
+            }
+            else{
+                const post_Insert_Lucky_Number =axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,DataLuckyNumber,{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(res=>{
+                  
+                    //  console.log("code = ",res)
+                    let message = res.data.message;
+                    let statusCode = res.data.statusCode;
+                    if(statusCode ==='01' && message === "success")
+                    {
+                        alert("ทำรายการสำเร็จ")
+                        setLuckyModal(false)
+                    }
+                    else if(statusCode ==='01' && message === 'duplicate_data')
+                    {
+                        alert("มีการทำรายการซ้ำของวันที่")
+                    }
+                    else{
+                        alert("เกิดข้อผิดพลาดในการทำรายการ")
+                    }
+                })
+            
+            console.log("check post insert  = ",post_Insert_Lucky_Number)
+
+            }
+        }
+        //* close InsertLucky Number Model */
+        else{
+            setLuckyModal(false)
+        }
+       // console.log("show lucky number ",DataLuckyNumber)
+    }
     return(
         <div className="mainpage">
             <div className="boxpage" >
@@ -147,14 +202,14 @@ function Lottary()
                            </thead>
                            <tbody>
                             <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>1</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>10.55.00 น</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>จ่ายแล้ว</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>1</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
+                                <td   style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="paynow">จ่ายแล้ว</span></td>
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
@@ -168,14 +223,14 @@ function Lottary()
                                 </td>
                             </tr>
                             <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>2</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>10.55.00 น</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ยังไม่จ่าย</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>2</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="notpay">ยังไม่จ่าย</span></td>
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
@@ -189,14 +244,14 @@ function Lottary()
                                 
                             </tr>
                             <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>3</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>10.55.00 น</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ยังไม่จ่าย</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>3</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="paynow">จ่ายแล้ว</span></td>
                                 <td style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
@@ -231,7 +286,7 @@ function Lottary()
                 <NumberModal  onClose={(e) => setpopup(e)}  show={popup} Data={setData} status={submitData}  />
 
                 {
-                    luckyModal && <InsertNumberModal onClose = {(e)=>setLuckyModal(e)}/>
+                    luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>SaveInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
                 }
                 {
                    isOpenPaymentModal &&   <PaymentStatusModal onClose={(e) => setIsOpenPayMentModal(e)} />

@@ -30,13 +30,13 @@ function NumberModal(props)
     
     const handleChange = (e) => {
         const value = e.target.value;
-        userData({...setUserData,[ e.target.name]: value});
+     //   userData({...setUserData,[ e.target.name]: value});
     }
     const saveData = (e)=>{
-        console.log(e.target.name)
-        props.Data(userData)
-        console.log("check data",userData)
-        props.status(e.target.name)
+        // console.log(e.target.name)
+        // props.Data(userData)
+        // console.log("check data",userData)
+        // props.status(e.target.name)
     
        
 
