@@ -49,15 +49,15 @@ function NumberModal(props)
                 <div className="boxbody"  style={{"marginLeft":"15px","marginRight":"20px"}}>
                    
                     <div className="flexcontainer1">
-                        <div className="textdate" style={{"width":"50%"}}>
-                            <div className="text">  <label>วันที่</label></div>
-                            <div className="datepicker" style={{"width":"50%"}}><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /> </div>
+                        <div className="text_numpagedate" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>วันที่</label></div>
+                            <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /> </div>
                         </div>
                     
-                        <div className="textchoice" style={{"width":"50%"}}>
-                            <div className="text">  <label>การแทง</label></div>
-                            <div className="choice"> 
-                                <select className="form-select form-select-sm "  name = "option"   style={{"width":"25%"}} onChange={(e)=>handleChange(e)}>
+                        <div className="text_numpagechoice" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>การแทง</label></div>
+                            <div className="choice" style={{"text_numpageAlign":"center"}}> 
+                                <select className="form-select form-select-sm "  name = "option"   style={{"width":"60%","text_numpageAlign":"center"}} onChange={(e)=>handleChange(e)}>
                                     <option value="empty">เลือก</option>
                                     <option value="top">บน</option>
                                     <option value = "button">ล่าง</option>
@@ -66,34 +66,34 @@ function NumberModal(props)
                         </div>
                     </div>
                     <div className="flexcontainer2">
-                        <div className="textno" style={{"width":"50%"}}>
-                            <div className="text">  <label>เลข</label></div>
-                            <div>  <input type="text" className="form-control " style={{"width":"50%"}}  name = "number"  onChange={(e)=>handleChange(e)}/></div>
+                        <div className="text_numpageno" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>เลข</label></div>
+                            <div>  <input type="text_numpage" className="form-control " style={{"width":"60%"}}  name = "number"  onChange={(e)=>handleChange(e)}/></div>
                         </div>
-                        <div className="textprice2"  style={{"width":"50%"}}>
-                            <div className="text">  <label>ราคา (บาท)</label></div>
-                            <div>  <input type="text" className="form-control price " style={{"width":"50%"}} name = "price"  onChange={(e)=>handleChange(e)}/></div>
+                        <div className="text_numpageprice2"  style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>ราคา (บาท)</label></div>
+                            <div>  <input type="text_numpage" className="form-control price " style={{"width":"60%"}} name = "price"  onChange={(e)=>handleChange(e)}/></div>
                         </div>
 
                     </div>
                    
                     <div className="flexcontainer3" >
-                        <div className="textline" style={{"width":"50%"}}>
-                            <div className="text">  <label>ID Line:</label></div>
-                            <div>  <input type="text" className="form-control "  style={{"width":"50%"}} name = "idLine"  onChange={(e)=>handleChange(e)}/></div>
+                        <div className="text_numpageline" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>ID Line:</label></div>
+                            <div>  <input type="text_numpage" className="form-control "  style={{"width":"60%"}} name = "idLine"  onChange={(e)=>handleChange(e)}/></div>
                         </div>
-                        <div className="textphone" style={{"width":"50%"}}>
-                            <div className="text">  <label>เบอร์โทรติดต่อ</label></div>
-                            <div>  <input type="text" className="form-control " style={{"width":"50%"}} name = "phoneNumber"  onChange={(e)=>handleChange(e)}/></div>
+                        <div className="text_numpagephone" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>เบอร์โทรติดต่อ</label></div>
+                            <div>  <input type="text_numpage" className="form-control " style={{"width":"60%"}} name = "phoneNumber"  onChange={(e)=>handleChange(e)}/></div>
                         </div>
                     </div>
                     
                   
                   
                 </div>
-                <div className="modal-footer" style={{"marginTop":"20px"}}>
+                <div className="modal-footer" style={{"marginTop":"20px","marginLeft":"15px","marginBottom":"10px"}}>
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.onClose(false)}>Close</button>
-                <button type="button" className="btn btn-primary" name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
+                <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
             </div>
         </div>
 

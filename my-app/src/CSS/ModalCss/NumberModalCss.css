@@ -6,9 +6,9 @@
     
     position: absolute;
     border: solid 2px yellow;
-    width: 45%;
+    width: 35%;
     top:100px;
-    left: 450px;  
+    left: 550px;  
     /* height: 200px; */
    
 }
@@ -20,4 +20,14 @@
 }
 .flexcontainer3{
     display: flex;
+}
+select.form-select  {
+    margin: 0 auto;
+}
+.datepicker{
+    margin: 0 auto;
+}
+.text_numpage{
+   padding: 10px;
+   margin-left: 50px;
 }

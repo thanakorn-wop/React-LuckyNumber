@@ -5,7 +5,17 @@
 .luckynumber{
     position: absolute;
     border: solid 2px yellow;
-    width: 45%;
+    width: 25%;
     top:100px;
-    left: 450px;  
+    left: 650px;  
+}
+.text{
+    text-align: center;
+}
+
+.form-control{
+    margin: 0 auto;
+}
+.formtext{
+    margin: 0 auto;
 }
