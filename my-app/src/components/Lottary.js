@@ -118,6 +118,7 @@ function Lottary()
                     //  console.log("code = ",res)
                     let message = res.data.message;
                     let statusCode = res.data.statusCode;
+                    // todo validate status insert from back end 
                     if(statusCode ==='01' && message === "success")
                     {
                         alert("ทำรายการสำเร็จ")
@@ -132,7 +133,7 @@ function Lottary()
                     }
                 })
             
-            console.log("check post insert  = ",post_Insert_Lucky_Number)
+          //  console.log("check post insert  = ",post_Insert_Lucky_Number)
 
             }
         }
@@ -283,20 +284,19 @@ function Lottary()
                     </nav>
                 </div>
        
-                <NumberModal  onClose={(e) => setpopup(e)}  show={popup} Data={setData} status={submitData}  />
-
-                {
-                    luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>SaveInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
-                }
-                {
-                   isOpenPaymentModal &&   <PaymentStatusModal onClose={(e) => setIsOpenPayMentModal(e)} />
-                }
-                {
-                  isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
-                }
                    
             </div>
-        
+            <NumberModal  onClose={(e) => setpopup(e)}  show={popup} Data={setData} status={submitData}  />
+
+            {
+                luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>SaveInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
+            }
+            {
+            isOpenPaymentModal &&   <PaymentStatusModal onClose={(e) => setIsOpenPayMentModal(e)} />
+            }
+            {
+            isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
+            }
 
         </div>
     );

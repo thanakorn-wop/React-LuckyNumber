@@ -9,4 +9,15 @@
     width: 45%;
     top:100px;
     left: 450px;  
+    /* height: 200px; */
+   
+}
+.flexcontainer1{
+    display: flex;
+}
+.flexcontainer2{
+    display: flex;
+}
+.flexcontainer3{
+    display: flex;
 }
