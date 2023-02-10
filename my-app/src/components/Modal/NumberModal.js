@@ -30,15 +30,16 @@ function NumberModal(props)
     
     const handleChange = (e) => {
         const value = e.target.value;
-     //   userData({...setUserData,[ e.target.name]: value});
+        setUserData({...userData,[ e.target.name]: value});
+        // console.log("value = ",value)
     }
-    const saveData = (e)=>{
-        // console.log(e.target.name)
+    const Handlesaving = (isOpen)=>{
+        // console.log("check number Modal = "+e);
         // props.Data(userData)
-        // console.log("check data",userData)
-        // props.status(e.target.name)
-    
        
+        // props.status(e.target.name)
+        userData.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
+        props.handleSavingNum(isOpen,userData)
 
         console.log("check data = ",userData)
     }
@@ -92,8 +93,8 @@ function NumberModal(props)
                   
                 </div>
                 <div className="modal-footer" style={{"marginTop":"20px","marginLeft":"15px","marginBottom":"10px"}}>
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.onClose(false)}>Close</button>
-                <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => Handlesaving(false)}>Close</button>
+                <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>Handlesaving(true)}>Save changes</button>
             </div>
         </div>
 

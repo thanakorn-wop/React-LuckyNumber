@@ -4,4 +4,4 @@ export const LOGOUT_USER = "http://localhost:8090/api/logout"
 export const GET_LIST_LOTTARY ="http://localhost:8090/api/getlistlottary"
 export const GET_DASH_BOARD ="http://localhost:8090/api/getdashboard"
 export const POST_INSERT_LUCKY_NUMBER ="http://localhost:8090/api/insertluckynumber"
-
+export const POST_INSERT_NUMBER ="http://localhost:8090/api/insertnumber"

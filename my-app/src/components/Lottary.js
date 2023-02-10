@@ -89,7 +89,7 @@ function Lottary()
     }
     // console.log(popup)
     //todo validate the  saving status from InsertLuckyNumber model
-    function SaveInsertNumber(e,DataLuckyNumber)
+    function HandleInsertNumber(e,DataLuckyNumber)
     {
         console.log("save InsertNUmber = ",e,DataLuckyNumber);
         if(e === "save")
@@ -142,6 +142,37 @@ function Lottary()
             setLuckyModal(false)
         }
        // console.log("show lucky number ",DataLuckyNumber)
+    }
+    function HandleluckyModal(isOpen,dataNum)
+    {
+     
+        if(isOpen)
+        {
+            console.log(dataNum.option);
+            if(dataNum.option === null || dataNum.option ===undefined || dataNum.option ==='')
+            {
+                alert("กรุณาเลือกการแทง");
+            }
+            else if(dataNum.price  === null || dataNum.price ===undefined || dataNum.price ==='' )
+            {
+                alert("กรุณาใส่ราคา");
+            }
+            else if(dataNum.number  === null || dataNum.number ===undefined || dataNum.number ==='' )
+            {
+                alert("กรุณาใส่เลข");
+            }
+            else{
+                const Post_Insert_Number = axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(res =>{
+                    console.log("check response num = ",res.data)
+                })
+
+            }
+        }
+        else{
+            setpopup(false)
+        }
     }
     return(
         <div className="mainpage">
@@ -286,15 +317,19 @@ function Lottary()
        
                    
             </div>
-            <NumberModal  onClose={(e) => setpopup(e)}  show={popup} Data={setData} status={submitData}  />
+            {/* // list insert purachse number  modal */}
+            <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleluckyModal(isOpen,dataNum)}  show={popup}   />
 
             {
-                luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>SaveInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
+            // todo  insert modal lottary
+                luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
             }
             {
+                // todo paymethod modal changing
             isOpenPaymentModal &&   <PaymentStatusModal onClose={(e) => setIsOpenPayMentModal(e)} />
             }
             {
+                
             isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
             }
 
