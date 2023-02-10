@@ -92,16 +92,12 @@ public class LoginController extends ValidateUntil {
 
 	@PostMapping("/validatelogin")
 	public ResponseEntity validatelogin(@RequestBody JwtRequestModel userLogin, HttpServletRequest req) throws Exception {
-		//InfoUserModal infoUser = new InfoUserModal();
 		GenJwt genjwt = new GenJwt();
-	//	String token = genjwt.generateNewToken(userLogin.getIduser(),"validatelogin");
-	//	token = genjwt.encodeData(token);
  		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		LoginResModal resp = new LoginResModal();
 		try {
 			List<UserModal> user = loginService.validateLoginService(userLogin);
-		//	req.getSession().setAttribute(ConstantData.USER_DETAILS, user.get(0));
 			if (null == user.get(0)) {
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
@@ -126,13 +122,6 @@ public class LoginController extends ValidateUntil {
 						resp.setIduser(userLogin.getUsername());
 						resp.setHeader(header);
 					}
-//					Authentication auth  = authenticationManager.authenticate(
-//					            new
-//					            UsernamePasswordAuthenticationToken(userLogin.getUsername(),
-//					           userLogin.getPassword())
-//					         );
-//					createWebTokenGenerator(req,"validatelogin");
-//					infoUser = loginService.getInfoUser(user.get(0).getId());
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					resp.setHeader(header);
@@ -140,14 +129,11 @@ public class LoginController extends ValidateUntil {
 					resp.setStatus(user.get(0).getStatus());
 					resp.setTimelogin(user.get(0).getTimelogin());
 					resp.setTimelogout(user.get(0).getTimelogout());
-					req.getSession().setAttribute(ConstantData.USER_DETAILS, resp);	
-					req.getSession().setAttribute("id", user.get(0).getId());
 					final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
 //				    req.getSession().setAttribute("iduser", userDetails.getUsername());
 				    final String jwtToken = jwt.generateJwtToken(userDetails);
 				    resp.setToken(jwtToken);
-				     req.getSession().setAttribute("testToken", "TEST TOKEN ");
-				     System.out.println("check before login token = "+req.getSession().getAttribute("testToken"));
+		
 				}
 
 			}

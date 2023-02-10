@@ -1,6 +1,6 @@
 package BackendLuckyNumber.Backend.COntroller;
 
-
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
+import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
@@ -50,15 +51,54 @@ public class LottaryController extends ValidateUntil {
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
 			}
 			else {
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+				status = HttpStatus.OK;
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setMessage(ConstantData.DUPLICATE_DATA);
 			}
 		}
 		else {
 			status = HttpStatus.BAD_REQUEST;
+			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+			header.setMessage(ConstantData.BAD_REQUEST);
 		}
 		return new ResponseEntity(header,status);
+	}
+	@PostMapping("/insertnumber")
+	public boolean postInsertNumber(@RequestBody NumberRequestModel NumRequest,Authentication auth) throws Exception
+	{
+		HttpStatus status = HttpStatus.OK;
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		
+		System.out.println("check user = "+user.getUsername());
+		if(validateAPI(NumRequest))
+		{
+			listLottaryService.postInsertNumberService(NumRequest);
+		}
+		else {
+			System.out.println("check");
+		}
+		
+		return false;
+	}
+	
+	public Boolean validateAPI(NumberRequestModel NumRequest)
+	{
+		Boolean validate  = false;
+	
+		try {
+			
+			if(StringUtils.isNotBlank(NumRequest.getDate()) || StringUtils.isNotBlank(NumRequest.getOption())|| StringUtils.isNotBlank(NumRequest.getNumber())
+					|| StringUtils.isNotBlank(NumRequest.getPrice()))
+			{
+				validate = true;
+			}
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("API is EMPTY or NULL ");
+		}
+		
+		return validate;
 	}
 
 }

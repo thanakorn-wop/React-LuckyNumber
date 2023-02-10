@@ -39,12 +39,12 @@ public class LottaryModal {
 	public void setTwodown(String twodown) {
 		this.twodown = twodown;
 	}
-	public String getIdLottary() {
-		return idLottary;
-	}
-	public void setIdLottary(String idLottary) {
-		this.idLottary = idLottary;
-	}
+//	public String getIdLottary() {
+//		return idLottary;
+//	}
+//	public void setIdLottary(String idLottary) {
+//		this.idLottary = idLottary;
+//	}
 	public String getTime() {
 		return date;
 	}

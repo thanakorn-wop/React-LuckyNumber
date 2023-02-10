@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,6 +26,7 @@ public class LoginService {
 	
 	@Autowired LoginRepo loginRepo;
 	@Autowired Base base;
+//	@Autowired private JwtUserDetailsService userDetailsService;
 	//@Autowired InfoUserRepo infoUserRepo;
 	
 	
@@ -39,10 +41,13 @@ public class LoginService {
 		String status = "A";
 		String passUser = "";
 		try {
-			
+		
 			dataUser = loginRepo.findidUser(userLogin.getUsername());
+		//	final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
+			
 			if(!StringUtils.isEmpty(dataUser))
 				 {
+				
 				  validatepass = b.matches(userLogin.getPassword(),dataUser.getPassword());
 				  if(validatepass)
 				  {
@@ -56,8 +61,7 @@ public class LoginService {
 					   dataUser.setStatus(status);
 					   dataUser.setTimelogin(formattedDate);
 					   loginRepo.updateStatusLoginUser(status,formattedDate,dataUser.getToken());
-					  // infoUser = infoUserRepo.findByIdSeller(dataUser.getId());
-					   //System.out.print(infoUser.getTotalLostPrice());
+				
 					 }
 					// case status == lock, user will not be able to access web site
 						  arrdataUser.add(dataUser);
@@ -159,14 +163,15 @@ public class LoginService {
 		}
 		return false;
 	}
+	
 	public UserModal register(LoginReqModel userLogin)
 	{
 		UserModal dataUser = new UserModal();
 		GenJwt genjwt = new GenJwt();
 		UserModal usermodal = new UserModal();
 		 String encodedPassword = new BCryptPasswordEncoder().encode(userLogin.getPassword());
-		String tokenpass = "";
-		Boolean DuplicateRegister = false;
+//		String tokenpass = "";
+//		Boolean DuplicateRegister = false;
 		// String encodedPassword = BCryptPasswordDecoder(userLogin.getPassword());
 		try {
 			dataUser = loginRepo.findidUser(userLogin.getIduser());
@@ -176,7 +181,7 @@ public class LoginService {
 					 return dataUser;	
 			}
 			else {
-				tokenpass = genjwt.encodeData(userLogin.getPassword());
+//				tokenpass = genjwt.encodeData(userLogin.getPassword());
 				usermodal.setIduser(userLogin.getIduser());
 				usermodal.setPassword(encodedPassword);
 				usermodal.setStatus("I");
