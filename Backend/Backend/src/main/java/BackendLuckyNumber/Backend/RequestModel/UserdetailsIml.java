@@ -11,7 +11,7 @@ import BackendLuckyNumber.Backend.Modal.UserModal;
 
 public class UserdetailsIml implements UserDetails {
 	private UserModal infoUser;
-	private String username;
+	
 	
 
 	
@@ -31,9 +31,6 @@ public class UserdetailsIml implements UserDetails {
 	}
 
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 
 	@Override

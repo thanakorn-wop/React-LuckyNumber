@@ -22,6 +22,10 @@ public class ConstantData {
 	public static String MESSAGE_SUCCESS ="success";
 	public static String MESSAGE_NOT_SUCCESS ="not_success";
 	public static String MESSAGE_USER_LOCK = "USER_LOCK";
+	public static String MESSAGE_TOP = "TOP";
+	public static String MESSAGE_BELOW = "Below";
+	public static String MESSAGE_YES = "Yes";
+	public static String MESSAGE_NO = "No";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";

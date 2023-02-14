@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
@@ -20,84 +21,99 @@ import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 import org.apache.commons.lang3.StringUtils;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class LottaryController extends ValidateUntil {
-	
-	@Autowired LottaryService listLottaryService;
-	
+
+	@Autowired
+	LottaryService listLottaryService;
+
 	@GetMapping("/getlistlottary")
-	public void getListLottary(Authentication auth)
-	{
+	public void getListLottary(Authentication auth) {
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-		
+
 //		listLottaryService.get
 	}
-	
+
 	@PostMapping("/insertluckynumber")
-	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq) throws Exception
-	{
+	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq) throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Boolean statusInsert;
 		Header header = new Header();
-		if(validateRequestInsetNumberLucky(luckyNumberReq))
-		{
+		if (validateRequestInsetNumberLucky(luckyNumberReq)) {
 			statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
-			if(statusInsert)
-			{
+			if (statusInsert) {
 				status = HttpStatus.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
-			}
-			else {
+			} else {
 				status = HttpStatus.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setMessage(ConstantData.DUPLICATE_DATA);
 			}
-		}
-		else {
+		} else {
 			status = HttpStatus.BAD_REQUEST;
 			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 			header.setMessage(ConstantData.BAD_REQUEST);
 		}
-		return new ResponseEntity(header,status);
+		return new ResponseEntity(header, status);
 	}
+
 	@PostMapping("/insertnumber")
 	public boolean postInsertNumber(@RequestBody NumberRequestModel NumRequest,Authentication auth) throws Exception
 	{
 		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-		
+		Boolean statusUpdate = false;
 		System.out.println("check user = "+user.getUsername());
-		if(validateAPI(NumRequest))
+		try
 		{
-			listLottaryService.postInsertNumberService(NumRequest);
+			if(null != user)
+			{
+				if(validateAPI(NumRequest))
+				{
+					statusUpdate = listLottaryService.postInsertNumberService(NumRequest,user);
+					if(statusUpdate)
+					{
+						header.setMessage(ConstantData.MESSAGE_SUCCESS);
+						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					}
+					else {
+						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+						header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+					}
+				}
+				else {
+					throw new Exception("BAD Request ");
+				}
+			}
+			
+		}catch(NullPointerException e)
+		{
+			throw e;
 		}
-		else {
-			System.out.println("check");
-		}
+		
 		
 		return false;
 	}
-	
-	public Boolean validateAPI(NumberRequestModel NumRequest)
-	{
-		Boolean validate  = false;
-	
+
+	public Boolean validateAPI(NumberRequestModel NumRequest) {
+		Boolean validate = false;
+
 		try {
-			
-			if(StringUtils.isNotBlank(NumRequest.getDate()) || StringUtils.isNotBlank(NumRequest.getOption())|| StringUtils.isNotBlank(NumRequest.getNumber())
-					|| StringUtils.isNotBlank(NumRequest.getPrice()))
-			{
+
+			if (StringUtils.isNotBlank(NumRequest.getDate()) || StringUtils.isNotBlank(NumRequest.getOption())
+					|| StringUtils.isNotBlank(NumRequest.getNumber())
+					|| StringUtils.isNotBlank(NumRequest.getPrice())) {
 				validate = true;
 			}
-		}
-		catch(NullPointerException e)
-		{
+		} catch (NullPointerException e) {
 			System.out.println("API is EMPTY or NULL ");
 		}
-		
+
 		return validate;
 	}
 

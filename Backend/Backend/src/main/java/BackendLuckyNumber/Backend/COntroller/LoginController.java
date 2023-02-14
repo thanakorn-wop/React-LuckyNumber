@@ -83,9 +83,10 @@ public class LoginController extends ValidateUntil {
 			      }
 			      final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 			      req.getSession().setAttribute("iduser", userDetails.getUsername());
-			      final String jwtToken = jwt.generateJwtToken(userDetails);
+//			      final String jwtToken = jwt.generateJwtToken(userDetails);
 			      System.out.println("check jjj");
-			      return ResponseEntity.ok(new JwtResponseModel(jwtToken));
+//			      return ResponseEntity.ok(new JwtResponseModel(jwtToken));
+			      return null;
 			   }
 
 
@@ -129,19 +130,20 @@ public class LoginController extends ValidateUntil {
 					resp.setStatus(user.get(0).getStatus());
 					resp.setTimelogin(user.get(0).getTimelogin());
 					resp.setTimelogout(user.get(0).getTimelogout());
-					final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
+					resp.setToken(user.get(0).getToken());
+					//final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
 //				    req.getSession().setAttribute("iduser", userDetails.getUsername());
-				    final String jwtToken = jwt.generateJwtToken(userDetails);
-				    resp.setToken(jwtToken);
+//				    final String jwtToken = jwt.generateJwtToken(userDetails);
+//				    resp.setToken(jwtToken);
 		
 				}
 
 			}
 		} catch (DisabledException e) {
-	         throw new Exception("USER_DISABLED", e);
+	         throw new DisabledException("USER_DISABLED", e);
 	      }
 		 catch (BadCredentialsException e) {
-	         throw new Exception("INVALID_CREDENTIALS", e);
+	         throw new BadCredentialsException("INVALID_CREDENTIALS", e);
 	      }
 		catch(Exception e)
 		{

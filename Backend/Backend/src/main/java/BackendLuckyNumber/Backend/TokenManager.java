@@ -25,9 +25,9 @@ public class TokenManager implements Serializable {
 	@Value("${secret}")
 	private String jwtSecret;
 
-	public String generateJwtToken(UserDetails userDetails) {
+	public String generateJwtToken(UserModal userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
+		return Jwts.builder().setClaims(claims).setSubject(userDetails.getIduser())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
