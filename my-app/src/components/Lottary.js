@@ -52,14 +52,16 @@ function Lottary()
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
     const [DateMonth, setDateMonth] = useState(new Date());
     const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
+    const [select ,setSelect] = useState();
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
     });
     // let navigate = useNavigate()
-   console.log("check data = ",dataSet)
+   //console.log("check data = ",dataSet)
     let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
         config =>{
@@ -106,6 +108,8 @@ function Lottary()
                         if(response.data != undefined)
                         {
                             setDataSet(response.data.datalist)
+                            setNewItem(response.data.datalist)
+                           
                         }
 
                         console.log("check response data = ",response );
@@ -254,56 +258,67 @@ function Lottary()
         }
     }
 
+    //TODO: filter data after click search buttom 
+    function SearchData()
+    {
+        console.log("check select = ",select)
+        if(select ==="Yes")
+        {
+            //** use object.values because the output is [Object,Object] */
+            setDataSet(newItem.filter(data=> data.statuspayment ==="Yes"))
+            console.log("check search = ",currentPosts)
+          
+        }
+        else if(select === "No"){
+               //** use object.values because the output is [Object,Object] */
+            setDataSet(newItem.filter(data=> data.statuspayment ==="No"))
+            console.log("check search = ",currentPosts)
+        }
+        else{
+            setDataSet(newItem)
+        }
+    }
+
+
     // ** get current post
+
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    console.log("check indexOfLastPost ",indexOfLastPost)
-    console.log("check indexOfFirstPost ",indexOfFirstPost)
-    const currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
-    console.log("check current ",currentPosts)
+    let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber =>setCurrentPage(pageNumber)
 
     return(
         <div className="mainpage">
             <div className="boxpage" >
-                    <div className="title" style={{"textAlign":"center","marginTop":"20px"}}>
+                    <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
                        <h3>รายการหวย ประจำวันที่ 16/10/2565</h3>
                     </div>
-                    <div className="info" style={{"marginTop":"40px"}}> 
-                        <table className="tabletext" style={{"width":"50%","margin":"0 auto"}} >
-                            <thead>
-                                <tr  >
-                                    <td style={{}} > <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button> </td>
-                                    <td style={{}} > <button type="button" className="btn btn-light" onClick={()=>setLuckyModal(true)}>เลขถูก</button> </td>
-                                    <td style={{}}>  <button type="button" className="btn btn-primary" style={{}} >ค้นหา</button>  </td>
-                                    <td style={{}}>
-                                        <select>
-                                            <option>เลือก</option>
-                                            <option>ยังไม่จ่าย</option>
-                                            <option>จ่ายแล้ว</option>
-                                        </select>
-                                    </td>
-                                    <td >
-                                        <div style={{"width":"50%"}}>
-                                        <DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </thead>
-                        </table>
-                        <table style={{"margin":"20px auto"}}>
-                            <thead>
-                              
-                                <tr>
-                                <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></td>
-                                    <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></td>
-                                    <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : 111 </label></td>
-                                    <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : 222</label></td>
-                                    <td ><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : 33</label></td>
-                             
-                                </tr>
-                            </thead>
-                        </table>
+                    <div className="info" style={{"marginTop":"40px","display":"flex","flexDirection":"column"}}> 
+                        <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
+                            <div className=" Action-btn">
+                                <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
+                            </div>
+                            <div className=" Action-btn">
+                                <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
+                            </div>
+                            <div className=" Action-btn">
+                                <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
+                             </div>
+                            <div className=" Action-btn">
+                                <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setSelect(e.target.value)}>
+                                    <option value = "All">ทั้งหมด</option>
+                                    <option value = "No">ยังไม่จ่าย</option>
+                                    <option value = "Yes">จ่ายแล้ว</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"10px"}}>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : 111 </label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : 222</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : 33</label></div>
+                        </div>     
                     </div>
 
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
@@ -327,7 +342,7 @@ function Lottary()
                                     console.log(resp.number);
                                    return(
                                      <tr key = {index}>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>

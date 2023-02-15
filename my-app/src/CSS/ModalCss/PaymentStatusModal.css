@@ -7,6 +7,8 @@
     position: absolute;
     border: solid 2px yellow;
     width: 45%;
-    top:150px;
-    left: 450px;  
+    /* top:150px;
+    left: 450px;   */
+    top:50%;
+   left: 25%;
 }
