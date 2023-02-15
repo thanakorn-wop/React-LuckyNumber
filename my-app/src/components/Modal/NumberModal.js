@@ -60,8 +60,8 @@ function NumberModal(props)
                             <div className="choice" style={{"text_numpageAlign":"center"}}> 
                                 <select className="form-select form-select-sm "  name = "option"   style={{"width":"60%","text_numpageAlign":"center"}} onChange={(e)=>handleChange(e)}>
                                     <option value="empty">เลือก</option>
-                                    <option value="top">บน</option>
-                                    <option value = "below">ล่าง</option>
+                                    <option value="Top">บน</option>
+                                    <option value = "Below">ล่าง</option>
                                 </select>
                             </div>
                         </div>

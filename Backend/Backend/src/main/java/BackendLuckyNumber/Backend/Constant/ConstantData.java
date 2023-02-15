@@ -22,7 +22,7 @@ public class ConstantData {
 	public static String MESSAGE_SUCCESS ="success";
 	public static String MESSAGE_NOT_SUCCESS ="not_success";
 	public static String MESSAGE_USER_LOCK = "USER_LOCK";
-	public static String MESSAGE_TOP = "TOP";
+	public static String MESSAGE_TOP = "Top";
 	public static String MESSAGE_BELOW = "Below";
 	public static String MESSAGE_YES = "Yes";
 	public static String MESSAGE_NO = "No";

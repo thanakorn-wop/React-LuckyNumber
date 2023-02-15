@@ -41,3 +41,13 @@
     border-radius: 5px;
     padding: 5px;
 }
+.unLucky{
+    background-color: rgb(242, 50, 188);
+    border-radius: 5px;
+    padding: 5px;
+}
+.Lucky{
+    background-color: rgb(136, 33, 206);
+    border-radius: 5px;
+    padding: 5px;
+}

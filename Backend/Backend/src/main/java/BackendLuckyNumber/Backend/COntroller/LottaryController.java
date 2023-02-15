@@ -1,5 +1,9 @@
 package BackendLuckyNumber.Backend.COntroller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +21,13 @@ import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
+import BackendLuckyNumber.Backend.ResponseModel.list_number_respModal;
 import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
+import BackendLuckyNumber.Backend.Modal.List_number_Modal;
+import BackendLuckyNumber.Backend.Repo.List_numberRepo;
+
 import org.apache.commons.lang3.StringUtils;
 
 @RestController
@@ -31,9 +39,27 @@ public class LottaryController extends ValidateUntil {
 	LottaryService listLottaryService;
 
 	@GetMapping("/getlistlottary")
-	public void getListLottary(Authentication auth) {
+	public ResponseEntity getListLottary(Authentication auth) {
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-
+		List<list_number_respModal> dataitem = new ArrayList<>();
+		Header header = new Header();
+		HttpStatus status = HttpStatus.OK;
+		List<List_number_Modal> data = new ArrayList<>();
+		try {
+			 if(null !=user)
+			 {
+				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId());
+				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				 header.setDatalist(data);
+				 
+				System.out.println("check = "+data);
+			 }
+		}catch(NullPointerException e)
+		{
+			throw e;
+		}
+		return new ResponseEntity(header,status);
 //		listLottaryService.get
 	}
 
@@ -62,7 +88,7 @@ public class LottaryController extends ValidateUntil {
 	}
 
 	@PostMapping("/insertnumber")
-	public boolean postInsertNumber(@RequestBody NumberRequestModel NumRequest,Authentication auth) throws Exception
+	public ResponseEntity postInsertNumber(@RequestBody NumberRequestModel NumRequest,Authentication auth) throws Exception
 	{
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
@@ -83,7 +109,7 @@ public class LottaryController extends ValidateUntil {
 					}
 					else {
 						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
-						header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					}
 				}
 				else {
@@ -97,8 +123,9 @@ public class LottaryController extends ValidateUntil {
 		}
 		
 		
-		return false;
+		return new ResponseEntity(header,status);
 	}
+
 
 	public Boolean validateAPI(NumberRequestModel NumRequest) {
 		Boolean validate = false;

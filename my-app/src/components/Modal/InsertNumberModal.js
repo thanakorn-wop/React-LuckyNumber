@@ -15,7 +15,7 @@ function InsertNumberModal (props)
         date:""
       
     });
-    
+    console.log("check ",luckyNumber);
     const monthjsx = 
     (
         month.map(data =>{

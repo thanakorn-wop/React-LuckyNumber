@@ -8,9 +8,42 @@ import InfoUserModal from "./Modal/infoUserModal"
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
+
+
+function Paginagtion({totalPosts,postsPerPage,paginate})
+{
+   
+
+    const pageNumber =[];
+    for(let i = 1; i<=Math.ceil(totalPosts / postsPerPage); i++)
+    {
+        pageNumber.push(i);
+    }
+    console.log("pageNumber = "+pageNumber)
+    return(
+        <nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px","position":"absolute","zIndex":"-1"}}>
+            <ul className="pagination" >
+                <li className="page-item disabled">
+                <a className="page-link">Previous</a>
+                </li>
+                {pageNumber.map((number) =>{
+                     return(
+                        <li className="page-item" key = {number}><a onClick={()=>paginate(number)}className="page-link" href="#">{number}</a></li>
+                     )
+                })}
+              
+                <li className="page-item"> <a className="page-link" href="#">Next</a> </li>
+            </ul>
+        </nav>
+        
+    )
+}
 function Lottary()
 {
-
+    //** pagination  */
+    const [currentPage,setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(10);
 
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
@@ -18,7 +51,7 @@ function Lottary()
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
     const [DateMonth, setDateMonth] = useState(new Date());
-    const [dataSet,setDataSet] = useState([]);
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [ newData,setNewData] = useState({
@@ -26,7 +59,7 @@ function Lottary()
         date: "", 
     });
     // let navigate = useNavigate()
-  
+   console.log("check data = ",dataSet)
     let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
         config =>{
@@ -34,19 +67,55 @@ function Lottary()
           return config;
         }
       )
+
+      axios.interceptors.response.use(undefined,(error) =>{
+        const {status,data,config} = error.response;
+        if(status === 404)
+        {
+          window.location.assign("pagenotfound")
+        }
+        if(status === 400)
+        {
+          console.log("bad request")
+        }
+        if(status ===500)
+        {
+          console.log("error server");
+          alert("ERROR 500")
+        }
+        if(status === 401)
+        {
+             window.location.assign("/login")
+        }
+        if(status ===403)
+        {
+          window.location.assign("/login")
+        }
+      })
     if(session === null || session === undefined || session ==="")
     {
       window.location.assign("/login")
     }
     useEffect(()=>{
-                    axios.get(urlConstant.GET_LIST_LOTTARY,{
-                        headers: { 'Content-Type': 'application/json' }
-                    }).then(resp =>{
-                        if(resp !== null && resp !== undefined)
+                  async function getListitem()
+                  {
+                    try{
+                        const response = await axios.get(urlConstant.GET_LIST_LOTTARY,{
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                        if(response.data != undefined)
                         {
-                            setDataSet(resp.data);
+                            setDataSet(response.data.datalist)
                         }
-                    })   
+
+                        console.log("check response data = ",response );
+                    }catch(error)
+                    {
+                        console.error(error);
+                    }
+                  }
+                getListitem();
+
     },[])
     // console.log("check 1 = ",popup.show)
     function ValidityState()
@@ -123,6 +192,7 @@ function Lottary()
                     {
                         alert("ทำรายการสำเร็จ")
                         setLuckyModal(false)
+                        // Window.location.reload()
                     }
                     else if(statusCode ==='01' && message === 'duplicate_data')
                     {
@@ -143,7 +213,7 @@ function Lottary()
         }
        // console.log("show lucky number ",DataLuckyNumber)
     }
-    function HandleluckyModal(isOpen,dataNum)
+    function HandleNumberModal(isOpen,dataNum)
     {
      
         if(isOpen)
@@ -166,6 +236,15 @@ function Lottary()
                     headers: { 'Content-Type': 'application/json' }
                 }).then(res =>{
                     console.log("check response num = ",res.data)
+                    if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                    {
+                        alert("ทำรายการไม่สำเร็จ");
+                    }
+                    else{
+                        alert("ทำรายการสำเร็จ");
+                        setpopup(false);
+                        window.location.reload(false)
+                    }
                 })
 
             }
@@ -174,6 +253,16 @@ function Lottary()
             setpopup(false)
         }
     }
+
+    // ** get current post
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    console.log("check indexOfLastPost ",indexOfLastPost)
+    console.log("check indexOfFirstPost ",indexOfFirstPost)
+    const currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
+    console.log("check current ",currentPosts)
+    const paginate = pageNumber =>setCurrentPage(pageNumber)
+
     return(
         <div className="mainpage">
             <div className="boxpage" >
@@ -217,7 +306,7 @@ function Lottary()
                         </table>
                     </div>
 
-                    <div>
+                    <div className="listdatanumber" style={{"marginBottom":"15px"}}>
                         <table style={{"border":"solid 2px yellow","width":"80%","margin":"0 auto","marginTop":"50px"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
@@ -233,16 +322,20 @@ function Lottary()
                             </tr>
                            </thead>
                            <tbody>
-                            <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>1</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
-                                <td   style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="paynow">จ่ายแล้ว</span></td>
-                                <td style={{"border":"solid 2px yellow"}}>
+                            {
+                                currentPosts.map((resp,index)=>{
+                                    console.log(resp.number);
+                                   return(
+                                     <tr key = {index}>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="Lucky" ? "Lucky":"unLucky"}>{resp.status}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
+                                <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
                                         <button type="button" className="btn btn-info"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไข</button>
@@ -254,71 +347,20 @@ function Lottary()
                                      
                                 </td>
                             </tr>
-                            <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>2</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="notpay">ยังไม่จ่าย</span></td>
-                                <td style={{"border":"solid 2px yellow"}}>
-                                    <div className="allbuttom">
-                                        <div  className="buttom1">
-                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>แก้ไข</button>
-                                        </div>
-                                   
-                                    <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button></div>
-                                    </div>
-    
-                                </td>
-                                
-                            </tr>
-                            <tr >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>3</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>บน</td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>ถูกรางวัล</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>20/04/2554</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}>10.55.00 น</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className="paynow">จ่ายแล้ว</span></td>
-                                <td style={{"border":"solid 2px yellow"}}>
-                                    <div className="allbuttom">
-                                        <div  className="buttom1">
-                                        <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>แก้ไข</button>
-                                        </div>
-                                   
-                                    <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button></div>
-                                    </div>
-                                    
-                                     
-                                </td>
-                            </tr>
+                                   )
+                                  
+                                })
+                            }
+                          
                            </tbody>
                         </table> 
-                     <nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px","position":"absolute","zIndex":"-1"}}>
-                    <ul className="pagination" >
-                        <li className="page-item disabled">
-                        <a className="page-link">Previous</a>
-                        </li>
-                        <li className="page-item"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item active" aria-current="page">
-                        <a className="page-link" href="#">2</a>
-                        </li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                        <li className="page-item">
-                        <a className="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                    </nav>
+                        <Paginagtion   totalPosts={dataSet.length} postsPerPage = {postsPerPage} paginate={paginate} />
                 </div>
        
                    
             </div>
             {/* // list insert purachse number  modal */}
-            <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleluckyModal(isOpen,dataNum)}  show={popup}   />
+            <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleNumberModal(isOpen,dataNum)}  show={popup}   />
 
             {
             // todo  insert modal lottary
