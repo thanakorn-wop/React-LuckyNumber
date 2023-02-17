@@ -312,7 +312,7 @@ function Lottary()
                                 </select>
                             </div>
                         </div>
-                        <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"10px"}}>
+                        <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"20px"}}>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></div>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : 111 </label></div>
@@ -322,7 +322,7 @@ function Lottary()
                     </div>
 
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
-                        <table style={{"border":"solid 2px yellow","width":"80%","margin":"0 auto","marginTop":"50px"}}  className="table table-striped">
+                        <table style={{"border":"solid 2px yellow","width":"80%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
