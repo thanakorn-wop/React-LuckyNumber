@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../CSS/Report.css"
 import EditinfoModal from "./Modal/EditinfoModal";
 import "../CSS/ModalCss/EditinfoModal.css"
@@ -16,6 +16,11 @@ function Report ()
     {
       window.location.assign("/login")
     }
+
+
+    useEffect(()=>{
+
+    },[])
     const monthjsx = 
     (
         month.map(data =>{
@@ -48,7 +53,7 @@ function Report ()
                   
                 </div>
                 
-                <table className="table">
+                <table className="table" style={{"marginBottom":"15px"}}>
                     <thead>
                         <tr style={{"border":"solid",}}>
                             <td>จำนวนต้นทุน : </td>

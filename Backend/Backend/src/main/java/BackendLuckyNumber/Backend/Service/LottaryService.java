@@ -71,6 +71,7 @@ public class LottaryService {
 			if (null == dataLottary) {
 
 				lottaryRepo.save(lottary);
+				
 				status = true;
 			} else {
 				System.out.println("Duplicate date ");
@@ -83,6 +84,38 @@ public class LottaryService {
 		}
 		return status;
 
+	}
+	
+	public Boolean postUpdateLuckyNumberService(LuckyNumberReq luckyNumberReq )
+	{
+		Boolean statusUpdate = false;
+		try
+		{
+
+			List<LottaryModal> LastDate = lottaryRepo.findLastDate(luckyNumberReq.getDate());
+			//Optional<List_number_Modal> allDataUser = listNumberRepo.findById(user.getInfoUser().getId());
+			if(null !=LastDate && LastDate.size()>1)
+			{
+				lottaryRepo.updateStatusLucky(LastDate.get(0).getDate(),LastDate.get(1).getDate()
+						,luckyNumberReq.getThreetop(),luckyNumberReq.getTwodown(),luckyNumberReq.getTwotop());
+				statusUpdate = true;
+				System.out.println("check statusUpdate Many "+statusUpdate);
+				
+			}
+			else {
+				lottaryRepo.updateStatusLuckyOneonOne(LastDate.get(0).getDate(),
+						luckyNumberReq.getThreetop(),luckyNumberReq.getTwodown(),luckyNumberReq.getTwotop());
+				statusUpdate = true;
+				System.out.println("check statusUpdate one on one  "+statusUpdate);
+			}
+			
+		}catch(Exception e)
+		{
+			System.out.println("Not update = "+statusUpdate);
+			throw  e;
+			
+		}
+		return statusUpdate;
 	}
 
 	public Boolean postInsertNumberService(NumberRequestModel NumRequest, UserdetailsIml user) throws Exception {

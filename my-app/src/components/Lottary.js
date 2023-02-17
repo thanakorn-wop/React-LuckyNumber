@@ -196,7 +196,7 @@ function Lottary()
                     {
                         alert("ทำรายการสำเร็จ")
                         setLuckyModal(false)
-                        // Window.location.reload()
+                         window.location.reload()
                     }
                     else if(statusCode ==='01' && message === 'duplicate_data')
                     {
@@ -357,9 +357,7 @@ function Lottary()
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
-                                    </div>
-                                    
-                                     
+                                    </div>                    
                                 </td>
                             </tr>
                                    )

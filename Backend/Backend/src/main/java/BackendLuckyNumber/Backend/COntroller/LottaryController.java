@@ -64,25 +64,40 @@ public class LottaryController extends ValidateUntil {
 	}
 
 	@PostMapping("/insertluckynumber")
-	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq) throws Exception {
+	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq,Authentication auth) throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Boolean statusInsert;
 		Header header = new Header();
-		if (validateRequestInsetNumberLucky(luckyNumberReq)) {
-			statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
-			if (statusInsert) {
-				status = HttpStatus.OK;
-				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		try {
+			if (validateRequestInsetNumberLucky(luckyNumberReq)) {
+				statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
+				if (statusInsert) {
+					Boolean statusUpdate = listLottaryService.postUpdateLuckyNumberService(luckyNumberReq);
+					if(statusUpdate)
+					{
+						status = HttpStatus.OK;
+						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setMessage(ConstantData.MESSAGE_SUCCESS);
+					}
+					else {
+						status = HttpStatus.OK;
+						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+					}
+				} else {
+					status = HttpStatus.OK;
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setMessage(ConstantData.DUPLICATE_DATA);
+				}
 			} else {
-				status = HttpStatus.OK;
-				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				header.setMessage(ConstantData.DUPLICATE_DATA);
+				status = HttpStatus.BAD_REQUEST;
+				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+				header.setMessage(ConstantData.BAD_REQUEST);
 			}
-		} else {
-			status = HttpStatus.BAD_REQUEST;
-			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-			header.setMessage(ConstantData.BAD_REQUEST);
+		}catch(Exception e)
+		{
+			throw e;
 		}
 		return new ResponseEntity(header, status);
 	}
