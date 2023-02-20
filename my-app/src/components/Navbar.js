@@ -45,7 +45,7 @@ function Navbar()
                             <li><a href="dashboard" > หน้าหลัก </a></li>
                             <li><a href="calculate" > คิดหวย </a></li>
                             <li><a href="report" > ยอดสรุป </a></li>
-                            <li><a href="contactus" > Contact us </a></li>
+                            <li><a href="contactus" > ติดต่อเรา </a></li>
                             <li><a href="login" onClick={()=> logout()} > ออกจากระบบ </a></li>
                            
                         </ul>

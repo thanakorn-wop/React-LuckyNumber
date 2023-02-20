@@ -20,6 +20,10 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 
 	@Query(" SELECT u from list_number u Where u.id = ?1 ")
 	List<List_number_Modal> findItem(String id);
+	
+	@Modifying
+	@Query(" UPDATE list_number set status_payment = ?1 Where id = ?2 and id_list = ?3 ")
+	void postUpdateStatusPaymentRepo(String statuspayment, String id , String idList);
 }
 
 

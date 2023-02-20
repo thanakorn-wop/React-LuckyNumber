@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../CSS/ModalCss/InsertNumberModal.css"
 import DatePicker from "react-datepicker";
-function InsertNumberModal (props)
+function InsertLuckyNumberModal (props)
 {
 
  
@@ -29,6 +29,7 @@ function InsertNumberModal (props)
     const handleSaving = (e)=>{
        
         luckyNumber.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
+       // luckyNumber.date = (DateMonth.getDate()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
         //console.log(luckyNumber)
         props.handleSaving(e.target.name,luckyNumber)
     }
@@ -58,4 +59,4 @@ function InsertNumberModal (props)
 </div>
     );
 }
-export default InsertNumberModal;
+export default InsertLuckyNumberModal;

@@ -24,7 +24,7 @@ function ContactUs()
                     </div>
 
                   </div>
-                    <table className=""  >
+                    <table className="table-contact" style={{"marginBottom":"20px"}}   >
                         <thead >
                            
                             <tr style={{"height":"70px"}} >

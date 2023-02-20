@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../CSS/Lottary.css"
 import NumberModal from "./Modal/NumberModal"
 import * as urlConstant from "../components/Constant/UrlConstant"
-import InsertNumberModal from "./Modal/InsertNumberModal";
+import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import InfoUserModal from "./Modal/infoUserModal"
 import DatePicker from "react-datepicker";
@@ -55,7 +55,9 @@ function Lottary()
     const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
+    const [index,setIndex] = useState();
     const [select ,setSelect] = useState();
+    const [collectNumber,setCollectNumber] = useState({date:"",threetop:"",threedown:"",twotop:"",twodown:""});
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
@@ -63,6 +65,7 @@ function Lottary()
     // let navigate = useNavigate()
    //console.log("check data = ",dataSet)
     let session =  sessionStorage.getItem("token");
+    // console.log("test data = ",collectNumber);
     axios.interceptors.request.use(
         config =>{
           config.headers.Authorization = `Bearer ${session}`;
@@ -78,7 +81,7 @@ function Lottary()
         }
         if(status === 400)
         {
-          console.log("bad request")
+            alert("ERROR 400")
         }
         if(status ===500)
         {
@@ -127,10 +130,7 @@ function Lottary()
         setpopup(true);
        
     }
-    function setData(e)
-    {
-        setNewData(e);
-    }
+
     function submitData(e)
     {
         if(e === "save")
@@ -160,9 +160,9 @@ function Lottary()
          console.log("check e ",newData)
         }
     }
-    // console.log(popup)
+   
     //todo validate the  saving status from InsertLuckyNumber model
-    function HandleInsertNumber(e,DataLuckyNumber)
+    function HandleInsertLuckyNumber(e,DataLuckyNumber)
     {
         console.log("save InsertNUmber = ",e,DataLuckyNumber);
         if(e === "save")
@@ -196,7 +196,8 @@ function Lottary()
                     {
                         alert("ทำรายการสำเร็จ")
                         setLuckyModal(false)
-                         window.location.reload()
+                        // setCollectNumber(res.data.datalist)
+                        window.location.reload()
                     }
                     else if(statusCode ==='01' && message === 'duplicate_data')
                     {
@@ -216,6 +217,45 @@ function Lottary()
             setLuckyModal(false)
         }
        // console.log("show lucky number ",DataLuckyNumber)
+    }
+    function HandlePayment(status_saving,DataPayment)
+    {
+        console.log("check index3 = ",newItem[0])
+        if(status_saving === 'save')
+        {
+            let indexUpdate = 0;
+            let dataUpdate = {};
+             newItem.map((item,no)=>{
+                if(item.idlist === index ){
+                   
+                    item.statuspayment = DataPayment.status;
+                    dataUpdate   = item
+                }
+            })
+            try{
+                const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(res =>{
+                    if(res.data.message === 'success' && res.data.statusCode ==='01')
+                {
+                    alert("ทำรายการสำเร็จ")
+                    setIsOpenPayMentModal(false)      
+                }
+
+                    window.location.reload()
+                })
+
+            }catch(err)
+            {
+                console.error("Error = ",err);
+            }
+        }
+        else{
+            console.log("check index2 = ",newItem)
+            setIsOpenPayMentModal(false)      
+        }
+        // console.log(newItem)
+        //console.log("check paymnet = ",status_saving,DataPayment)
     }
     function HandleNumberModal(isOpen,dataNum)
     {
@@ -257,7 +297,12 @@ function Lottary()
             setpopup(false)
         }
     }
-
+    function SetPaymentMethod(index)
+    {
+        setIsOpenPayMentModal(true)
+        setIndex(index)
+        //console.log("check index = "+index)
+    }
     //TODO: filter data after click search buttom 
     function SearchData()
     {
@@ -315,9 +360,10 @@ function Lottary()
                         <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"20px"}}>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : 111 </label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : 222</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : 33</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : {collectNumber.threetop} </label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : {collectNumber.threedown}</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : {collectNumber.twotop}</label></div>
+                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : {collectNumber.twodown}</label></div>
                         </div>     
                     </div>
 
@@ -339,7 +385,7 @@ function Lottary()
                            <tbody>
                             {
                                 currentPosts.map((resp,index)=>{
-                                    console.log(resp.number);
+                                   // console.log(resp.number);
                                    return(
                                      <tr key = {index}>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
@@ -353,7 +399,7 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="buttom1">
-                                        <button type="button" className="btn btn-info"  onClick={()=>setIsOpenPayMentModal(true)}>แก้ไข</button>
+                                        <button type="button" className="btn btn-info"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>
                                         </div>
                                    
                                     <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
@@ -377,11 +423,11 @@ function Lottary()
 
             {
             // todo  insert modal lottary
-                luckyModal && <InsertNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
+                luckyModal && <InsertLuckyNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertLuckyNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
             }
             {
                 // todo paymethod modal changing
-            isOpenPaymentModal &&   <PaymentStatusModal onClose={(e) => setIsOpenPayMentModal(e)} />
+            isOpenPaymentModal &&   <PaymentStatusModal HandlePayment = {(status_saving,DataPayment)=>HandlePayment(status_saving,DataPayment)} />
             }
             {
                 

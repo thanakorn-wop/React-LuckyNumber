@@ -21,6 +21,8 @@ import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
+import BackendLuckyNumber.Backend.RequestModel.listNumberRquestModal;
+import BackendLuckyNumber.Backend.ResponseModel.LuckyNumberResponModal;
 import BackendLuckyNumber.Backend.ResponseModel.list_number_respModal;
 import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
@@ -48,6 +50,7 @@ public class LottaryController extends ValidateUntil {
 		try {
 			 if(null !=user)
 			 {
+				 // set increase date for get list item
 				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId());
 				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
@@ -68,7 +71,8 @@ public class LottaryController extends ValidateUntil {
 		HttpStatus status = HttpStatus.OK;
 		Boolean statusInsert;
 		Header header = new Header();
-		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		LuckyNumberResponModal resp = new LuckyNumberResponModal();
+//		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		try {
 			if (validateRequestInsetNumberLucky(luckyNumberReq)) {
 				statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
@@ -79,6 +83,13 @@ public class LottaryController extends ValidateUntil {
 						status = HttpStatus.OK;
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 						header.setMessage(ConstantData.MESSAGE_SUCCESS);
+//						resp.setDate(luckyNumberReq.getDate());
+//						resp.setThreedown(luckyNumberReq.getThreedown());
+//						resp.setThreetop(luckyNumberReq.getThreetop());
+//						resp.setTwodown(luckyNumberReq.getTwodown());
+//						resp.setTwotop(luckyNumberReq.getTwotop());
+//						header.setDatalist(resp);
+						
 					}
 					else {
 						status = HttpStatus.OK;
@@ -141,7 +152,28 @@ public class LottaryController extends ValidateUntil {
 		return new ResponseEntity(header,status);
 	}
 
-
+	@PostMapping("/updatestatuspayment")
+	public ResponseEntity postUpdateStatusPayment(@RequestBody listNumberRquestModal listRequest,Authentication auth )
+	{
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		if(null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null & listRequest.getStatuspayment() != null)
+		{
+			 Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest,auth);
+			 if(updateStatus)
+			 {
+				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				
+			 }
+		}
+		else {
+			status = HttpStatus.BAD_REQUEST;
+			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setStatusCode(ConstantData.STATUS_CODE_400);
+		}
+		return new ResponseEntity(header,status);
+	}
 	public Boolean validateAPI(NumberRequestModel NumRequest) {
 		Boolean validate = false;
 

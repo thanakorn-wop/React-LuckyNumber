@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import BackendLuckyNumber.Backend.Constant.ConstantData;
@@ -18,6 +19,7 @@ import BackendLuckyNumber.Backend.Repo.LottaryRepo;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
+import BackendLuckyNumber.Backend.RequestModel.listNumberRquestModal;
 import BackendLuckyNumber.Backend.ResponseModel.list_number_respModal;
 
 import org.apache.commons.lang3.StringUtils;
@@ -156,4 +158,19 @@ public class LottaryService {
 		return status_Update;
 
 	}
+	
+	public Boolean postUpdateStatusPaymentService(listNumberRquestModal listRequest,Authentication auth)
+	{
+		Boolean updateStatus = false;
+		try {
+			
+			listNumberRepo.postUpdateStatusPaymentRepo(listRequest.getStatuspayment(), listRequest.getId(), listRequest.getIdlist());
+			updateStatus = true;
+		}catch(Exception e)
+		{
+		 throw e;	
+		}
+		return updateStatus;
+	}
+
 }
