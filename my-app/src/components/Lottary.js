@@ -6,10 +6,7 @@ import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import InfoUserModal from "./Modal/infoUserModal"
 import DatePicker from "react-datepicker";
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
-
 
 function Paginagtion({totalPosts,postsPerPage,paginate})
 {
@@ -50,14 +47,16 @@ function Lottary()
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
-    const [DateMonth, setDateMonth] = useState(new Date());
+    const [DateMonth, setDateMonth] = useState("");
+    const [DateSelect,setDataSelect] = useState(new Date());
+    const [IsSelect,setIsSelect] = useState(false);
     const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
-    const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
+    const [dateLucky,setDateLucky] = useState();
     const [index,setIndex] = useState();
     const [select ,setSelect] = useState();
-    const [collectNumber,setCollectNumber] = useState({date:"",threetop:"",threedown:"",twotop:"",twodown:""});
+    const [collectNumber,setCollectNumber] = useState({lucktime:"",threetop:"",threedown:"",twotop:"",twodown:""});
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
@@ -72,7 +71,6 @@ function Lottary()
           return config;
         }
       )
-
       axios.interceptors.response.use(undefined,(error) =>{
         const {status,data,config} = error.response;
         if(status === 404)
@@ -104,27 +102,43 @@ function Lottary()
     useEffect(()=>{
                   async function getListitem()
                   {
-                    try{
-                        const response = await axios.get(urlConstant.GET_LIST_LOTTARY,{
-                            headers: { 'Content-Type': 'application/json' }
-                        })
-                        if(response.data != undefined)
-                        {
-                            setDataSet(response.data.datalist)
-                            setNewItem(response.data.datalist)
-                           
-                        }
-
-                        console.log("check response data = ",response );
-                    }catch(error)
+                    let date = null;
+                    if(IsSelect)
                     {
-                        console.error(error);
+                            date = (DateSelect.getFullYear()+"-"+(1+Number(DateSelect.getMonth()))+"-"+DateSelect.getDate());
+                            console.log("check date again = ",collectNumber.date)
                     }
+                    else{
+                        date = "lastdata";
+                    }
+                        try{
+                            const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
+                                headers: { 'Content-Type': 'application/json' }
+                            })
+                            if(response.data != undefined)
+                            {
+                                setDataSet(response.data.datalist)
+                                // setDateLucky(response.data.datalist.luckytime)
+                                setNewItem(response.data.datalist)   
+                            }
+    
+                            console.log("check response data = ",response );
+                        }catch(error)
+                        {
+                            console.error(error);
+                        }
                   }
                 getListitem();
 
-    },[])
+    },[DateMonth])
     // console.log("check 1 = ",popup.show)
+    function DatePickert(date)
+    {
+           // console.log("check date = e  = ",date)
+            setDateMonth(date)
+            setIsSelect(true)
+            setDataSelect(date)
+    }
     function ValidityState()
     {
         setpopup(true);
@@ -197,7 +211,7 @@ function Lottary()
                         alert("ทำรายการสำเร็จ")
                         setLuckyModal(false)
                         // setCollectNumber(res.data.datalist)
-                        window.location.reload()
+                        // window.location.reload()
                     }
                     else if(statusCode ==='01' && message === 'duplicate_data')
                     {
@@ -287,7 +301,7 @@ function Lottary()
                     else{
                         alert("ทำรายการสำเร็จ");
                         setpopup(false);
-                        window.location.reload(false)
+                        // window.location.reload(false)
                     }
                 })
 
@@ -336,7 +350,7 @@ function Lottary()
         <div className="mainpage">
             <div className="boxpage" >
                     <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
-                       <h3>รายการหวย ประจำวันที่ 16/10/2565</h3>
+                       <h3>รายการหวย ประจำวันที่ {dateLucky}</h3>
                     </div>
                     <div className="info" style={{"marginTop":"40px","display":"flex","flexDirection":"column"}}> 
                         <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
@@ -356,6 +370,7 @@ function Lottary()
                                     <option value = "Yes">จ่ายแล้ว</option>
                                 </select>
                             </div>
+                                <div className="datepicker" style={{"width":"30%"}}><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}    /> </div>
                         </div>
                         <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"20px"}}>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>

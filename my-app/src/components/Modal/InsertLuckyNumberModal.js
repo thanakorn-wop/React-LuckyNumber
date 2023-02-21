@@ -12,7 +12,7 @@ function InsertLuckyNumberModal (props)
         threedown: "",
         twotop: "",
         twodown:"",
-        date:""
+        lucktime:""
       
     });
     console.log("check ",luckyNumber);
@@ -28,7 +28,7 @@ function InsertLuckyNumberModal (props)
     }
     const handleSaving = (e)=>{
        
-        luckyNumber.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
+        luckyNumber.lucktime = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
        // luckyNumber.date = (DateMonth.getDate()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
         console.log(luckyNumber)
         props.handleSaving(e.target.name,luckyNumber)
@@ -40,7 +40,7 @@ function InsertLuckyNumberModal (props)
         <div className="boxbody">
             <div style={{"marginLeft":"10px","marginRight":"20px"}}>
             <div className="text">  <label>วันที่</label></div>
-            <div className="formtext" style={{"width":"50%"}}>    <DatePicker className="form-control " name = "date" selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div>
+            <div className="formtext" style={{"width":"50%"}}>    <DatePicker className="form-control " name = "lucktime" selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div>
             <div className="text">  <label>เลขหน้า 3 ตัว</label></div>
             <div className="formtext">  <input type="textbox" className="form-control "   style={{"width":"50%"}} name = "threetop"  onChange={(e)=>handleChange(e)}/></div>
             <div className="text">  <label>เลขท้าย 3 ตัว</label></div>

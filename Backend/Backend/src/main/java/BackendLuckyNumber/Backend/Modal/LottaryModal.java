@@ -1,10 +1,13 @@
 package BackendLuckyNumber.Backend.Modal;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -16,8 +19,8 @@ public class LottaryModal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_lottary")
 	private String idLottary;
-	@Column(name = "date")
-	private String date;
+	@Column(name = "lucktime")
+	private String lucktme;
 	@Column(name = "three_top")
 	private String threeTop;
 	@Column(name = "three_dow")
@@ -26,13 +29,17 @@ public class LottaryModal {
 	private String twotop;
 	@Column(name = "two_down")
 	private String twodown;
+	@OneToMany(mappedBy = "lucktime")
+	private List<List_number_Modal> listnumber;
 	
-	public String getDate() {
-		return date;
+	
+	public List<List_number_Modal> getListnumber() {
+		return listnumber;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setListnumber(List<List_number_Modal> listnumber) {
+		this.listnumber = listnumber;
 	}
+
 	public String getTwodown() {
 		return twodown;
 	}
@@ -45,12 +52,7 @@ public class LottaryModal {
 	public void setIdLottary(String idLottary) {
 		this.idLottary = idLottary;
 	}
-	public String getTime() {
-		return date;
-	}
-	public void setTime(String time) {
-		this.date = time;
-	}
+
 	public String getThreeTop() {
 		return threeTop;
 	}
@@ -68,6 +70,12 @@ public class LottaryModal {
 	}
 	public void setTwotop(String twotop) {
 		this.twotop = twotop;
+	}
+	public String getLucktme() {
+		return lucktme;
+	}
+	public void setLucktme(String lucktme) {
+		this.lucktme = lucktme;
 	}
 
 

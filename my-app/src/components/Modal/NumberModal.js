@@ -16,7 +16,7 @@ function NumberModal(props)
         price:"",
         idLine:"",
         phoneNumber:"",
-        luckydate:""
+        lucktime:""
 
 
     });
@@ -41,7 +41,7 @@ function NumberModal(props)
        
         // props.status(e.target.name)
         userData.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
-        userData.luckydate = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
+        userData.lucktime = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
         console.log("check data again = ",userData)
         props.handleSavingNum(isOpen,userData)
 

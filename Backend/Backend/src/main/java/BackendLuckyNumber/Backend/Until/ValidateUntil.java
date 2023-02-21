@@ -26,7 +26,7 @@ public class ValidateUntil {
 	{
 		Boolean validate = StringUtils.isNotBlank(req.getThreetop()) && StringUtils.isNotBlank(req.getThreedown())
 							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())
-							&& StringUtils.isNotBlank(req.getDate())? true:false;
+							&& StringUtils.isNotBlank(req.getLucktime())? true:false;
 		return validate;
 	}
 	

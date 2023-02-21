@@ -41,14 +41,14 @@ public class LottaryService {
 		list_number_respModal obj = new list_number_respModal();
 		List<List_number_Modal>	dataItem = null;
 		try {
-			if(null == date || StringUtils.isNotBlank(date))
+			if(date.equals("lastdata"))
 			{
 				LottaryModal dataLottary = lottaryRepo.findDate();
-				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getDate());
+				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getLucktme());
 			}
 			else {
 				LottaryModal dataLottary = lottaryRepo.findSelectDate(date);
-				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getDate());
+				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getLucktme());
 			}
 			
 		}
@@ -64,13 +64,13 @@ public class LottaryService {
 		Boolean status = false;
 		LottaryModal lottary = new LottaryModal();
 
-		lottary.setDate(luckyNumberReq.getDate());
+		lottary.setLucktme(luckyNumberReq.getLucktime());
 		lottary.setThreedow(luckyNumberReq.getThreedown());
 		lottary.setThreeTop(luckyNumberReq.getThreetop());
 		lottary.setTwodown(luckyNumberReq.getTwodown());
 		lottary.setTwotop(luckyNumberReq.getTwotop());
 		try {
-			LottaryModal dataLottary = lottaryRepo.findByDate(luckyNumberReq.getDate());
+			LottaryModal dataLottary = lottaryRepo.findByDate(luckyNumberReq.getLucktime());
 			if (null == dataLottary) {
 
 				lottaryRepo.save(lottary);
@@ -95,18 +95,18 @@ public class LottaryService {
 		try
 		{
 
-			List<LottaryModal> LastDate = lottaryRepo.findLastDate(luckyNumberReq.getDate());
+			List<LottaryModal> LastDate = lottaryRepo.findLastDate(luckyNumberReq.getLucktime());
 			//Optional<List_number_Modal> allDataUser = listNumberRepo.findById(user.getInfoUser().getId());
 			if(null !=LastDate && LastDate.size()>1)
 			{
-				lottaryRepo.updateStatusLucky(LastDate.get(0).getDate(),LastDate.get(1).getDate()
+				lottaryRepo.updateStatusLucky(LastDate.get(0).getLucktme(),LastDate.get(1).getLucktme()
 						,luckyNumberReq.getThreetop(),luckyNumberReq.getTwodown(),luckyNumberReq.getTwotop());
 				statusUpdate = true;
 				System.out.println("check statusUpdate Many "+statusUpdate);
 				
 			}
 			else {
-				lottaryRepo.updateStatusLuckyOneonOne(LastDate.get(0).getDate(),
+				lottaryRepo.updateStatusLuckyOneonOne(LastDate.get(0).getLucktme(),
 						luckyNumberReq.getThreetop(),luckyNumberReq.getTwodown(),luckyNumberReq.getTwotop());
 				statusUpdate = true;
 				System.out.println("check statusUpdate one on one  "+statusUpdate);
