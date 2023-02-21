@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,18 +41,19 @@ public class LottaryController extends ValidateUntil {
 	@Autowired
 	LottaryService listLottaryService;
 
-	@GetMapping("/getlistlottary")
-	public ResponseEntity getListLottary(Authentication auth) {
+	@GetMapping("/getlistlottary/{date}")
+	public ResponseEntity getListLottary(@PathVariable String date, Authentication auth) {
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		List<list_number_respModal> dataitem = new ArrayList<>();
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		List<List_number_Modal> data = new ArrayList<>();
+		System.out.println("date = "+date);
 		try {
 			 if(null !=user)
 			 {
 				 // set increase date for get list item
-				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId());
+				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId(),date);
 				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
 				 header.setDatalist(data);

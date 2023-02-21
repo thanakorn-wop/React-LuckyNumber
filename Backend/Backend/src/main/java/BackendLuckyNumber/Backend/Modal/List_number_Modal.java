@@ -30,7 +30,7 @@ public class List_number_Modal {
 	private String time;
 	@Column(name = "status_payment")
 	private String statuspayment;
-	@Column(name = "lucky_time")
+	@Column(name = "luckytime")
 	private String luckytime;
 	@Column(name = "id")
 	private String id;
@@ -84,6 +84,9 @@ public class List_number_Modal {
 	public void setStatuspayment(String statuspayment) {
 		this.statuspayment = statuspayment;
 	}
+	
+	
+	
 	public String getLuckytime() {
 		return luckytime;
 	}

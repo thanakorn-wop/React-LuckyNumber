@@ -30,7 +30,7 @@ function InsertLuckyNumberModal (props)
        
         luckyNumber.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
        // luckyNumber.date = (DateMonth.getDate()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
-        //console.log(luckyNumber)
+        console.log(luckyNumber)
         props.handleSaving(e.target.name,luckyNumber)
     }
    

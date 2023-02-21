@@ -11,9 +11,17 @@ public class NumberRequestModel {
 	private String idline;
 	private String phoneNumber;
 	private String option;
+	private String luckydate;
+	
 	
 	 
 	
+	public String getLuckydate() {
+		return luckydate;
+	}
+	public void setLuckydate(String luckydate) {
+		this.luckydate = luckydate;
+	}
 	public String getOption() {
 		return option;
 	}

@@ -16,10 +16,12 @@ function NumberModal(props)
         price:"",
         idLine:"",
         phoneNumber:"",
+        luckydate:""
 
 
     });
     const [DateMonth, setDateMonth] = useState(new Date());
+    const [LuckyDate, setLuckyDate] = useState(new Date());
    
     // console.log("check 1 = ",closepopup);
     if(props.show !== true)
@@ -39,6 +41,8 @@ function NumberModal(props)
        
         // props.status(e.target.name)
         userData.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
+        userData.luckydate = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
+        console.log("check data again = ",userData)
         props.handleSavingNum(isOpen,userData)
 
         console.log("check data = ",userData)
@@ -51,7 +55,7 @@ function NumberModal(props)
                    
                     <div className="flexcontainer1">
                         <div className="text_numpagedate" style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>วันที่</label></div>
+                            <div className="text_numpage">  <label>วันที่ซื้อ</label></div>
                             <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /> </div>
                         </div>
                     
@@ -77,7 +81,6 @@ function NumberModal(props)
                         </div>
 
                     </div>
-                   
                     <div className="flexcontainer3" >
                         <div className="text_numpageline" style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>ID Line:</label></div>
@@ -86,6 +89,12 @@ function NumberModal(props)
                         <div className="text_numpagephone" style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>เบอร์โทรติดต่อ</label></div>
                             <div>  <input type="text_numpage" className="form-control " style={{"width":"60%"}} name = "phoneNumber"  onChange={(e)=>handleChange(e)}/></div>
+                        </div> 
+                    </div>
+                    <div className="flexcontainer4">
+                        <div className="LuckyDate" style={{"width":"50%"}}>
+                            <div className="text_numpage">  <label>งวดประจำวันที่</label></div>
+                            <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={LuckyDate}  onChange={(date) => setLuckyDate(date)} /> </div>
                         </div>
                     </div>
                     

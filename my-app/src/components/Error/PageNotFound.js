@@ -17,7 +17,7 @@ function PangeNotFound()
                     <tr className="trerrorpage">
                         <td className="tderrorpage"><p style={{"backgroundColor":"white","color":"black"}}>ไม่สามารถค้นหา Page หรือ URl ที่คุณต้องการเจอ</p></td>
                     </tr>
-                    <tr>
+                    <tr className="trerrorpage">
                         <td ><button type="button" style={{"color":"white","width":"100px","backgroundColor":"black"}}>กลับ</button></td>
                     </tr>
                 </thead>

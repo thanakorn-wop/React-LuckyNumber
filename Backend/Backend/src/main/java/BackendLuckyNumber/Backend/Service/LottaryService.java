@@ -34,29 +34,30 @@ public class LottaryService {
 	List_numberRepo listNumberRepo;
 
 	
-	public List<List_number_Modal> getLottaryService(String idUser)
+	public List<List_number_Modal> getLottaryService(String idUser,String date)
 	{
 //		List<List_numberRepo> dataItem = new ArrayList<>();
 		List<list_number_respModal> newData = new ArrayList<>();
 		list_number_respModal obj = new list_number_respModal();
-		List<List_number_Modal>	dataItem =  listNumberRepo.findItem(idUser);
-//		if(null != dataItem)
-//		{
-//			for(List_number_Modal data: dataItem)
-//			{
-//				obj.setDatebuy(data.getDatebuy());
-//				obj.setId(data.getId());
-//				obj.setIdlist(data.getIdlist());
-//				obj.setLuckytime(data.getLuckytime());
-//				obj.setNumber(data.getNumber());
-//				obj.setOptinpurchase(data.getOptinpurchase());
-//				obj.setPrice(data.getPrice());
-//				obj.setStatus(data.getPrice());
-//				obj.setStatuspayment(data.getStatuspayment());
-//				obj.setTime(data.getTime());
-//				newData.add(obj);
-//			}
-//		}
+		List<List_number_Modal>	dataItem = null;
+		try {
+			if(null == date || StringUtils.isNotBlank(date))
+			{
+				LottaryModal dataLottary = lottaryRepo.findDate();
+				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getDate());
+			}
+			else {
+				LottaryModal dataLottary = lottaryRepo.findSelectDate(date);
+				dataItem =  listNumberRepo.findItem(idUser,dataLottary.getDate());
+			}
+			
+		}
+		catch(Exception e)
+		{
+			throw e;
+			
+		}
+		
 	return	 dataItem;
 	}
 	public Boolean postInsertNumberLuckyService(LuckyNumberReq luckyNumberReq) throws Exception {
@@ -135,6 +136,7 @@ public class LottaryService {
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
+				list_number_modal.setLuckytime(NumRequest.getLuckydate());
 				listNumberRepo.save(list_number_modal);			
 				status_Update = true;
 				
@@ -148,6 +150,7 @@ public class LottaryService {
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
+				list_number_modal.setLuckytime(NumRequest.getLuckydate());
 				listNumberRepo.save(list_number_modal);			
 				status_Update = true;
 			}
