@@ -6,10 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import lombok.Data;
 @Data
 @Entity(name = "user")
-public class UserModal {
+public class UserModal  {
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -29,21 +32,10 @@ public class UserModal {
 	@Column(name = "role")
 	private String role;
 
-	public UserModal() {
-	}
+
 	
-	public UserModal(String id, String iduser, String password, String token, String timelogin, String timelogout,
-			String status, String role) {
-		super();
-		this.id = id;
-		this.iduser = iduser;
-		this.password = password;
-		this.token = token;
-		this.timelogin = timelogin;
-		this.timelogout = timelogout;
-		this.status = status;
-		this.role = role;
-	}
+
+
 
 
 

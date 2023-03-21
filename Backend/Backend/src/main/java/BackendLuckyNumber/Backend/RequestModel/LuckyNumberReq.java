@@ -2,17 +2,18 @@ package BackendLuckyNumber.Backend.RequestModel;
 
 public class LuckyNumberReq {
 	
-	private String lucktime;
+	private String date;
 	private String threetop;
 	private String threedown;
 	private String twotop;
 	private String twodown;
 	
-	public String getLucktime() {
-		return lucktime;
+
+	public String getDate() {
+		return date;
 	}
-	public void setLucktime(String lucktime) {
-		this.lucktime = lucktime;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getThreetop() {
 		return threetop;

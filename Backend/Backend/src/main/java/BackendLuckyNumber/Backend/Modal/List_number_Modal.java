@@ -20,6 +20,8 @@ public class List_number_Modal {
 	private String number;
 	@Column(name = "price")
 	private String price;
+	@Column(name = "all_price")
+	private String all_price;
 	@Column(name = "option_purchase")
 	private String optinpurchase;
 	@Column(name = "status")
@@ -35,6 +37,15 @@ public class List_number_Modal {
 	@Column(name = "id")
 	private String id;
 	
+	
+	
+	
+	public String getAll_price() {
+		return all_price;
+	}
+	public void setAll_price(String all_price) {
+		this.all_price = all_price;
+	}
 	public String getIdlist() {
 		return idlist;
 	}

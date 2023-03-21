@@ -19,7 +19,7 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 //	void postInsertNumber(String number,String price,String option, String date, String time,String status,String id);
 
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.luckytime = ?2 ")
-	List<List_number_Modal> findItem(String id,String date);
+	List<List_number_Modal> findItem(String id );
 	
 	@Modifying
 	@Query(" UPDATE list_number set status_payment = ?1 Where id = ?2 and id_list = ?3 ")

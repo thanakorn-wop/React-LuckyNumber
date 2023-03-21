@@ -19,8 +19,8 @@ public class LottaryModal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_lottary")
 	private String idLottary;
-	@Column(name = "lucktime")
-	private String lucktme;
+	@Column(name = "date")
+	private String date;
 	@Column(name = "three_top")
 	private String threeTop;
 	@Column(name = "three_dow")
@@ -29,16 +29,16 @@ public class LottaryModal {
 	private String twotop;
 	@Column(name = "two_down")
 	private String twodown;
-	@OneToMany(mappedBy = "lucktime")
-	private List<List_number_Modal> listnumber;
+//	@OneToMany(mappedBy = "lucktime")
+//	private List<List_number_Modal> listnumber;
+//	
 	
-	
-	public List<List_number_Modal> getListnumber() {
-		return listnumber;
-	}
-	public void setListnumber(List<List_number_Modal> listnumber) {
-		this.listnumber = listnumber;
-	}
+//	public List<List_number_Modal> getListnumber() {
+//		return listnumber;
+//	}
+//	public void setListnumber(List<List_number_Modal> listnumber) {
+//		this.listnumber = listnumber;
+//	}
 
 	public String getTwodown() {
 		return twodown;
@@ -71,12 +71,13 @@ public class LottaryModal {
 	public void setTwotop(String twotop) {
 		this.twotop = twotop;
 	}
-	public String getLucktme() {
-		return lucktme;
+	public String getDate() {
+		return date;
 	}
-	public void setLucktme(String lucktme) {
-		this.lucktme = lucktme;
+	public void setDate(String date) {
+		this.date = date;
 	}
+	
 
 
 }

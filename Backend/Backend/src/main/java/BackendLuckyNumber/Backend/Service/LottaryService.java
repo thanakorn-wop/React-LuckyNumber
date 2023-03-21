@@ -48,7 +48,7 @@ public class LottaryService {
 				dataItem = listNumberRepo.findItem(idUser);
 			} else {
 				LottaryModal dataLottary = lottaryRepo.findSelectDate(date);
-				if (null != dataLottary && dataLottary.getDate() != null) {
+				if (null != dataLottary && dataLottary.getDate()!= null) {
 //					dataItem = listNumberRepo.findItem(idUser, dataLottary.getDate());
 				} else {
 					lottaryDate.setDate(date);

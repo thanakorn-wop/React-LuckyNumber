@@ -15,7 +15,7 @@ import BackendLuckyNumber.Backend.GenJwt;
 import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
-import BackendLuckyNumber.Backend.Repo.Base;
+
 //import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.LoginRepo;
 import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
@@ -26,7 +26,6 @@ import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
 public class LoginService {
 
 	@Autowired LoginRepo loginRepo;
-	@Autowired Base base;
 	@Autowired TokenManager jwt;
 //	@Autowired private JwtUserDetailsService userDetailsService;
 	// @Autowired InfoUserRepo infoUserRepo;
