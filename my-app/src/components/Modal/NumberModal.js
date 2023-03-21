@@ -14,6 +14,7 @@ function NumberModal(props)
         option:"",
         number:"",
         price:"",
+        all_price:"",
         idLine:"",
         phoneNumber:"",
         lucktime:""
@@ -66,6 +67,7 @@ function NumberModal(props)
                                     <option value="empty">เลือก</option>
                                     <option value="Top">บน</option>
                                     <option value = "Below">ล่าง</option>
+                                    <option value = "Tod">โต๊ด</option>
                                 </select>
                             </div>
                         </div>

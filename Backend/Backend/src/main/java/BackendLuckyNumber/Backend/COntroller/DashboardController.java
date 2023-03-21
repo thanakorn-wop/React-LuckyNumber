@@ -25,6 +25,7 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 //import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
+import BackendLuckyNumber.Backend.Modal.MonthModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
@@ -49,19 +50,19 @@ public class DashboardController extends ValidateUntil {
 
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		InfoUserRespModal resp = new InfoUserRespModal();
-		List<InfoUserModal> infoUser = new ArrayList<>();
+		MonthModal Month = new MonthModal();
 		System.out.println(user.getInfoUser().getIduser());
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 
 		try {
-			infoUser = (List<InfoUserModal>) dashBoardService.getInfoUser(user.getInfoUser().getId());
-			if (null != infoUser && infoUser.size() >0) {
+			Month = dashBoardService.getInfoUser(user.getInfoUser().getId());
+			if (null != Month ) {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
 				resp.setHeader(header);
-				resp.setDatalist(infoUser);
+				resp.setDatalist(Month);
 			} else {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_401);

@@ -248,7 +248,7 @@ function Lottary()
                 if(item.idlist === index ){
                    
                     item.statuspayment = DataPayment.status;
-                    dataUpdate   = item
+                    dataUpdate  = item
                 }
             })
             try{
@@ -334,6 +334,11 @@ function Lottary()
                         else{
                             alert("ทำรายการสำเร็จ");
                             setpopup(false);
+                            let timeout;
+                            function myFunction() {
+                                timeout = setTimeout(()=>{window.location.reload(false)}, 1000);
+                              }
+                              myFunction();
                             // window.location.reload(false)
                         }
                     })
@@ -368,7 +373,7 @@ function Lottary()
         else if(select === "No"){
                //** use object.values because the output is [Object,Object] */
             setDataSet(newItem.filter(data=> data.statuspayment ==="No"))
-            console.log("check search = ",currentPosts)
+            console.log("check search No = ",currentPosts)
         }
         else{
             setDataSet(newItem)
@@ -438,10 +443,9 @@ function Lottary()
                            </thead>
                            <tbody>
                             {
-                        
                             currentPosts[0]['idlist'] == null ||    currentPosts[0]['idlist'] == undefined  ||    currentPosts[0]['idlist'] ==''?
                             <tr key = {index}>
-                               <td colSpan="9" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
+                               <td colSpan="10" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
                                
                             </tr> : 
                                     currentPosts.map((resp,index)=>{

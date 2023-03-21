@@ -9,19 +9,20 @@ import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 
 public class InfoUserRespModal {
 	private Header header;
-	private List<InfoUserModal> Datalist;
+	private Object Datalist;
 	public Header getHeader() {
 		return header;
 	}
 	public void setHeader(Header header) {
 		this.header = header;
 	}
-	public List<InfoUserModal> getDatalist() {
+	public Object getDatalist() {
 		return Datalist;
 	}
-	public void setDatalist(List<InfoUserModal> datalist) {
+	public void setDatalist(Object datalist) {
 		Datalist = datalist;
 	}
+
 	
 	
 	
