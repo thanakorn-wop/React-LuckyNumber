@@ -1,30 +1,12 @@
 package BackendLuckyNumber.Backend.Repo;
 
-
-
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import javax.transaction.Transactional;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
 
 import BackendLuckyNumber.Backend.Modal.UserModal;
-import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
-import org.springframework.data.jpa.repository.Query;
 
 @Transactional 
 public interface   LoginRepo  extends JpaRepository<UserModal,String>     {

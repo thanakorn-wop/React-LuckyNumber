@@ -6,7 +6,10 @@ import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import InfoUserModal from "./Modal/infoUserModal"
 import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+
+
 
 function Paginagtion({totalPosts,postsPerPage,paginate})
 {
@@ -50,13 +53,14 @@ function Lottary()
     const [DateMonth, setDateMonth] = useState("");
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
-    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
-    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
-    const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [dateLucky,setDateLucky] = useState();
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
+    const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
+    const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
     const [select ,setSelect] = useState();
-    const [collectNumber,setCollectNumber] = useState({lucktime:"",threetop:"",threedown:"",twotop:"",twodown:""});
+    const [collectNumber,setCollectNumber] = useState({date:"",threetop:"",threedown:"",twotop:"",twodown:""});
     const [ newData,setNewData] = useState({
         id: "",
         date: "", 
@@ -71,6 +75,7 @@ function Lottary()
           return config;
         }
       )
+
       axios.interceptors.response.use(undefined,(error) =>{
         const {status,data,config} = error.response;
         if(status === 404)
@@ -106,7 +111,6 @@ function Lottary()
                     if(IsSelect)
                     {
                             date = (DateSelect.getFullYear()+"-"+(1+Number(DateSelect.getMonth()))+"-"+DateSelect.getDate());
-                            console.log("check date again = ",collectNumber.date)
                     }
                     else{
                         date = "lastdata";
@@ -115,14 +119,16 @@ function Lottary()
                             const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
                                 headers: { 'Content-Type': 'application/json' }
                             })
-                            if(response.data != undefined)
+                            console.log("check response.data  = ",response.data );
+                            if(response.data != undefined && response.data.datalist != null)
                             {
                                 setDataSet(response.data.datalist)
                                 // setDateLucky(response.data.datalist.luckytime)
                                 setNewItem(response.data.datalist)   
                             }
+                          
     
-                            console.log("check response data = ",response );
+                           // console.log("check response data = ",response );
                         }catch(error)
                         {
                             console.error(error);
@@ -132,13 +138,6 @@ function Lottary()
 
     },[DateMonth])
     // console.log("check 1 = ",popup.show)
-    function DatePickert(date)
-    {
-           // console.log("check date = e  = ",date)
-            setDateMonth(date)
-            setIsSelect(true)
-            setDataSelect(date)
-    }
     function ValidityState()
     {
         setpopup(true);
@@ -174,7 +173,13 @@ function Lottary()
          console.log("check e ",newData)
         }
     }
-   
+    function DatePickert(date)
+    {
+           // console.log("check date = e  = ",date)
+            setDateMonth(date)
+            setIsSelect(true)
+            setDataSelect(date)
+    }
     //todo validate the  saving status from InsertLuckyNumber model
     function HandleInsertLuckyNumber(e,DataLuckyNumber)
     {
@@ -211,7 +216,7 @@ function Lottary()
                         alert("ทำรายการสำเร็จ")
                         setLuckyModal(false)
                         // setCollectNumber(res.data.datalist)
-                        // window.location.reload()
+                        window.location.reload()
                     }
                     else if(statusCode ==='01' && message === 'duplicate_data')
                     {
@@ -276,7 +281,7 @@ function Lottary()
      
         if(isOpen)
         {
-            console.log(dataNum.option);
+            //console.log(dataNum.option);
             if(dataNum.option === null || dataNum.option ===undefined || dataNum.option ==='')
             {
                 alert("กรุณาเลือกการแทง");
@@ -289,21 +294,53 @@ function Lottary()
             {
                 alert("กรุณาใส่เลข");
             }
+        
             else{
-                const Post_Insert_Number = axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(res =>{
-                    console.log("check response num = ",res.data)
-                    if(res.data.message === 'not_success' && res.data.statusCode === '01')
-                    {
-                        alert("ทำรายการไม่สำเร็จ");
+                let number = dataNum.number;
+                let arrNo = [];
+                let statusValidate = true;
+
+           
+                number = number.trim();
+                number = number.replaceAll(","," ")
+                number = number.split(" ");
+                //console.log("check number = ",number);
+                for(let i = 0 ; i<number.length ; i++)
+                {
+                    if(number[i] != ""){
+                        if(number[i].length >1 && number[i].length<4)
+                        {
+                            arrNo.push(number[i]);  
+                        }
+                        else{
+                            alert("กรุณาใส่เลขมากกว่า1หลักแต่ไม่เกิน3หลัก")
+                            statusValidate = false;
+                            break;
+                        }
                     }
-                    else{
-                        alert("ทำรายการสำเร็จ");
-                        setpopup(false);
-                        // window.location.reload(false)
-                    }
-                })
+                }
+                  
+                if(statusValidate)
+                {
+                    dataNum.number = arrNo.join(",");
+                    const Post_Insert_Number = axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(res =>{
+                        console.log("check response num = ",res.data)
+                        if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                        {
+                            alert("ทำรายการไม่สำเร็จ");
+                        }
+                        else{
+                            alert("ทำรายการสำเร็จ");
+                            setpopup(false);
+                            // window.location.reload(false)
+                        }
+                    })
+                }
+            
+                
+              
 
             }
         }
@@ -345,21 +382,22 @@ function Lottary()
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber =>setCurrentPage(pageNumber)
+    console.log("check currentpost = ",currentPosts);
 
     return(
         <div className="mainpage">
             <div className="boxpage" >
                     <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
-                       <h3>รายการหวย ประจำวันที่ {dateLucky}</h3>
+                        <h3>รายการหวย ประจำวันที่ {dateLucky}</h3>
                     </div>
                     <div className="info" style={{"marginTop":"40px","display":"flex","flexDirection":"column"}}> 
                         <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
                             <div className=" Action-btn">
                                 <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
                             </div>
-                            <div className=" Action-btn">
+                            {/* <div className=" Action-btn">
                                 <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
-                            </div>
+                            </div> */}
                             <div className=" Action-btn">
                                 <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
                              </div>
@@ -370,7 +408,7 @@ function Lottary()
                                     <option value = "Yes">จ่ายแล้ว</option>
                                 </select>
                             </div>
-                                <div className="datepicker" style={{"width":"30%"}}><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}    /> </div>
+                            <div className="datepicker" style={{"width":"30%"}}><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}  /> </div>
                         </div>
                         <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"20px"}}>
                             <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>
@@ -383,29 +421,37 @@ function Lottary()
                     </div>
 
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
-                        <table style={{"border":"solid 2px yellow","width":"80%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
+                        <table style={{"border":"solid 2px yellow","width":"90%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เลข</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคา (บาท)</td>
+                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคาเลขละ (บาท)</td>
+                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคาทั้งหมด</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การแทง</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>สถานะ</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>วันที่</td>
-                                <td style={{"width":"15%","border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
+                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
                                 <td style={{"width":"30%","border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
                             </tr>
                            </thead>
                            <tbody>
                             {
-                                currentPosts.map((resp,index)=>{
+                        
+                            currentPosts[0]['idlist'] == null ||    currentPosts[0]['idlist'] == undefined  ||    currentPosts[0]['idlist'] ==''?
+                            <tr key = {index}>
+                               <td colSpan="9" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
+                               
+                            </tr> : 
+                                    currentPosts.map((resp,index)=>{
                                    // console.log(resp.number);
                                    return(
                                      <tr key = {index}>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.all_price}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="Lucky" ? "Lucky":"unLucky"}>{resp.status}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
@@ -424,6 +470,7 @@ function Lottary()
                                    )
                                   
                                 })
+                                
                             }
                           
                            </tbody>
@@ -437,7 +484,7 @@ function Lottary()
             <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleNumberModal(isOpen,dataNum)}  show={popup}   />
 
             {
-            // todo  insert modal lottary
+            // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 
                 luckyModal && <InsertLuckyNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertLuckyNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
             }
             {
