@@ -56,7 +56,7 @@ public class LottaryController extends ValidateUntil {
 				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId(),date);
 				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
-				 header.setDatalist(data);
+//				 header.setDatalist(data);
 				 
 				System.out.println("check = "+data);
 			 }

@@ -24,6 +24,7 @@ public class ConstantData {
 	public static String MESSAGE_USER_LOCK = "USER_LOCK";
 	public static String MESSAGE_TOP = "Top";
 	public static String MESSAGE_BELOW = "Below";
+	public static String MESSAGE_TOD = "Tod";
 	public static String MESSAGE_YES = "Yes";
 	public static String MESSAGE_NO = "No";
 

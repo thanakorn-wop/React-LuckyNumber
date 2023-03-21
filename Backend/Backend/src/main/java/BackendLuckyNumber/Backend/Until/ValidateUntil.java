@@ -14,7 +14,7 @@ import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 public class ValidateUntil {
 	
-;
+
 	
 	public  Boolean validateRequest(LoginReqModel userLogin)
 	{

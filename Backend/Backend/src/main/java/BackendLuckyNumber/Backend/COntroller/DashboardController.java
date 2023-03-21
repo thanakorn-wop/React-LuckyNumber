@@ -25,12 +25,10 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 //import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
-import BackendLuckyNumber.Backend.Modal.MonthModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.ResponseModel.InfoUserRespModal;
-import BackendLuckyNumber.Backend.ResponseModel.MonthReponse;
 import BackendLuckyNumber.Backend.Service.DashBoardService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 
@@ -47,30 +45,23 @@ public class DashboardController extends ValidateUntil {
 	private TokenManager jwt;
 
 	@GetMapping("/getdashboard")
-	public ResponseEntity testget(Authentication auth,HttpServletRequest req) {
+	public ResponseEntity testget(Authentication auth) {
 
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-		//InfoUserRespModal resp = new InfoUserRespModal();
-		MonthModal Month_Each_Month = null;
-		MonthReponse monthReponse = new MonthReponse();
+		InfoUserRespModal resp = new InfoUserRespModal();
 		List<InfoUserModal> infoUser = new ArrayList<>();
 		System.out.println(user.getInfoUser().getIduser());
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
-		//System.out.println("check token = "+req.getSession().getAttribute("testToken"));
+
 		try {
-			 Month_Each_Month = dashBoardService.getInfoUser(user.getInfoUser().getId());
-			//System.out.println("check length = "+Month_Each_Month.length);
-			if (null != Month_Each_Month) {
+			infoUser = (List<InfoUserModal>) dashBoardService.getInfoUser(user.getInfoUser().getId());
+			if (null != infoUser && infoUser.size() >0) {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
-//				resp.setHeader(header);
-//				resp.setDataList(Month_Each_Month);
-				
-				monthReponse.setDataList(Month_Each_Month);
-				monthReponse.setHeader(header);
-			
+				resp.setHeader(header);
+				resp.setDatalist(infoUser);
 			} else {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_401);
@@ -82,7 +73,7 @@ public class DashboardController extends ValidateUntil {
 			System.out.println("ERROR DASHBOARD = " + e);
 		}
 
-		return new ResponseEntity(monthReponse, status);
+		return new ResponseEntity(resp, status);
 	}
 
 	@GetMapping("/testdata")

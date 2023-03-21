@@ -55,12 +55,9 @@ function Dashbord()
   try{
     axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
       console.log(" tt = ",session)
-      if(res.data.statusCode ==='401')
+      if(res.data.statusCode !=='401')
       {
-        navaigate("/login");
-      }else{
-        console.log("check data ",res.data.dataList.years)
-        setDataSet(res.data.dataList)
+        setDataSet(res.data.datalist)
       }
     })
    

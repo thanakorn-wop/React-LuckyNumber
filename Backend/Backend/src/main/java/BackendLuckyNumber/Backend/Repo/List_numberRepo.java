@@ -18,7 +18,7 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 //	@Query(" INSERT into list_number (number,price,option_purchase,date_buy,time,status_payment,id) VALUES(?1,?2,?3,?4,?5,?6,?7) ")
 //	void postInsertNumber(String number,String price,String option, String date, String time,String status,String id);
 
-	@Query(" SELECT u from list_number u Where u.id = ?1 and u.luckytime = ?2 ")
+	@Query(" SELECT u from list_number u Where u.id = ?1 ")
 	List<List_number_Modal> findItem(String id );
 	
 	@Modifying
