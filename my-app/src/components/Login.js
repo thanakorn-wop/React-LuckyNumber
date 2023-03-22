@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {AuthContext} from "../components/Authen"
 function Login()
 {
+    
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
     // const data = [1,2,3,4]
@@ -15,6 +16,10 @@ function Login()
     sessionStorage.setItem("token","");
     let navigate = useNavigate();
   
+
+
+  
+
     function handleChange(e)
     {
         setUser({...user,[e.target.name]:e.target.value})
@@ -31,49 +36,61 @@ function Login()
             alert("กรุณากรอก PASSWORD")
         }
         else{
-         axios.post(urlConstant.LOGIN_USER,user,{
-                headers: { 'Content-Type': 'application/json' }
-            }).then(res =>{
-                console.log(res.data)
-              //  console.log(res.data.header)
-                if(res.data !== null && res.data !== undefined)
-                {
-                 
-                   if(res.data.header.statusCode ==="01")
-                   {
-                     // window.location.assign("/dashbord")
-                     console.log(res.data[0])
-                     if(res.data.status == "L")
-                     {
-                        alert("บัญชีถูกล็อคการใช้งาน")
-                     }
-                     else if (res.data.status === "I")
-                     {
-                        alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
-                     }
-                     else{
-                        const accessToken = res.data.token;
-
-                      //  setAuth = accessToken;
-                      setauth(accessToken)
-                        sessionStorage.setItem("token", res.data.token);
-                        console.log("check session  = ",sessionStorage.getItem("token"))
-                        navigate("/dashboard")
-                     }
-                   }
-                   else{
-                        if(res.data.iduser != null  )
-                        {
-                        alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
-                        }
-                        else{
-                            alert("กรุณาสมัครสมาชิก")
-                        }
-                      
-                   }
-                }
-               
-            })
+            try{
+               axios.post(urlConstant.LOGIN_USER,user,{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(res =>{
+                    console.log(res.data)
+                  //  console.log(res.data.header)
+                    if(res.data !== null && res.data !== undefined)
+                    {
+                     
+                       if(res.data.header.statusCode ==="01")
+                       {
+                         // window.location.assign("/dashbord")
+                         console.log(res.data[0])
+                         if(res.data.status == "L")
+                         {
+                            alert("บัญชีถูกล็อคการใช้งาน")
+                         }
+                         else if (res.data.status === "I")
+                         {
+                            alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
+                         }
+                         else{
+                            const accessToken = res.data.token;
+    
+                          //  setAuth = accessToken;
+                          setauth(accessToken)
+                            sessionStorage.setItem("token", res.data.token);
+                            console.log("check session  = ",sessionStorage.getItem("token"))
+                            navigate("/dashboard")
+                         }
+                       }
+                       else{
+                            if(res.data.iduser != null  )
+                            {
+                            alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
+                            }
+                            else{
+                                alert("กรุณาสมัครสมาชิก")
+                            }
+                          
+                       }
+                    }
+                   
+                }).catch(function(error){
+                    if(error.response)
+                    {
+                        console.log("status errorr = ",error.response.status)
+                        alert("error")
+                    }
+                })
+            }catch(error)
+            {
+                console.error(error);
+                console.log("check error = ",error)
+            }
         
         }
     }

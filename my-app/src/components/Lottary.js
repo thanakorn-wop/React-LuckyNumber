@@ -9,12 +9,8 @@ import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-
-
 function Paginagtion({totalPosts,postsPerPage,paginate})
 {
-   
-
     const pageNumber =[];
     for(let i = 1; i<=Math.ceil(totalPosts / postsPerPage); i++)
     {
@@ -36,7 +32,6 @@ function Paginagtion({totalPosts,postsPerPage,paginate})
                 <li className="page-item"> <a className="page-link" href="#">Next</a> </li>
             </ul>
         </nav>
-        
     )
 }
 function Lottary()
@@ -44,16 +39,15 @@ function Lottary()
     //** pagination  */
     const [currentPage,setCurrentPage] = useState(1);
     const [postsPerPage] = useState(10);
-
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
-    const [DateMonth, setDateMonth] = useState("");
+    const [DateBuy, setDateBuy] = useState("");
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
-    const [dateLucky,setDateLucky] = useState();
+    const [dateLucky,setDateLucky] = useState("");
     const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
@@ -110,7 +104,7 @@ function Lottary()
                     let date = null;
                     if(IsSelect)
                     {
-                            date = (DateSelect.getFullYear()+"-"+(1+Number(DateSelect.getMonth()))+"-"+DateSelect.getDate());
+                            // date = (DateSelect.getFullYear()+"-"+(1+Number(DateSelect.getMonth()))+"-"+DateSelect.getDate());
                     }
                     else{
                         date = "lastdata";
@@ -126,8 +120,6 @@ function Lottary()
                                 // setDateLucky(response.data.datalist.luckytime)
                                 setNewItem(response.data.datalist)   
                             }
-                          
-    
                            // console.log("check response data = ",response );
                         }catch(error)
                         {
@@ -136,14 +128,12 @@ function Lottary()
                   }
                 getListitem();
 
-    },[DateMonth])
+    },[])
     // console.log("check 1 = ",popup.show)
     function ValidityState()
     {
-        setpopup(true);
-       
+        setpopup(true); 
     }
-
     function submitData(e)
     {
         if(e === "save")
@@ -176,7 +166,8 @@ function Lottary()
     function DatePickert(date)
     {
            // console.log("check date = e  = ",date)
-            setDateMonth(date)
+        //    console.log("check month = ",date)
+            setDateBuy(date)
             setIsSelect(true)
             setDataSelect(date)
     }
@@ -226,9 +217,7 @@ function Lottary()
                         alert("เกิดข้อผิดพลาดในการทำรายการ")
                     }
                 })
-            
           //  console.log("check post insert  = ",post_Insert_Lucky_Number)
-
             }
         }
         //* close InsertLucky Number Model */
@@ -278,7 +267,6 @@ function Lottary()
     }
     function HandleNumberModal(isOpen,dataNum)
     {
-     
         if(isOpen)
         {
             //console.log(dataNum.option);
@@ -299,8 +287,6 @@ function Lottary()
                 let number = dataNum.number;
                 let arrNo = [];
                 let statusValidate = true;
-
-           
                 number = number.trim();
                 number = number.replaceAll(","," ")
                 number = number.split(" ");
@@ -343,10 +329,6 @@ function Lottary()
                         }
                     })
                 }
-            
-                
-              
-
             }
         }
         else{
@@ -362,25 +344,87 @@ function Lottary()
     //TODO: filter data after click search buttom 
     function SearchData()
     {
-        console.log("check select = ",select)
+        let date = null;
+        let dateTimeLucky = null;
+        
+        // console.log("check = asdasd",DateBuy)
+        if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
+        {
+            date = (DateBuy.getFullYear()+"-"+(1+Number(DateBuy.getMonth()))+"-"+DateBuy.getDate());
+        }
+        if(dateLucky !== null && dateLucky !== '' && dateLucky !== undefined)
+        {
+            dateTimeLucky = (dateLucky.getFullYear()+"-"+(1+Number(dateLucky.getMonth()))+"-"+dateLucky.getDate());
+        }
+        console.log("dateTimeLucky = ",dateTimeLucky)
+        // console.log("check select = ",date)
         if(select ==="Yes")
         {
             //** use object.values because the output is [Object,Object] */
-            setDataSet(newItem.filter(data=> data.statuspayment ==="Yes"))
-            console.log("check search = ",currentPosts)
-          
+            if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+            {
+                console.log("checko yes 1= ",newItem);
+                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === date && data.luckytime === dateTimeLucky))
+            }
+
+            else if(date !== null && date !== undefined && date !== '')
+            {
+                console.log("checko yes 2 = ",newItem);
+                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === date))
+            }
+            else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
+            {
+                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.luckytime === dateTimeLucky ))
+            }
+            else{
+                console.log("checko yes 3 = ",newItem);
+                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" ))
+            }
+           
+            console.log("check search = ",currentPosts)   
         }
         else if(select === "No"){
                //** use object.values because the output is [Object,Object] */
-            setDataSet(newItem.filter(data=> data.statuspayment ==="No"))
+               if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+                {
+                    console.log("checko no 1= ",newItem);
+                    setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.datebuy === date && data.luckytime === dateTimeLucky))
+                }
+               else if(date !== null && date !== undefined && date !== '')
+               {
+                   console.log("checko new item = ",newItem);
+                   setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.datebuy === date))
+               }
+               else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
+               {
+                console.log("checko new 3 = ",newItem);
+                setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.luckytime === dateTimeLucky ))
+               }
+               else{
+                   console.log("checko new item = ",newItem);
+                   setDataSet(newItem.filter(data=> data.statuspayment ==="No" ))
+               }
             console.log("check search No = ",currentPosts)
         }
         else{
-            setDataSet(newItem)
+            if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+            {
+                console.log("checko no 1= ",newItem);
+                setDataSet(newItem.filter(data=> data.datebuy === date && data.luckytime === dateTimeLucky))
+            }
+            else if(date !== null && date !== undefined && date !== '')
+            {
+                setDataSet(newItem.filter(data=> data.datebuy === date ))
+            }
+            else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
+            {
+                setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky ))
+            }
+            else{
+                setDataSet(newItem)
+            }   
         }
     }
-
-
     // ** get current post
 
     const indexOfLastPost = currentPage * postsPerPage;
@@ -393,7 +437,7 @@ function Lottary()
         <div className="mainpage">
             <div className="boxpage" >
                     <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
-                        <h3>รายการหวย ประจำวันที่ {dateLucky}</h3>
+                        <h3>รายการหวย ประจำวันที่ </h3>
                     </div>
                     <div className="listitem">
               
@@ -405,9 +449,22 @@ function Lottary()
                             </thead>
                             <tbody>
                                 <tr className="table-listitem" >
-                                    <td ><label>เลข</label></td>
-                                    <td><input className = "form-control" type="text"/></td>
-                                    <td>สถานะ</td>
+                                <td>สถานะการถูกรางวัล</td>
+                                    <td>  
+                                        <div className=" Action-btn">
+                                         
+                                           <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setSelect(e.target.value)}>
+                                                <option value = "All">ทั้งหมด</option>
+                                                <option value = "Lucky">ถูกรางวัล</option>
+                                                <option value = "unLucky">ไม่ถูกรางวัล</option>
+                                                {/* <option value = "unLucky">ไม่ถูกรางวัล</option>
+                                                <option value = "Lucky">ถูกรางวัล</option> */}
+                                            </select>
+                                           
+                                          
+                                        </div>
+                                    </td>
+                                    <td>สถานะการจ่ายเงิน</td>
                                     <td>  
                                         <div className=" Action-btn">
                                          
@@ -415,6 +472,8 @@ function Lottary()
                                                 <option value = "All">ทั้งหมด</option>
                                                 <option value = "No">ยังไม่จ่าย</option>
                                                 <option value = "Yes">จ่ายแล้ว</option>
+                                                {/* <option value = "unLucky">ไม่ถูกรางวัล</option>
+                                                <option value = "Lucky">ถูกรางวัล</option> */}
                                             </select>
                                            
                                           
@@ -423,11 +482,15 @@ function Lottary()
                                 </tr>
                                 <tr className="table-listitem">
                                     <td>วันที่ซื้อ</td>
-                                    <td>   <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}  /> </div> </td>
+                                    <td>   <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected={DateBuy} onChange={(date)=>DatePickert(date)}  /> </div> </td>
                                     <td>งวดประจำวันที่</td>
                                     <td>
-                                    <div className="datepicker" ><DatePicker className="form-control" name = "datePicker"   /> </div>
+                                    <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected ={dateLucky} onChange={(date)=>setDateLucky(date)}  /> </div>
                                     </td>
+                                </tr>
+                                <tr className="table-listitem" >
+                                    <td ><label>เลข</label></td>
+                                    <td><input className = "form-control" type="text"/></td>
                                 </tr>
                                 <tr className="table-listitem">
                                     <td colSpan="4">
@@ -450,7 +513,7 @@ function Lottary()
                     </div>
              
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
-                        <table style={{"border":"solid 2px yellow","width":"90%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
+                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
@@ -459,17 +522,19 @@ function Lottary()
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคาทั้งหมด</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การแทง</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>สถานะ</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>วันที่</td>
+                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>วันที่ซื้อ</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
+                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>งวดประจำวันที่</td>
                                 <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
                                 <td style={{"width":"30%","border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
                             </tr>
                            </thead>
                            <tbody>
+                        
                             {
-                            currentPosts[0]['idlist'] == null ||    currentPosts[0]['idlist'] == undefined  ||    currentPosts[0]['idlist'] ==''?
+                            currentPosts.length<=0?
                             <tr key = {index}>
-                               <td colSpan="10" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
+                               <td colSpan="11" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
                                
                             </tr> : 
                                     currentPosts.map((resp,index)=>{
@@ -484,6 +549,7 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="Lucky" ? "Lucky":"unLucky"}>{resp.status}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
                                 <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
@@ -495,18 +561,14 @@ function Lottary()
                                     </div>                    
                                 </td>
                             </tr>
-                                   )
-                                  
-                                })
-                                
+                                   )                            
+                                })                 
                             }
                           
                            </tbody>
                         </table> 
                         <Paginagtion   totalPosts={dataSet.length} postsPerPage = {postsPerPage} paginate={paginate} />
                 </div>
-       
-                   
             </div>
             {/* // list insert purachse number  modal */}
             <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleNumberModal(isOpen,dataNum)}  show={popup}   />

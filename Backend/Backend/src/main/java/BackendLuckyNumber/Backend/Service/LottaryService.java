@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +126,9 @@ public class LottaryService {
 		LocalTime timenow = LocalTime.now();
 		List_number_Modal list_number_modal = new List_number_Modal();
 		String regex = "[, ' ']";
+	    Formatter formatter = new Formatter();
+		formatter = new Formatter();
+		 formatter.format("%.8s",timenow);
 		
 		Integer all_price = 0;
 		try {
@@ -140,7 +144,7 @@ public class LottaryService {
 				list_number_modal.setAll_price(String.valueOf(all_price));
 				list_number_modal.setOptinpurchase(ConstantData.MESSAGE_TOP);
 				list_number_modal.setDatebuy(NumRequest.getDate());
-				list_number_modal.setTime(timenow.toString());
+				list_number_modal.setTime(formatter.toString());
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
@@ -155,7 +159,7 @@ public class LottaryService {
 				list_number_modal.setAll_price(String.valueOf(all_price));
 				list_number_modal.setOptinpurchase(NumRequest.getOption());
 				list_number_modal.setDatebuy(NumRequest.getDate());
-				list_number_modal.setTime(timenow.toString());
+				list_number_modal.setTime(formatter.toString());
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
