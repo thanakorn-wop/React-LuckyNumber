@@ -83,7 +83,7 @@ function NumberModal(props)
                         </div>
 
                     </div>
-                    <div className="flexcontainer3" >
+                    {/* <div className="flexcontainer3" >
                         <div className="text_numpageline" style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>ID Line:</label></div>
                             <div>  <input type="text_numpage" className="form-control "  style={{"width":"60%"}} name = "idLine"  onChange={(e)=>handleChange(e)}/></div>
@@ -92,7 +92,7 @@ function NumberModal(props)
                             <div className="text_numpage">  <label>เบอร์โทรติดต่อ</label></div>
                             <div>  <input type="text_numpage" className="form-control " style={{"width":"60%"}} name = "phoneNumber"  onChange={(e)=>handleChange(e)}/></div>
                         </div> 
-                    </div>
+                    </div> */}
                     <div className="flexcontainer4">
                         <div className="LuckyDate" style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>งวดประจำวันที่</label></div>

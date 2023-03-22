@@ -395,36 +395,60 @@ function Lottary()
                     <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
                         <h3>รายการหวย ประจำวันที่ {dateLucky}</h3>
                     </div>
-                    <div className="info" style={{"marginTop":"40px","display":"flex","flexDirection":"column"}}> 
-                        <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
-                            <div className=" Action-btn">
-                                <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
-                            </div>
-                            {/* <div className=" Action-btn">
-                                <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
-                            </div> */}
-                            <div className=" Action-btn">
-                                <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
-                             </div>
-                            <div className=" Action-btn">
-                                <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setSelect(e.target.value)}>
-                                    <option value = "All">ทั้งหมด</option>
-                                    <option value = "No">ยังไม่จ่าย</option>
-                                    <option value = "Yes">จ่ายแล้ว</option>
-                                </select>
-                            </div>
-                            <div className="datepicker" style={{"width":"30%"}}><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}  /> </div>
-                        </div>
-                        <div className="setText" style={{"display":"flex","margin":"0 auto","marginTop":"20px"}}>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เงินต้น : 20000</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>ยอดเงินคนถูก : 20000</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขหน้า 3 ตัว : {collectNumber.threetop} </label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 3 ตัว : {collectNumber.threedown}</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : {collectNumber.twotop}</label></div>
-                            <div className="constantText"><label style={{"fontSize":"24px","marginLeft":"20px"}}>เลขท้าย 2 ตัว : {collectNumber.twodown}</label></div>
-                        </div>     
-                    </div>
+                    <div className="listitem">
+              
+                        <table className="table table-bordered table-striped">
+                            <thead className="table-secondary">
+                                <tr className="table-listitem">
+                                    <td colSpan="4" style={{"color":"black"}}>รายการค้นหา</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="table-listitem" >
+                                    <td ><label>เลข</label></td>
+                                    <td><input className = "form-control" type="text"/></td>
+                                    <td>สถานะ</td>
+                                    <td>  
+                                        <div className=" Action-btn">
+                                         
+                                           <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setSelect(e.target.value)}>
+                                                <option value = "All">ทั้งหมด</option>
+                                                <option value = "No">ยังไม่จ่าย</option>
+                                                <option value = "Yes">จ่ายแล้ว</option>
+                                            </select>
+                                           
+                                          
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr className="table-listitem">
+                                    <td>วันที่ซื้อ</td>
+                                    <td>   <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected={DateMonth} onChange={(date)=>DatePickert(date)}  /> </div> </td>
+                                    <td>งวดประจำวันที่</td>
+                                    <td>
+                                    <div className="datepicker" ><DatePicker className="form-control" name = "datePicker"   /> </div>
+                                    </td>
+                                </tr>
+                                <tr className="table-listitem">
+                                    <td colSpan="4">
+                                    <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
+                                        <div className=" Action-btn">
+                                            <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
+                                        </div>
+                                        {/* <div className=" Action-btn">
+                                            <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
+                                        </div> */}
+                                        <div className=" Action-btn">
+                                            <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
+                                        </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
+                    </div>
+             
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
                         <table style={{"border":"solid 2px yellow","width":"90%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
                            <thead >
