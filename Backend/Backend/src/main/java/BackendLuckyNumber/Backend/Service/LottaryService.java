@@ -49,7 +49,7 @@ public class LottaryService {
 				dataItem = listNumberRepo.findItem(idUser);
 			} else {
 				LottaryModal dataLottary = lottaryRepo.findSelectDate(date);
-				if (null != dataLottary && dataLottary.getDate()!= null) {
+				if (null != dataLottary && dataLottary.getDate() != null) {
 //					dataItem = listNumberRepo.findItem(idUser, dataLottary.getDate());
 				} else {
 					lottaryDate.setDate(date);
@@ -126,10 +126,10 @@ public class LottaryService {
 		LocalTime timenow = LocalTime.now();
 		List_number_Modal list_number_modal = new List_number_Modal();
 		String regex = "[, ' ']";
-	    Formatter formatter = new Formatter();
+		Formatter formatter = new Formatter();
 		formatter = new Formatter();
-		 formatter.format("%.8s",timenow);
-		
+		formatter.format("%.8s", timenow);
+
 		Integer all_price = 0;
 		try {
 			String Cover_Number = NumRequest.getNumber().trim().replaceAll(regex, ",");
@@ -138,7 +138,8 @@ public class LottaryService {
 			all_price = Length_Number * Integer.valueOf(NumRequest.getPrice());
 			String joinNumber = String.join(",", Str_Number);
 
-			if (null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOP) || NumRequest.getOption().equals(ConstantData.MESSAGE_BELOW)) {
+			if (null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOP)
+					|| NumRequest.getOption().equals(ConstantData.MESSAGE_BELOW)) {
 				list_number_modal.setNumber(joinNumber);
 				list_number_modal.setPrice(NumRequest.getPrice());
 				list_number_modal.setAll_price(String.valueOf(all_price));
@@ -152,9 +153,7 @@ public class LottaryService {
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
 
-			}
-			else if(null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOD) )
-			{
+			} else if (null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOD)) {
 				list_number_modal.setNumber(joinNumber);
 				list_number_modal.setPrice(NumRequest.getPrice());
 				list_number_modal.setAll_price(String.valueOf(all_price));
@@ -169,7 +168,6 @@ public class LottaryService {
 				status_Update = true;
 			}
 
-		
 		} catch (Exception e) {
 			throw new Exception("Error Lottary Service = " + e);
 		}
@@ -189,6 +187,18 @@ public class LottaryService {
 			throw e;
 		}
 		return updateStatus;
+	}
+
+	public Boolean postDeleteDataService(listNumberRquestModal listRequest, Authentication auth) {
+		Boolean DeleteStatus = false;
+		try {
+
+			listNumberRepo.postDeleteDataRepo(listRequest.getId(),listRequest.getIdlist());
+			DeleteStatus = true;
+		} catch (Exception e) {
+			throw e;
+		}
+		return DeleteStatus;
 	}
 
 }

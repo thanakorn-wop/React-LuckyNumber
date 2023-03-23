@@ -24,6 +24,10 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Modifying
 	@Query(" UPDATE list_number set status_payment = ?1 Where id = ?2 and id_list = ?3 ")
 	void postUpdateStatusPaymentRepo(String statuspayment, String id , String idList);
+	
+	@Modifying
+	@Query(" DELETE from list_number where id = ?1 and id_list = ?2 ")
+	void postDeleteDataRepo(String id,String idlist);
 }
 
 

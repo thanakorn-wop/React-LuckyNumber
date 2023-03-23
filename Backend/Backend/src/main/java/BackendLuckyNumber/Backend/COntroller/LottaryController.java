@@ -179,6 +179,29 @@ public class LottaryController extends ValidateUntil {
 		}
 		return new ResponseEntity(header,status);
 	}
+	
+	@PostMapping("/deletedata")
+	public ResponseEntity postDeleteData(@RequestBody listNumberRquestModal listRequest,Authentication auth )
+	{
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		if(null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null)
+		{
+			 Boolean DeleteStatus = listLottaryService.postDeleteDataService(listRequest,auth);
+			 if(DeleteStatus)
+			 {
+				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				
+			 }
+		}
+		else {
+			status = HttpStatus.BAD_REQUEST;
+			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setStatusCode(ConstantData.STATUS_CODE_400);
+		}
+		return new ResponseEntity(header,status);
+	}
 	public Boolean validateAPI(NumberRequestModel NumRequest) {
 		Boolean validate = false;
 

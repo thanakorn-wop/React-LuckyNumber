@@ -4,7 +4,7 @@ import NumberModal from "./Modal/NumberModal"
 import * as urlConstant from "../components/Constant/UrlConstant"
 import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
-import InfoUserModal from "./Modal/infoUserModal"
+import DeleteModal from "./Modal/DeleteDataModal"
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
@@ -43,7 +43,7 @@ function Lottary()
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
-    const [isOpenInfoUserModal,setInfoUserModal] = useState(false);
+    const [isOpenDeleteModal,setIsOpenDeleteModal] = useState(false);
     const [DateBuy, setDateBuy] = useState("");
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
@@ -60,6 +60,7 @@ function Lottary()
         id: "",
         date: "", 
     });
+    const [DataDelete,setDataDelete] = useState({id:"",idlist:""})
     // let navigate = useNavigate()
    //console.log("check data = ",dataSet)
     let session =  sessionStorage.getItem("token");
@@ -79,7 +80,7 @@ function Lottary()
         }
         if(status === 400)
         {
-            alert("ERROR 400")
+            alert("BAD Request 400")
         }
         if(status ===500)
         {
@@ -114,6 +115,7 @@ function Lottary()
                             const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
                                 headers: { 'Content-Type': 'application/json' }
                             })
+                            console.log("check response.data  = ",response );
                             console.log("check response.data  = ",response.data );
                             if(response.data != undefined && response.data.datalist != null)
                             {
@@ -171,6 +173,38 @@ function Lottary()
             setDateBuy(date)
             setIsSelect(true)
             setDataSelect(date)
+    }
+    // TODO : delete data from table 
+    function DeleteData(status,value)
+    {
+        console.log("check status delete = ",DataDelete);
+        if(status ==='Yes')
+        {
+            try{
+                const response =  axios.post(urlConstant.POST_DELETEDATAT,DataDelete,{
+                    headers: { 'Content-Type': 'application/json' }
+                }).then((resp)=>{
+                    console.log(resp)
+                    if(resp.status=== 200)
+                    {
+                        alert("ทำรายการสำเร็จ");
+                        setIsOpenDeleteModal(false)
+                        let timeout;
+                        function myFunction() {
+                            timeout = setTimeout(()=>{window.location.reload(false)}, 1000);
+                          }
+                        myFunction()
+                    }
+                })
+
+            }catch(error)
+            {
+                console.error(error)
+            }
+        }
+        else{
+            setIsOpenDeleteModal(false)
+        }
     }
     //todo validate the  saving status from InsertLuckyNumber model
     function HandleInsertLuckyNumber(e,DataLuckyNumber)
@@ -360,6 +394,12 @@ function Lottary()
         setIsOpenPayMentModal(true)
         setIndex(index)
         //console.log("check index = "+index)
+    }
+    function SetDeleteModal(status,idlist,id)
+    {
+        setIsOpenDeleteModal(status);
+         console.log("check id list = ",idlist,id)
+        setDataDelete({...DataDelete,idlist:idlist,id:id})
     }
     //TODO: filter data after click search buttom 
     function SearchData()
@@ -687,8 +727,7 @@ function Lottary()
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber =>setCurrentPage(pageNumber)
-  console.log("check currentpost = ",currentPosts);
-
+//   console.log("check currentpost = ",currentPosts);
     return(
         <div className="mainpage">
             <div className="boxpage" >
@@ -787,11 +826,15 @@ function Lottary()
                            <tbody>
                         
                             {
-                            currentPosts.length<=0?
+                            currentPosts.length<=0 || currentPosts[0]['idlist'] ==='' ?
                             <tr key = {index}>
                                <td colSpan="11" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
                                
                             </tr> : 
+
+
+
+ 
                                     currentPosts.map((resp,index)=>{
                                    // console.log(resp.number);
                                    return(
@@ -809,11 +852,11 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
                                         <div  className="btn-edit">
-                                        <button type="button" className="btn btn-info"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>
+                                        <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>
                                         </div>
                                         
                                    
-                                        <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
+                                        <div className="buttom2"> <button type="button" className="btn btn-danger"  onClick={()=>SetDeleteModal(true,resp.idlist,resp.id)}>ลบ</button></div>
                                     </div>                    
                                 </td>
                             </tr>
@@ -839,7 +882,7 @@ function Lottary()
             }
             {
                 
-            isOpenInfoUserModal &&   <InfoUserModal onClose={(e) => setInfoUserModal(e)}/>
+            isOpenDeleteModal &&   <DeleteModal onClose={(e) => DeleteData(e)}/>
             }
 
         </div>

@@ -35,6 +35,7 @@ function PaymentStatusModal (props)
                             <option value="empty
                             ">เลือก</option>
                             <option value="Yes">จ่ายแล้ว</option>
+                            <option value="No">ยังไม่จ่าย</option>
                             {/* <option value = "No">ยังไม่จ่าย</option> */}
                         </select>
                     </div>
