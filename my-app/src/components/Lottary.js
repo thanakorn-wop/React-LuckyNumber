@@ -54,6 +54,7 @@ function Lottary()
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
     const [select ,setSelect] = useState();
+    const [statusLucky,setStatusLucky] = useState("All");
     const [collectNumber,setCollectNumber] = useState({date:"",threetop:"",threedown:"",twotop:"",twodown:""});
     const [ newData,setNewData] = useState({
         id: "",
@@ -291,17 +292,36 @@ function Lottary()
                 number = number.replaceAll(","," ")
                 number = number.split(" ");
                 //console.log("check number = ",number);
-                for(let i = 0 ; i<number.length ; i++)
+                if(dataNum.option === 'Tod')
                 {
-                    if(number[i] != ""){
-                        if(number[i].length >1 && number[i].length<4)
-                        {
-                            arrNo.push(number[i]);  
+                    for(let i = 0 ; i<number.length ; i++)
+                    {
+                        if(number[i] != ""){
+                            if(number[i].length === 3)
+                            {
+                                arrNo.push(number[i]);  
+                            }
+                            else{
+                                alert("มีบางเลขไม่ครบ3หลัก")
+                                statusValidate = false;
+                                break;
+                            }
                         }
-                        else{
-                            alert("กรุณาใส่เลขมากกว่า1หลักแต่ไม่เกิน3หลัก")
-                            statusValidate = false;
-                            break;
+                    }
+                }
+                else{
+                    for(let i = 0 ; i<number.length ; i++)
+                    {
+                        if(number[i] != ""){
+                            if(number[i].length >1 && number[i].length<4)
+                            {
+                                arrNo.push(number[i]);  
+                            }
+                            else{
+                                alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
+                                statusValidate = false;
+                                break;
+                            }
                         }
                     }
                 }
@@ -344,83 +364,319 @@ function Lottary()
     //TODO: filter data after click search buttom 
     function SearchData()
     {
-        let date = null;
+        let dateBuy = null;
         let dateTimeLucky = null;
         
-        // console.log("check = asdasd",DateBuy)
+        console.log("check = asdasd",newItem)
         if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
         {
-            date = (DateBuy.getFullYear()+"-"+(1+Number(DateBuy.getMonth()))+"-"+DateBuy.getDate());
+            dateBuy = (DateBuy.getFullYear()+"-"+(1+Number(DateBuy.getMonth()))+"-"+DateBuy.getDate());
         }
         if(dateLucky !== null && dateLucky !== '' && dateLucky !== undefined)
         {
             dateTimeLucky = (dateLucky.getFullYear()+"-"+(1+Number(dateLucky.getMonth()))+"-"+dateLucky.getDate());
         }
-        console.log("dateTimeLucky = ",dateTimeLucky)
-        // console.log("check select = ",date)
         if(select ==="Yes")
         {
             //** use object.values because the output is [Object,Object] */
-            if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+            if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
             {
-                console.log("checko yes 1= ",newItem);
-                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === date && data.luckytime === dateTimeLucky))
+               // console.log("checko yes 1= ",newItem);
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                         console.log("check ถูกรางงวัลไม่จ่าย")
+                         setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                     setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                    }
+                }else{
+                    if(statusLucky !='All')
+                    {
+                         console.log("check ถูกรางงวัลไม่จ่าย")
+                         setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                     setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                    }
+                }
             }
-
-            else if(date !== null && date !== undefined && date !== '')
+            else if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '')
             {
-                console.log("checko yes 2 = ",newItem);
-                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === date))
+               // console.log("checko yes 2 = ",newItem);
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                         console.log("check ถูกรางงวัลไม่จ่าย")
+                         setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.datebuy === dateBuy && data.status === statusLucky))
+                    }
+                    else{
+                         setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === dateBuy))
+                    }
+                }
+                else{
+                    if(statusLucky !='All')
+                    {
+                         console.log("check ถูกรางงวัลไม่จ่าย")
+                         setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.datebuy === dateBuy && data.status === statusLucky))
+                    }
+                    else{
+                         setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.datebuy === dateBuy))
+                    }
+                }
             }
             else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
             {
-                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" && data.luckytime === dateTimeLucky ))
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                        console.log("check ถูกรางงวัลไม่จ่าย")
+                        setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.statuspayment ===select && data.luckytime === dateTimeLucky ))
+                    }
+                }
+                else{
+                    if(statusLucky !='All')
+                    {
+                        console.log("check ถูกรางงวัลไม่จ่าย")
+                        setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.statuspayment ===select && data.luckytime === dateTimeLucky ))
+                    }
+                }
+            }
+            else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !='All')
+            {
+             // console.log("check ถูกรางวัลแต่ไม่จ่าย  = ",select,statusLucky)
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    setDataSet(newItem.filter(data=> data.status === statusLucky && data.statuspayment === select ))
+                }
+                else{
+                    setDataSet(newItem.filter(data=> data.status === statusLucky && data.statuspayment === select ))
+                }
             }
             else{
-                console.log("checko yes 3 = ",newItem);
-                setDataSet(newItem.filter(data=> data.statuspayment ==="Yes" ))
+              //  console.log("checko yes 3 = ",newItem);
+                if(currentPage>1)
+                {
+                  setCurrentPage(1)
+                  setDataSet(newItem.filter(data=> data.statuspayment ===select ))
+                }
+                else{
+                  setDataSet(newItem.filter(data=> data.statuspayment ===select ))
+                }
             }
            
             console.log("check search = ",currentPosts)   
         }
         else if(select === "No"){
                //** use object.values because the output is [Object,Object] */
-               if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+               if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
                 {
-                    console.log("checko no 1= ",newItem);
-                    setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.datebuy === date && data.luckytime === dateTimeLucky))
+                    //console.log("checko no 1= ",newItem);
+                    if(currentPage>1)
+                    {
+                        setCurrentPage(1)
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky ))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                        }
+                    }
+                    else{
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky ))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                        }
+                    }
+                  
                 }
-               else if(date !== null && date !== undefined && date !== '')
+               else if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '')
                {
-                   console.log("checko new item = ",newItem);
-                   setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.datebuy === date))
+                    if(currentPage>1)
+                    {
+                        currentPage(1)
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.status === statusLucky ))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy))
+                        }
+                    }
+                    else{
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.status === statusLucky ))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy))
+                        }
+                    }
+                  // console.log("checko new item = ",newItem);
                }
                else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
                {
-                console.log("checko new 3 = ",newItem);
-                setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.luckytime === dateTimeLucky ))
+                    if(currentPage>1)
+                    {
+                        setCurrentPage(1)
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.luckytime === dateTimeLucky ))
+                        }
+                    }
+                    else{
+                        if(statusLucky !='All')
+                        {
+                            console.log("check ถูกรางงวัลไม่จ่าย")
+                            setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
+                        }
+                        else{
+                            setDataSet(newItem.filter(data=> data.statuspayment === select && data.luckytime === dateTimeLucky ))
+                        }
+                    }
+               // console.log("checko new 3 = ",newItem);
+                // setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.luckytime === dateTimeLucky ))
+               }
+               else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !='All')
+               {
+                // console.log("check ถูกรางวัลแต่ไม่จ่าย  = ",select,statusLucky)
+                   if(currentPage>1)
+                    {
+                        setCurrentPage(1)
+                        setDataSet(newItem.filter(data=> data.status === statusLucky && data.statuspayment === select ))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.status === statusLucky && data.statuspayment === select ))
+                    }
                }
                else{
-                   console.log("checko new item = ",newItem);
-                   setDataSet(newItem.filter(data=> data.statuspayment ==="No" ))
+                  // console.log("checko new item = ",newItem);
+                  if(currentPage>1)
+                  {
+                    setCurrentPage(1)
+                    setDataSet(newItem.filter(data=> data.statuspayment ===select ))
+                  }
+                  else{
+                    setDataSet(newItem.filter(data=> data.statuspayment ===select ))
+                  }
+                  
                }
-            console.log("check search No = ",currentPosts)
+           // console.log("check search No = ",currentPosts)
         }
         else{
-            if(date !== null && date !== undefined && date !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
+            // console.log("check status ",statusLucky)
+            if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined  )
             {
                 console.log("checko no 1= ",newItem);
-                setDataSet(newItem.filter(data=> data.datebuy === date && data.luckytime === dateTimeLucky))
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                    }
+                }
+                else{
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
+                    }
+                }
+               
             }
-            else if(date !== null && date !== undefined && date !== '')
+            else if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '')
             {
-                setDataSet(newItem.filter(data=> data.datebuy === date ))
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.status === statusLucky ))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy ))
+                    }
+                }
+                else{
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.status === statusLucky ))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.datebuy === dateBuy ))
+                    }
+                }
             }
-            else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined)
+            else if(dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
             {
-                setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky ))
+                console.log("checko no 1= ",newItem);
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky))
+                    }
+                }
+                else{
+                    if(statusLucky !='All')
+                    {
+                        setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky && data.status === statusLucky))
+                    }
+                    else{
+                        setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky))
+                    }
+                }
+            }
+            else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !='All')
+            {
+                if(currentPage>1)
+                {
+                    setCurrentPage(1)
+                    setDataSet(newItem.filter(data=> data.status === statusLucky ))
+                }
+                else{
+                    setDataSet(newItem.filter(data=> data.status === statusLucky ))
+                }
+               
             }
             else{
+                console.log("else no ")
                 setDataSet(newItem)
             }   
         }
@@ -431,7 +687,7 @@ function Lottary()
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber =>setCurrentPage(pageNumber)
-    console.log("check currentpost = ",currentPosts);
+  console.log("check currentpost = ",currentPosts);
 
     return(
         <div className="mainpage">
@@ -453,15 +709,13 @@ function Lottary()
                                     <td>  
                                         <div className=" Action-btn">
                                          
-                                           <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setSelect(e.target.value)}>
+                                           <select className="selectOption" style={{"marginTop":"5px"}} onChange={(e)=>setStatusLucky(e.target.value)}>
                                                 <option value = "All">ทั้งหมด</option>
                                                 <option value = "Lucky">ถูกรางวัล</option>
                                                 <option value = "unLucky">ไม่ถูกรางวัล</option>
                                                 {/* <option value = "unLucky">ไม่ถูกรางวัล</option>
                                                 <option value = "Lucky">ถูกรางวัล</option> */}
                                             </select>
-                                           
-                                          
                                         </div>
                                     </td>
                                     <td>สถานะการจ่ายเงิน</td>
@@ -486,10 +740,11 @@ function Lottary()
                                     <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected ={dateLucky} onChange={(date)=>setDateLucky(date)}  /> </div>
                                     </td>
                                 </tr>
-                                <tr className="table-listitem" style={{"border":"solid white 1px"}} >
+                                {/* **comment for find number if  i want to use it , can uncomment */}
+                                {/* <tr className="table-listitem" style={{"border":"solid white 1px"}} >
                                     <td ><label>เลข</label></td>
                                     <td><input className = "form-control" type="text"/></td>
-                                </tr>
+                                </tr> */}
                                 <tr className="table-listitem" style={{"border":"none"}}>
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
                                     <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>

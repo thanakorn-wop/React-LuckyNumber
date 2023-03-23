@@ -138,11 +138,11 @@ public class LottaryService {
 			all_price = Length_Number * Integer.valueOf(NumRequest.getPrice());
 			String joinNumber = String.join(",", Str_Number);
 
-			if (null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOP)) {
+			if (null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOP) || NumRequest.getOption().equals(ConstantData.MESSAGE_BELOW)) {
 				list_number_modal.setNumber(joinNumber);
 				list_number_modal.setPrice(NumRequest.getPrice());
 				list_number_modal.setAll_price(String.valueOf(all_price));
-				list_number_modal.setOptinpurchase(ConstantData.MESSAGE_TOP);
+				list_number_modal.setOptinpurchase(NumRequest.getOption());
 				list_number_modal.setDatebuy(NumRequest.getDate());
 				list_number_modal.setTime(formatter.toString());
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
@@ -152,8 +152,9 @@ public class LottaryService {
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
 
-			} else if (null != joinNumber && (NumRequest.getOption().equals(ConstantData.MESSAGE_BELOW)
-					|| NumRequest.getOption().equals(ConstantData.MESSAGE_BELOW))) {
+			}
+			else if(null != joinNumber && NumRequest.getOption().equals(ConstantData.MESSAGE_TOD) )
+			{
 				list_number_modal.setNumber(joinNumber);
 				list_number_modal.setPrice(NumRequest.getPrice());
 				list_number_modal.setAll_price(String.valueOf(all_price));
@@ -167,6 +168,8 @@ public class LottaryService {
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
 			}
+
+		
 		} catch (Exception e) {
 			throw new Exception("Error Lottary Service = " + e);
 		}
