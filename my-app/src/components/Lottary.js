@@ -437,7 +437,7 @@ function Lottary()
         <div className="mainpage">
             <div className="boxpage" >
                     <div className="title" style={{"textAlign":"center","marginTop":"20px",}}>
-                        <h3>รายการหวย ประจำวันที่ </h3>
+                        <h3>รายการหวย ประจำวันที่  </h3>
                     </div>
                     <div className="listitem">
               
@@ -475,8 +475,6 @@ function Lottary()
                                                 {/* <option value = "unLucky">ไม่ถูกรางวัล</option>
                                                 <option value = "Lucky">ถูกรางวัล</option> */}
                                             </select>
-                                           
-                                          
                                         </div>
                                     </td>
                                 </tr>
@@ -488,12 +486,12 @@ function Lottary()
                                     <div className="datepicker" ><DatePicker className="form-control" name = "datePicker" selected ={dateLucky} onChange={(date)=>setDateLucky(date)}  /> </div>
                                     </td>
                                 </tr>
-                                <tr className="table-listitem" >
+                                <tr className="table-listitem" style={{"border":"solid white 1px"}} >
                                     <td ><label>เลข</label></td>
                                     <td><input className = "form-control" type="text"/></td>
                                 </tr>
-                                <tr className="table-listitem">
-                                    <td colSpan="4">
+                                <tr className="table-listitem" style={{"border":"none"}}>
+                                    <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
                                     <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
                                         <div className=" Action-btn">
                                             <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
@@ -504,12 +502,14 @@ function Lottary()
                                         <div className=" Action-btn">
                                             <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
                                         </div>
+                                        <div className=" Action-btn">
+                                            <button type="button" className="btn btn-warning" >ส่งหวย</button> 
+                                        </div>
                                     </div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
              
                     <div className="listdatanumber" style={{"marginBottom":"15px"}}>
@@ -517,16 +517,16 @@ function Lottary()
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เลข</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคาเลขละ (บาท)</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>ราคาทั้งหมด</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การแทง</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>สถานะ</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>วันที่ซื้อ</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>งวดประจำวันที่</td>
-                                <td style={{"width":"10%","border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
-                                <td style={{"width":"30%","border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>เลข</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ราคาเลขละ (บาท)</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ราคาทั้งหมด</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การแทง</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>สถานะ</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>วันที่ซื้อ</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>งวดประจำวันที่</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
                             </tr>
                            </thead>
                            <tbody>
@@ -553,11 +553,12 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
                                 <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">
-                                        <div  className="buttom1">
+                                        <div  className="btn-edit">
                                         <button type="button" className="btn btn-info"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>
                                         </div>
+                                        
                                    
-                                    <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
+                                        <div className="buttom2"> <button type="button" className="btn btn-light"  onClick={()=>setInfoUserModal(true)}>ข้อมูล</button></div>
                                     </div>                    
                                 </td>
                             </tr>
