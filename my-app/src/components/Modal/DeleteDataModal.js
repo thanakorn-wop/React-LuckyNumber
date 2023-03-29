@@ -3,7 +3,7 @@ import "../../CSS/ModalCss/DeleteDataModal.css"
 function DeleteModal(props)
 {
     return(
-        <div className="infoUserModal" >
+        <div className="deleteDataModal" >
         <div className="modal-header" style={{"textAlign":"center"}} ><h4>Modal title</h4></div>
         <div className="boxbody">
             <div  className ="textDelete" style={{"marginTop":"15px","marginLeft":"15px"}}>

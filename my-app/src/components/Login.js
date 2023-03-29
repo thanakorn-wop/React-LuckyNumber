@@ -16,7 +16,30 @@ function Login()
     sessionStorage.setItem("token","");
     let navigate = useNavigate();
   
-
+    axios.interceptors.response.use(undefined,(error) =>{
+        const {status,data,config} = error.response;
+        if(status === 404)
+        {
+          window.location.assign("pagenotfound")
+        }
+        if(status === 400)
+        {
+            alert("BAD Request 400")
+        }
+        if(status ===500)
+        {
+          console.log("error server");
+          alert("ERROR 500")
+        }
+        if(status === 401)
+        {
+             window.location.assign("/login")
+        }
+        if(status ===403)
+        {
+          window.location.assign("/login")
+        }
+      })
 
   
 
@@ -79,7 +102,7 @@ function Login()
                        }
                     }
                    
-                }).catch(function(error){
+                }).catch((error)=>{
                     if(error.response)
                     {
                         console.log("status errorr = ",error.response.status)
@@ -114,7 +137,7 @@ function Login()
                         </div>
                       
                     </div>
-                    <div className="btnlogin" style={{"textAlign":"center"}} > <button  style={{"width":"92%","marginTop":"15px","fontSize":"20px"}}type="button" className="btn btn-light" onClick={()=>submitLogin()}>Login</button></div>
+                    <div className="btnlogin" style={{"textAlign":"center","marginTop":"30px"}} > <button  style={{"width":"92%","fontSize":"20px"}}type="button" className="btn btn-light" onClick={()=>submitLogin()}>Login</button></div>
                 </div>
             </div>
         </div>

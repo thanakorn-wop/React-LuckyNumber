@@ -15,8 +15,11 @@ import org.springframework.stereotype.Service;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
 import BackendLuckyNumber.Backend.Modal.LottaryModal;
+import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
+import BackendLuckyNumber.Backend.Modal.TransferLottaryModal;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 import BackendLuckyNumber.Backend.Repo.LottaryRepo;
+import BackendLuckyNumber.Backend.Repo.TransferLottaryRepo;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
@@ -34,6 +37,9 @@ public class LottaryService {
 
 	@Autowired
 	List_numberRepo listNumberRepo;
+	
+	@Autowired
+	TransferLottaryRepo transferLottaryRepo;
 
 	public List<List_number_Modal> getLottaryService(String idUser, String date) {
 //		List<List_numberRepo> dataItem = new ArrayList<>();
@@ -123,12 +129,14 @@ public class LottaryService {
 
 	public Boolean postInsertNumberService(NumberRequestModel NumRequest, UserdetailsIml user) throws Exception {
 		Boolean status_Update = false;
-		LocalTime timenow = LocalTime.now();
+		 LocalDateTime myDateObj = LocalDateTime.now();  
+		 DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");  
 		List_number_Modal list_number_modal = new List_number_Modal();
+	    String formattedDate = myDateObj.format(myFormatObj);  
 		String regex = "[, ' ']";
-		Formatter formatter = new Formatter();
-		formatter = new Formatter();
-		formatter.format("%.8s", timenow);
+//		Formatter formatter = new Formatter();
+//		formatter = new Formatter();
+//		formatter.format("%.8s", timenow);
 
 		Integer all_price = 0;
 		try {
@@ -145,11 +153,12 @@ public class LottaryService {
 				list_number_modal.setAll_price(String.valueOf(all_price));
 				list_number_modal.setOptinpurchase(NumRequest.getOption());
 				list_number_modal.setDatebuy(NumRequest.getDate());
-				list_number_modal.setTime(formatter.toString());
+				list_number_modal.setTime(formattedDate);
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
 				list_number_modal.setLuckytime(NumRequest.getLuckydate());
+				list_number_modal.setTransfer("N");
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
 
@@ -159,11 +168,12 @@ public class LottaryService {
 				list_number_modal.setAll_price(String.valueOf(all_price));
 				list_number_modal.setOptinpurchase(NumRequest.getOption());
 				list_number_modal.setDatebuy(NumRequest.getDate());
-				list_number_modal.setTime(formatter.toString());
+				list_number_modal.setTime(formattedDate);
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
 				list_number_modal.setLuckytime(NumRequest.getLuckydate());
+				list_number_modal.setTransfer("N");
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
 			}
@@ -193,12 +203,56 @@ public class LottaryService {
 		Boolean DeleteStatus = false;
 		try {
 
-			listNumberRepo.postDeleteDataRepo(listRequest.getId(),listRequest.getIdlist());
+			listNumberRepo.postDeleteDataRepo(listRequest.getId(), listRequest.getIdlist());
 			DeleteStatus = true;
 		} catch (Exception e) {
 			throw e;
 		}
 		return DeleteStatus;
+	}
+
+	public MixTransferListNumberModal postSendLottaryService(listNumberRquestModal listRequest, String nickname,
+		String iduser, String id) {
+		Boolean transferStatus = false;
+		Boolean duplicateTransfer = false;
+		List<TransferLottaryModal> dataTransfer = new ArrayList<>();
+		TransferLottaryModal itemTransfer = new TransferLottaryModal();
+		List<List_number_Modal> listItem = new ArrayList<>();
+		MixTransferListNumberModal mixTransferNumber = new MixTransferListNumberModal();
+		LocalDateTime myDateObj = LocalDateTime.now();
+		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String formattedDate = myDateObj.format(myFormatObj);
+		try {
+			listItem = listNumberRepo.getItemListNumber(id, listRequest.getLuckytime());
+			if (listItem.size() > 0 && listItem != null) {
+				System.out.println("check");
+				dataTransfer = listNumberRepo.getDataTransferLottaryRepo(iduser, nickname, listRequest.getLuckytime());
+				if (null != dataTransfer && dataTransfer.size()>0) {
+					duplicateTransfer = true;
+				} else {
+					listNumberRepo.postSendLottaryRepo(id,listRequest.getLuckytime());
+					transferStatus = true;
+					if(transferStatus)
+					{
+						itemTransfer.setIduser(iduser);
+						itemTransfer.setNickname(nickname);
+						itemTransfer.setDate(listRequest.getLuckytime());
+						itemTransfer.setTimeTransfer(formattedDate);
+						transferLottaryRepo.save(itemTransfer);
+					}
+				}
+			}
+			mixTransferNumber.setDuplicateTransfer(duplicateTransfer);
+			mixTransferNumber.setListNumberModal(listItem);
+
+//			
+//	
+//			listNumberRepo.postSendLottaryRepo(listRequest.getId(),listRequest.getIdlist());
+//			transferStatus = true;
+		} catch (Exception e) {
+			throw e;
+		}
+		return mixTransferNumber;
 	}
 
 }

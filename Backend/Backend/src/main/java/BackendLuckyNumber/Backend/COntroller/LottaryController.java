@@ -29,6 +29,7 @@ import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
+import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,31 +49,29 @@ public class LottaryController extends ValidateUntil {
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		List<List_number_Modal> data = new ArrayList<>();
-		System.out.println("date = "+date);
+		System.out.println("date = " + date);
 		try {
-			 if(null !=user)
-			 {
-				 // set increase date for get list item
-				 data =  listLottaryService.getLottaryService(user.getInfoUser().getId(),date);
-				 if(null != data && data.size() >0)
-				 {
-					 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-					 header.setMessage(ConstantData.MESSAGE_SUCCESS);
+			if (null != user) {
+				// set increase date for get list item
+				data = listLottaryService.getLottaryService(user.getInfoUser().getId(), date);
+				if (null != data && data.size() > 0) {
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 //					 header.setDatalist(data);
-					 dataitem.setDatalist(data);
-					 dataitem.setHeader(header);
-				 }
-			 }
-		}catch(NullPointerException e)
-		{
+					dataitem.setDatalist(data);
+					dataitem.setHeader(header);
+				}
+			}
+		} catch (NullPointerException e) {
 			throw e;
 		}
-		return new ResponseEntity(dataitem,status);
+		return new ResponseEntity(dataitem, status);
 //		listLottaryService.get
 	}
 
 	@PostMapping("/insertluckynumber")
-	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq,Authentication auth) throws Exception {
+	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq, Authentication auth)
+			throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Boolean statusInsert;
 		Header header = new Header();
@@ -83,8 +82,7 @@ public class LottaryController extends ValidateUntil {
 				statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
 				if (statusInsert) {
 					Boolean statusUpdate = listLottaryService.postUpdateLuckyNumberService(luckyNumberReq);
-					if(statusUpdate)
-					{
+					if (statusUpdate) {
 						status = HttpStatus.OK;
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 						header.setMessage(ConstantData.MESSAGE_SUCCESS);
@@ -94,9 +92,8 @@ public class LottaryController extends ValidateUntil {
 //						resp.setTwodown(luckyNumberReq.getTwodown());
 //						resp.setTwotop(luckyNumberReq.getTwotop());
 //						header.setDatalist(resp);
-						
-					}
-					else {
+
+					} else {
 						status = HttpStatus.OK;
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
@@ -104,104 +101,122 @@ public class LottaryController extends ValidateUntil {
 				} else {
 					status = HttpStatus.OK;
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-					header.setMessage(ConstantData.DUPLICATE_DATA);
+					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
 				}
 			} else {
 				status = HttpStatus.BAD_REQUEST;
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				header.setMessage(ConstantData.BAD_REQUEST);
 			}
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			throw e;
 		}
 		return new ResponseEntity(header, status);
 	}
 
 	@PostMapping("/insertnumber")
-	public ResponseEntity postInsertNumber(@RequestBody NumberRequestModel NumRequest,Authentication auth) throws Exception
-	{
+	public ResponseEntity postInsertNumber(@RequestBody NumberRequestModel NumRequest, Authentication auth)
+			throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		Boolean statusUpdate = false;
-		System.out.println("check user = "+user.getUsername());
-		try
-		{
-			if(null != user)
-			{
-				if(validateAPI(NumRequest))
-				{
-					statusUpdate = listLottaryService.postInsertNumberService(NumRequest,user);
-					if(statusUpdate)
-					{
+		System.out.println("check user = " + user.getUsername());
+		try {
+			if (null != user) {
+				if (validateAPI(NumRequest)) {
+					statusUpdate = listLottaryService.postInsertNumberService(NumRequest, user);
+					if (statusUpdate) {
 						header.setMessage(ConstantData.MESSAGE_SUCCESS);
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-					}
-					else {
+					} else {
 						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					}
-				}
-				else {
+				} else {
 					throw new Exception("BAD Request ");
 				}
 			}
-			
-		}catch(NullPointerException e)
-		{
+
+		} catch (NullPointerException e) {
 			throw e;
 		}
-		
-		
-		return new ResponseEntity(header,status);
+
+		return new ResponseEntity(header, status);
 	}
 
 	@PostMapping("/updatestatuspayment")
-	public ResponseEntity postUpdateStatusPayment(@RequestBody listNumberRquestModal listRequest,Authentication auth )
-	{
+	public ResponseEntity postUpdateStatusPayment(@RequestBody listNumberRquestModal listRequest, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
-		if(null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null & listRequest.getStatuspayment() != null)
-		{
-			 Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest,auth);
-			 if(updateStatus)
-			 {
-				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
-				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				
-			 }
-		}
-		else {
+		if (null != listRequest && listRequest.getId() != null
+				&& listRequest.getIdlist() != null & listRequest.getStatuspayment() != null) {
+			Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, auth);
+			if (updateStatus) {
+				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+
+			}
+		} else {
 			status = HttpStatus.BAD_REQUEST;
 			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_400);
 		}
-		return new ResponseEntity(header,status);
+		return new ResponseEntity(header, status);
 	}
-	
+
 	@PostMapping("/deletedata")
-	public ResponseEntity postDeleteData(@RequestBody listNumberRquestModal listRequest,Authentication auth )
-	{
+	public ResponseEntity postDeleteData(@RequestBody listNumberRquestModal listRequest, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
-		if(null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null)
-		{
-			 Boolean DeleteStatus = listLottaryService.postDeleteDataService(listRequest,auth);
-			 if(DeleteStatus)
-			 {
-				 header.setMessage(ConstantData.MESSAGE_SUCCESS);
-				 header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				
-			 }
-		}
-		else {
+		if (null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null) {
+			Boolean DeleteStatus = listLottaryService.postDeleteDataService(listRequest, auth);
+			if (DeleteStatus) {
+				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+
+			}
+		} else {
 			status = HttpStatus.BAD_REQUEST;
 			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_400);
 		}
-		return new ResponseEntity(header,status);
+		return new ResponseEntity(header, status);
 	}
+
+	@PostMapping("/sendlottary")
+	public ResponseEntity postSendLottary(@RequestBody listNumberRquestModal listRequest, Authentication auth) {
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		if (null != user) {
+			if (null != listRequest && listRequest.getLuckytime() != null) {
+				MixTransferListNumberModal mixTransfer = listLottaryService.postSendLottaryService(listRequest,
+						user.getInfoUser().getNickname(), user.getUsername(), user.getInfoUser().getId());
+				if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
+					header.setMessage(ConstantData.MESSAGE_EMPTY);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				} else if (mixTransfer.getDuplicateTransfer()) {
+					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				} else {
+					header.setMessage(ConstantData.MESSAGE_SUCCESS);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				}
+			} else {
+				status = HttpStatus.BAD_REQUEST;
+				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setStatusCode(ConstantData.STATUS_CODE_400);
+			}
+
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setStatusCode(ConstantData.STATUS_CODE_401);
+		}
+		return new ResponseEntity(header, status);
+	}
+
 	public Boolean validateAPI(NumberRequestModel NumRequest) {
 		Boolean validate = false;
 

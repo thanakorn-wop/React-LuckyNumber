@@ -1,0 +1,23 @@
+.sendlottarymodal{
+    position: absolute;
+    border: solid 2px yellow;
+    width: 45%;
+    top:25%;
+    left: 25%;
+}
+.textsendlottary{
+    margin-bottom: 10px;
+}
+.dateLottary{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+.modal-footer .footer{
+    padding: 0 20px;
+    margin-top: 15px;
+}
+.modal-footer{
+    border-top: solid;
+}

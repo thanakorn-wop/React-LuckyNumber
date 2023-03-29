@@ -7,3 +7,4 @@ export const POST_INSERT_LUCKY_NUMBER ="http://localhost:8090/api/insertluckynum
 export const POST_INSERT_NUMBER ="http://localhost:8090/api/insertnumber"
 export const POST_UPDATE__STATUS_PAYMENT ="http://localhost:8090/api/updatestatuspayment"
 export const POST_DELETEDATAT ="http://localhost:8090/api/deletedata"
+export const POST_SEND_LOTTARY ="http://localhost:8090/api/sendlottary"

@@ -7,6 +7,7 @@ import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import DeleteModal from "./Modal/DeleteDataModal"
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
+import SendLottaryModal from "./Modal/SendLottaryModal";
 import axios from 'axios';
 
 function Paginagtion({totalPosts,postsPerPage,paginate})
@@ -44,6 +45,7 @@ function Lottary()
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenDeleteModal,setIsOpenDeleteModal] = useState(false);
+    const [isOpenSendLottaryModa,setIsOpenSendLottaryModal] = useState(false);
     const [DateBuy, setDateBuy] = useState("");
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
@@ -114,9 +116,10 @@ function Lottary()
                         try{
                             const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
                                 headers: { 'Content-Type': 'application/json' }
+                                
                             })
-                            console.log("check response.data  = ",response );
-                            console.log("check response.data  = ",response.data );
+                            // console.log("check response.data  = ",response );
+                            // console.log("check response.data  = ",response.data );
                             if(response.data != undefined && response.data.datalist != null)
                             {
                                 setDataSet(response.data.datalist)
@@ -133,10 +136,7 @@ function Lottary()
 
     },[])
     // console.log("check 1 = ",popup.show)
-    function ValidityState()
-    {
-        setpopup(true); 
-    }
+ 
     function submitData(e)
     {
         if(e === "save")
@@ -401,6 +401,40 @@ function Lottary()
          console.log("check id list = ",idlist,id)
         setDataDelete({...DataDelete,idlist:idlist,id:id})
     }
+    async function HandleSendLottaryModal(status,date)
+    {
+        console.log("check status sending = ",status,date)
+
+        if(status ==="Yes")
+        {
+            const response = await axios.post(urlConstant.POST_SEND_LOTTARY,date,{
+                headers: { 'Content-Type': 'application/json' }
+            })
+            console.log("check response sendding  ",response);
+            if(response.data.message ==="empty")
+            {
+                alert("ไม่มีข้อมูลให้ทำรายการ")
+            }
+            else if(response.data.message ==="duplicate_data")
+            {
+                alert("ไม่สามารถทำรายการซ้ำได้");
+            }
+            else if(response.data.message ==="success")
+            {
+                alert("ทำรายการสำเร็จ");
+                reload()
+            }
+
+        }
+        else{
+            setIsOpenSendLottaryModal(false);
+        }
+    }
+    function reload()
+    {
+        let timeout;
+        timeout = setTimeout(()=>{window.location.reload(false)}, 1000);
+    }
     //TODO: filter data after click search buttom 
     function SearchData()
     {
@@ -425,7 +459,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                          console.log("check ถูกรางงวัลไม่จ่าย")
                          setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -434,7 +468,7 @@ function Lottary()
                      setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky))
                     }
                 }else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                          console.log("check ถูกรางงวัลไม่จ่าย")
                          setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -450,7 +484,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                          console.log("check ถูกรางงวัลไม่จ่าย")
                          setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.datebuy === dateBuy && data.status === statusLucky))
@@ -460,7 +494,7 @@ function Lottary()
                     }
                 }
                 else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                          console.log("check ถูกรางงวัลไม่จ่าย")
                          setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.datebuy === dateBuy && data.status === statusLucky))
@@ -475,7 +509,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         console.log("check ถูกรางงวัลไม่จ่าย")
                         setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -485,7 +519,7 @@ function Lottary()
                     }
                 }
                 else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         console.log("check ถูกรางงวัลไม่จ่าย")
                         setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -529,7 +563,7 @@ function Lottary()
                     if(currentPage>1)
                     {
                         setCurrentPage(1)
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky ))
@@ -539,7 +573,7 @@ function Lottary()
                         }
                     }
                     else{
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment ===select && data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky ))
@@ -555,7 +589,7 @@ function Lottary()
                     if(currentPage>1)
                     {
                         currentPage(1)
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.status === statusLucky ))
@@ -565,7 +599,7 @@ function Lottary()
                         }
                     }
                     else{
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment === select && data.datebuy === dateBuy && data.status === statusLucky ))
@@ -581,7 +615,7 @@ function Lottary()
                     if(currentPage>1)
                     {
                         setCurrentPage(1)
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -591,7 +625,7 @@ function Lottary()
                         }
                     }
                     else{
-                        if(statusLucky !='All')
+                        if(statusLucky !=='All')
                         {
                             console.log("check ถูกรางงวัลไม่จ่าย")
                             setDataSet(newItem.filter(data=> data.statuspayment === select &&  data.luckytime === dateTimeLucky && data.status === statusLucky))
@@ -603,7 +637,7 @@ function Lottary()
                // console.log("checko new 3 = ",newItem);
                 // setDataSet(newItem.filter(data=> data.statuspayment ==="No" && data.luckytime === dateTimeLucky ))
                }
-               else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !='All')
+               else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !=='All')
                {
                 // console.log("check ถูกรางวัลแต่ไม่จ่าย  = ",select,statusLucky)
                    if(currentPage>1)
@@ -637,7 +671,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
                     }
@@ -646,7 +680,7 @@ function Lottary()
                     }
                 }
                 else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.luckytime === dateTimeLucky && data.status === statusLucky))
                     }
@@ -661,7 +695,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.status === statusLucky ))
                     }
@@ -670,7 +704,7 @@ function Lottary()
                     }
                 }
                 else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.datebuy === dateBuy && data.status === statusLucky ))
                     }
@@ -685,7 +719,7 @@ function Lottary()
                 if(currentPage>1)
                 {
                     setCurrentPage(1)
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky && data.status === statusLucky))
                     }
@@ -694,7 +728,7 @@ function Lottary()
                     }
                 }
                 else{
-                    if(statusLucky !='All')
+                    if(statusLucky !=='All')
                     {
                         setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky && data.status === statusLucky))
                     }
@@ -703,7 +737,7 @@ function Lottary()
                     }
                 }
             }
-            else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !='All')
+            else if(statusLucky !== null && statusLucky !=='' && statusLucky !== undefined && statusLucky !=='All')
             {
                 if(currentPage>1)
                 {
@@ -744,7 +778,7 @@ function Lottary()
                             </thead>
                             <tbody>
                                 <tr className="table-listitem" >
-                                <td>สถานะการถูกรางวัล</td>
+                                <td style={{"color":"white"}}>สถานะการถูกรางวัล</td>
                                     <td>  
                                         <div className=" Action-btn">
                                          
@@ -757,7 +791,7 @@ function Lottary()
                                             </select>
                                         </div>
                                     </td>
-                                    <td>สถานะการจ่ายเงิน</td>
+                                    <td  style={{"color":"white"}} >สถานะการจ่ายเงิน</td>
                                     <td>  
                                         <div className=" Action-btn">
                                          
@@ -788,7 +822,7 @@ function Lottary()
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
                                     <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
                                         <div className=" Action-btn">
-                                            <button type="button" className="btn btn-light"  onClick={()=>ValidityState()}>เพิ่มข้อมูล</button>
+                                            <button type="button" className="btn btn-light"  onClick={()=>setpopup(true)}>เพิ่มข้อมูล</button>
                                         </div>
                                         {/* <div className=" Action-btn">
                                             <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
@@ -797,7 +831,7 @@ function Lottary()
                                             <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
                                         </div>
                                         <div className=" Action-btn">
-                                            <button type="button" className="btn btn-warning" >ส่งหวย</button> 
+                                            <button type="button" className="btn btn-warning" onClick = {() =>setIsOpenSendLottaryModal(true)} >ส่งหวย</button> 
                                         </div>
                                     </div>
                                     </td>
@@ -883,6 +917,9 @@ function Lottary()
             {
                 
             isOpenDeleteModal &&   <DeleteModal onClose={(e) => DeleteData(e)}/>
+            }
+            {
+                isOpenSendLottaryModa && <SendLottaryModal onClose = {(status,date)=>HandleSendLottaryModal(status,date)}/>
             }
 
         </div>

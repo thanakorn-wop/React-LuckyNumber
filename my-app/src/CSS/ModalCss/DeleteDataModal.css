@@ -2,7 +2,7 @@
     margin: 0px;
     padding: 0px;
 }
-.infoUserModal{
+.deleteDataModal{
     position: absolute;
     border: solid 2px yellow;
     width: 45%;

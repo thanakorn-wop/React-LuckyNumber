@@ -36,10 +36,21 @@ public class List_number_Modal {
 	private String luckytime;
 	@Column(name = "id")
 	private String id;
+	@Column(name = "transfer")
+	private String transfer;
 	
 	
 	
 	
+	
+	
+	
+	public String getTransfer() {
+		return transfer;
+	}
+	public void setTransfer(String transfer) {
+		this.transfer = transfer;
+	}
 	public String getAll_price() {
 		return all_price;
 	}

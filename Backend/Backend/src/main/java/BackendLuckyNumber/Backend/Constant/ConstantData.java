@@ -16,6 +16,7 @@ public class ConstantData {
 	// message error
 	public static String ERROR_MESSAGE_DUPLICATE_REGISTER= "duplicate_register";
 	public static String ERROR_MESSAGE_UNAUTHORIZED= "UNAUTHORIZED";
+
 	
 	
 	//message constant 
@@ -27,12 +28,13 @@ public class ConstantData {
 	public static String MESSAGE_TOD = "Tod";
 	public static String MESSAGE_YES = "Yes";
 	public static String MESSAGE_NO = "No";
+	public static String MESSAGE_EMPTY = "empty";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";
 	
 	//message duplciate 
-	public static String DUPLICATE_DATA ="duplicate_data";
+	public static String MESSAGE_DUPLICATE_DATA ="duplicate_data";
 	public static String BAD_REQUEST ="bad_request";
 	
 	

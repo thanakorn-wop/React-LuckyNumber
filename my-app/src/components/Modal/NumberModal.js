@@ -51,7 +51,7 @@ function NumberModal(props)
    
     return(
         <div className="boxmodal">
-                <div className="modal-header" ><h4>Modal title</h4></div>
+                <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>Modal title</h4></div></div>
                 <div className="boxbody"  style={{"marginLeft":"15px","marginRight":"20px"}}>
                    
                     <div className="flexcontainer1">
@@ -79,7 +79,7 @@ function NumberModal(props)
                         </div>
                         <div className="text_numpageprice2"  style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>ราคา (บาท)</label></div>
-                            <div>  <input type="text_numpage" className="form-control price " style={{"width":"60%"}} name = "price"  onChange={(e)=>handleChange(e)}/></div>
+                            <div>  <input type="number" className="form-control price " style={{"width":"60%"}} name = "price"  onChange={(e)=>handleChange(e)}/></div>
                         </div>
 
                     </div>
@@ -103,10 +103,12 @@ function NumberModal(props)
                   
                   
                 </div>
-                <div className="modal-footer" style={{"marginTop":"20px","marginLeft":"15px","marginBottom":"10px"}}>
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => Handlesaving(false)}>Close</button>
-                <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>Handlesaving(true)}>Save changes</button>
-            </div>
+                <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
+                    <div className="footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => Handlesaving(false)}>Close</button>
+                        <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>Handlesaving(true)}>Save changes</button>
+                    </div>
+                </div>
         </div>
 
     );

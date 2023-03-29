@@ -12,6 +12,7 @@ import {AuthContext} from "./components/Authen"
 import { useState } from 'react';
 import Outlet from './components/Outlet';
 import PangeNotFound from './components/Error/PageNotFound';
+import bootstrap from 'bootstrap'
 function App() {
   const [auth , setauth] = useState();
   return (

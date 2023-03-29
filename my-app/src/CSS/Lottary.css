@@ -23,7 +23,7 @@
     justify-content: center;
    
 }
-.buttom1{
+.btn-edit{
     margin-right: 5px;
 }
 .buttom2{
@@ -54,3 +54,15 @@
 .Action-btn{
     margin-left: 10px;
 }
+.listitem{
+    margin: 0 auto;
+    width: 80%;
+    margin-top: 20px;
+}
+/* .modal-footer .footer{
+    padding: 0 20px;
+    margin-top: 15px;
+}
+.modal-footer{
+    border-top: solid;
+} */

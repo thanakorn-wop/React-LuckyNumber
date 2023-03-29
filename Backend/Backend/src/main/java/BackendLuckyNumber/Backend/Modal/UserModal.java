@@ -31,13 +31,19 @@ public class UserModal  {
 	private String status;
 	@Column(name = "role")
 	private String role;
+	@Column(name = "nickname")
+	private String nickname;
 
 
 	
 
+	public String getNickname() {
+		return nickname;
+	}
 
-
-
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public String getRole() {
 		return role;
