@@ -10,36 +10,16 @@ import { useNavigate } from "react-router-dom";
 import SendLottaryModal from "./Modal/SendLottaryModal";
 import axios from 'axios';
 
-function Paginagtion({totalPosts,postsPerPage,paginate})
-{
-    const pageNumber =[];
-    for(let i = 1; i<=Math.ceil(totalPosts / postsPerPage); i++)
-    {
-        pageNumber.push(i);
-    }
-    console.log("pageNumber = "+pageNumber)
-    return(
-        <nav aria-label="..." style={{"marginLeft":"120px","marginTop":"20px","position":"absolute","zIndex":"-1"}}>
-            <ul className="pagination" >
-                <li className="page-item disabled">
-                <a className="page-link">Previous</a>
-                </li>
-                {pageNumber.map((number) =>{
-                     return(
-                        <li className="page-item" key = {number}><a onClick={()=>paginate(number)}className="page-link" href="#">{number}</a></li>
-                     )
-                })}
-              
-                <li className="page-item"> <a className="page-link" href="#">Next</a> </li>
-            </ul>
-        </nav>
-    )
-}
+
 function Lottary()
 {
     //** pagination  */
     const [currentPage,setCurrentPage] = useState(1);
     const [postsPerPage] = useState(10);
+    const [pageNumberLimit, setpageNumberLimit] = useState(5);
+    const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
+    const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
@@ -137,6 +117,32 @@ function Lottary()
     },[])
     // console.log("check 1 = ",popup.show)
  
+    function Paginagtion({totalPosts,postsPerPage,paginate})
+{
+    const pageNumber =[];
+    for(let i = 1; i<=Math.ceil(totalPosts / postsPerPage); i++)
+    {
+        pageNumber.push(i);
+    }
+    // console.log("pageNumber = "+pageNumber)
+    // console.log("qqq",paginate)
+    return(
+        <nav  className="Nopagination" style={{"marginLeft":"120px","marginTop":"30px","position":"absolute","zIndex":"-1"}}>
+            <ul className="pagination" >
+                <li className="page-item disabled">
+                <a className="page-link">Previous</a>
+                </li>
+                {pageNumber.map((number) =>{
+                     return(
+                        <button className={number == currentPage ?'active':'inactive'} key = {number}  onClick={()=>paginate(number)}>{number}</button>
+                     )
+                })}
+              
+                <li className="page-item">  <button > Next </button> </li>
+            </ul>
+        </nav>
+    )
+}
     function submitData(e)
     {
         if(e === "save")
@@ -782,8 +788,8 @@ function Lottary()
             }   
         }
     }
-    // ** get current post
 
+    // ** get current post
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
@@ -889,13 +895,8 @@ function Lottary()
                             {
                             currentPosts.length<=0 || currentPosts[0]['idlist'] ==='' ?
                             <tr key = {index}>
-                               <td colSpan="11" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>
-                               
+                               <td colSpan="11" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>  
                             </tr> : 
-
-
-
- 
                                     currentPosts.map((resp,index)=>{
                                    // console.log(resp.number);
                                    return(

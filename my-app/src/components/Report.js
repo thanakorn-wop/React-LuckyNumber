@@ -3,6 +3,8 @@ import "../CSS/Report.css"
 import EditinfoModal from "./Modal/EditinfoModal";
 import "../CSS/ModalCss/EditinfoModal.css"
 import DatePicker from "react-datepicker";
+import axios from "axios";
+import * as urlConstant from "../components/Constant/UrlConstant"
 function Report ()
 {
     const [isOpen ,setIsOpen] = useState(false);
@@ -19,6 +21,13 @@ function Report ()
 
 
     useEffect(()=>{
+            async function GetReport()
+            {
+                const response = axios.get(urlConstant.GET_REPORT,{
+                    headers: { 'Content-Type': 'application/json' }   
+                }
+                )
+            }
 
     },[])
     const monthjsx = 

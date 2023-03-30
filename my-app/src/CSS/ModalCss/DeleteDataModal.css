@@ -4,7 +4,7 @@
 }
 .deleteDataModal{
     position: absolute;
-    border: solid 2px yellow;
+    border: solid 2px gray;
     width: 45%;
     top:25%;
     left: 25%;

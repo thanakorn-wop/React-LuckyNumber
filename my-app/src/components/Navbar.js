@@ -41,7 +41,7 @@ function Navbar()
                 <div className="Menu">
                     <div className="Logo"><label style={{"fontSize":"24px","marginLeft":"15px"}}>Nueng</label></div>
                     <div className="Link">
-                        <ul>
+                        <ul className=" setmenu">
                             <li><a href="dashboard" > หน้าหลัก </a></li>
                             <li><a href="calculate" > คิดหวย </a></li>
                             <li><a href="report" > ยอดสรุป </a></li>

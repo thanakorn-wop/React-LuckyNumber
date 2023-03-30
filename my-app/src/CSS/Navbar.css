@@ -12,8 +12,6 @@
     display: flex;
     justify-content:space-between;
     
- 
-
 }
 
 li{
@@ -26,11 +24,13 @@ li a{
 .Link ul{
     display: flex;
 }
-ul{
+/* ul{
     margin-top: 10px;
-}
-ul li{
-    margin-left: 15px;
-   
+} */
 
+.Link ul li{
+    margin-left: 15px;
+}
+.setmenu{
+    margin-top: 10px;
 }

@@ -66,3 +66,19 @@
 .modal-footer{
     border-top: solid;
 } */
+button.active{
+    font-weight: 900;
+    border-color: black;
+    background-color: blue;
+    color: white;
+    width: 30px;
+}
+button.inactive{
+    width: 30px;
+    background-color: white;
+    color: black;
+    font-weight: 900;
+}
+.pagination li{
+    padding: 0 5px;
+}
