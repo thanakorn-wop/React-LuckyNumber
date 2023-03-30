@@ -26,7 +26,7 @@ function PaymentStatusModal (props)
    
     return(
         <div className="paymentmodal" >
-                <div className="modal-header" style={{"textAlign":"center"}} ><h4>Modal title</h4></div>
+                <div className="modal-header" style={{"textAlign":"center","borderBottom":"solid gray"}} > <div className="header-title" style={{"padding":"15px"}}> <h4>สถานะการจ่ายเงิน</h4></div></div>
                 <div className="boxbody">
                     <div style={{"marginLeft":"10px","marginRight":"20px"}}>
                     <div className="text">  <label>สถานะการจ่าย</label></div>
@@ -42,9 +42,11 @@ function PaymentStatusModal (props)
                  
                     </div>
                 </div>
-                <div className="modal-footer" style={{"marginTop":"20px"}}>
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"  name = "notsave" onClick={(e)=>saveData(e)}>Close</button>
-                    <button type="button" className="btn btn-primary" name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
+                <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
+                    <div className="footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"  name = "notsave" onClick={(e)=>saveData(e)}>Close</button>
+                        <button type="button" className="btn btn-primary"  style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
+                    </div>
                 </div>
         </div>
     );

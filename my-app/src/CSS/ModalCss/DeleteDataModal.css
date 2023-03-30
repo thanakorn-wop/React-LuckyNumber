@@ -9,3 +9,10 @@
     top:25%;
     left: 25%;
 }
+.modal-footer .footer{
+    padding: 0 20px;
+    margin-top: 15px;
+}
+.modal-footer{
+    border-top: solid;
+}

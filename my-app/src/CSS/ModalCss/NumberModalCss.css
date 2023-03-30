@@ -5,7 +5,7 @@
 .boxmodal{
     
     position: absolute;
-    border: solid 2px yellow;
+    border: solid 2px gray;
     width: 35%;
     top:100px;
     left: 550px;  
@@ -20,6 +20,13 @@
 }
 .flexcontainer3{
     display: flex;
+}
+.flexcontainer4{
+    display: flex;
+}
+.flexcontainer5{
+    display: flex;
+   
 }
 select.form-select  {
     margin: 0 auto;
@@ -37,4 +44,11 @@ select.form-select  {
 }
 .modal-footer{
     border-top: solid;
+}
+.flexcontainer5 .totalprice{
+    padding: 15px;
+    width: 80%;
+    margin-left: 35px;
+   
+
 }

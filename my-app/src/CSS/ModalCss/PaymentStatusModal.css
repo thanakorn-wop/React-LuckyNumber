@@ -5,10 +5,17 @@
 .paymentmodal{
     
     position: absolute;
-    border: solid 2px yellow;
+    border: solid 2px gray;
     width: 45%;
     /* top:150px;
     left: 450px;   */
     top:25%;
    left: 25%;
+}
+.modal-footer .footer{
+    padding: 0 20px;
+    margin-top: 15px;
+}
+.modal-footer{
+    border-top: solid;
 }

@@ -300,16 +300,16 @@ function Lottary()
         // console.log(newItem)
         //console.log("check paymnet = ",status_saving,DataPayment)
     }
-    function HandleNumberModal(isOpen,dataNum)
+    async function HandleNumberModal(isSave,dataNum)
     {
-        if(isOpen)
+        if(isSave)
         {
-            //console.log(dataNum.option);
+            // console.log("data price = ",dataNum.price[0]);
             if(dataNum.option === null || dataNum.option ===undefined || dataNum.option ==='')
             {
                 alert("กรุณาเลือกการแทง");
             }
-            else if(dataNum.price  === null || dataNum.price ===undefined || dataNum.price ==='' )
+            else if(dataNum.price  === null || dataNum.price ===undefined || dataNum.price ===''||  Number(dataNum.price[0])=== 0 )
             {
                 alert("กรุณาใส่ราคา");
             }
@@ -325,7 +325,7 @@ function Lottary()
                 number = number.trim();
                 number = number.replaceAll(","," ")
                 number = number.split(" ");
-                //console.log("check number = ",number);
+                console.log("check number = ",number);
                 if(dataNum.option === 'Tod')
                 {
                     for(let i = 0 ; i<number.length ; i++)
@@ -333,10 +333,19 @@ function Lottary()
                         if(number[i] != ""){
                             if(number[i].length === 3)
                             {
-                                arrNo.push(number[i]);  
+                                if(Number(number[i]))
+                                {
+                                    arrNo.push(number[i]);  
+                                }
+                                else{
+                                    alert("ห้ามตัวอักษร");
+                                    statusValidate = false;
+                                    break;
+                                }
                             }
                             else{
                                 alert("มีบางเลขไม่ครบ3หลัก")
+                                console.log("check qq = ",number[i])
                                 statusValidate = false;
                                 break;
                             }
@@ -349,10 +358,27 @@ function Lottary()
                         if(number[i] != ""){
                             if(number[i].length >1 && number[i].length<4)
                             {
-                                arrNo.push(number[i]);  
+                                if(Number(number[i]))
+                                {
+                                    arrNo.push(number[i]);  
+                                }
+                                else{
+                                    alert("ห้ามตัวอักษร");
+                                    statusValidate = false;
+                                    break;
+                                }
                             }
                             else{
-                                alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
+                                if(Number(number[i]))
+                                {
+                                    alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
+                                    statusValidate = false;
+                                }
+                                else{
+                                    alert("ห้ามตัวอักษร");
+                                    statusValidate = false;
+                                    break;
+                                }
                                 statusValidate = false;
                                 break;
                             }
@@ -363,7 +389,10 @@ function Lottary()
                 if(statusValidate)
                 {
                     dataNum.number = arrNo.join(",");
-                    const Post_Insert_Number = axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                    const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
+                    if(answer)
+                    {
+                    const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
                         headers: { 'Content-Type': 'application/json' }
                     }).then(res =>{
                         console.log("check response num = ",res.data)
@@ -374,14 +403,12 @@ function Lottary()
                         else{
                             alert("ทำรายการสำเร็จ");
                             setpopup(false);
-                            let timeout;
-                            function myFunction() {
-                                timeout = setTimeout(()=>{window.location.reload(false)}, 1000);
-                              }
-                              myFunction();
+                            reload()
                             // window.location.reload(false)
                         }
                     })
+                    }
+                 
                 }
             }
         }
@@ -904,7 +931,7 @@ function Lottary()
                 </div>
             </div>
             {/* // list insert purachse number  modal */}
-            <NumberModal  handleSavingNum={(isOpen,dataNum) => HandleNumberModal(isOpen,dataNum)}  show={popup}   />
+            <NumberModal  handleSavingNum={(isSave,dataNum) => HandleNumberModal(isSave,dataNum)}  show={popup}   />
 
             {
             // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 

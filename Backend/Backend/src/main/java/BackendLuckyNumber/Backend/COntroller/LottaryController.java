@@ -124,6 +124,7 @@ public class LottaryController extends ValidateUntil {
 		System.out.println("check user = " + user.getUsername());
 		try {
 			if (null != user) {
+			
 				if (validateAPI(NumRequest)) {
 					statusUpdate = listLottaryService.postInsertNumberService(NumRequest, user);
 					if (statusUpdate) {
@@ -134,7 +135,10 @@ public class LottaryController extends ValidateUntil {
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					}
 				} else {
-					throw new Exception("BAD Request ");
+					status = status.BAD_REQUEST;
+					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+					
 				}
 			}
 

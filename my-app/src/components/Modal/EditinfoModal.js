@@ -15,7 +15,7 @@ function EditinfoModal(props)
     }
     return(
         <div className="boxmodalEdit" >
-                <div className="modal-header"  ><h4>Modal title</h4></div>
+                <div className="modal-header"  ><div className="header-title"><h4>Modal title</h4></div></div>
                 <div className="boxbody">
                     <div style={{"marginLeft":"10px","marginRight":"20px"}}>
                     <div className="text">  <label>จำนวนเงินทุน</label></div>
@@ -36,9 +36,11 @@ function EditinfoModal(props)
                     </div>
                 </div>
                 <div className="modal-footer" style={{"marginTop":"20px"}}>
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.onClose(false)}>Close</button>
-                <button type="button" className="btn btn-primary" name = "save" onClick={()=>saveData()}>Save changes</button>
-            </div>
+                   <div className="footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.onClose(false)}>Close</button>
+                        <button type="button" className="btn btn-primary"  style={{"marginLeft":"10px"}} name = "save" onClick={()=>saveData()}>Save changes</button>
+                   </div>
+                </div>
         </div>
 
     );

@@ -157,7 +157,7 @@ public class LottaryService {
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
-				list_number_modal.setLuckytime(NumRequest.getLuckydate());
+				list_number_modal.setLuckytime(NumRequest.getLuckytime());
 				list_number_modal.setTransfer("N");
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;
@@ -172,7 +172,7 @@ public class LottaryService {
 				list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
 				list_number_modal.setId(user.getInfoUser().getId());
 				list_number_modal.setStatus("unLucky");
-				list_number_modal.setLuckytime(NumRequest.getLuckydate());
+				list_number_modal.setLuckytime(NumRequest.getLuckytime());
 				list_number_modal.setTransfer("N");
 				listNumberRepo.save(list_number_modal);
 				status_Update = true;

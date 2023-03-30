@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../CSS/ModalCss/NumberModalCss.css"
 import Calendar from 'moedim';
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,7 +7,8 @@ function NumberModal(props)
 {
   
     // const [value, onChange] = useState(new Date());
-  
+    const [allprice,setallprice] = useState(0);
+    const [data,setdata] = useState();
     const [userData, setUserData] = useState({
         id: "",
         date: "",
@@ -17,41 +18,72 @@ function NumberModal(props)
         all_price:"",
         idLine:"",
         phoneNumber:"",
-        lucktime:""
+        luckytime:""
 
 
     });
     const [DateMonth, setDateMonth] = useState(new Date());
     const [LuckyDate, setLuckyDate] = useState(new Date());
+
+    useEffect(()=>{
+        console.log("check price = ",userData.price);
+        let number = userData.number;
+        let price = userData.price;
+        number = number.trim();
+        number = number.replaceAll(","," ")
+        number = number.split(" ");
+        let arrNo = [];
+        for(let i = 0 ; i<number.length ; i++)
+        {
+            if(number[i] != ""){
+                if(number[i].length >1 && number[i].length<4)
+                {
+                    if(Number(number[i]))
+                    {
+                        arrNo.push(number[i]);  
+                    }
+                   
+                }
+            }
+        }
    
+        setallprice(arrNo.length * price )
+
+    },[userData.price,userData.number])
     // console.log("check 1 = ",closepopup);
     if(props.show !== true)
     {
         return null;
     }
  
-    
+
     const handleChange = (e) => {
         const value = e.target.value;
         setUserData({...userData,[ e.target.name]: value});
-        // console.log("value = ",value)
+        // if(Number(userData.number)){
+        //     console.log(true);
+        // }
+        // else{
+        //     console.log(false)
+        // }
+    
     }
-    const Handlesaving = (isOpen)=>{
+    const Handlesaving = (isSave)=>{
         // console.log("check number Modal = "+e);
         // props.Data(userData)
        
         // props.status(e.target.name)
         userData.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
-        userData.lucktime = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
-        console.log("check data again = ",userData)
-        props.handleSavingNum(isOpen,userData)
+        userData.luckytime = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
+         console.log("check data again = ",userData)
+        props.handleSavingNum(isSave,userData)
 
-        console.log("check data = ",userData)
+        // console.log("check data = ",userData)
     }
    
     return(
         <div className="boxmodal">
-                <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>Modal title</h4></div></div>
+                <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>เพิ่มข้อมูล </h4></div></div>
                 <div className="boxbody"  style={{"marginLeft":"15px","marginRight":"20px"}}>
                    
                     <div className="flexcontainer1">
@@ -97,6 +129,11 @@ function NumberModal(props)
                         <div className="LuckyDate" style={{"width":"50%"}}>
                             <div className="text_numpage">  <label>งวดประจำวันที่</label></div>
                             <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={LuckyDate}  onChange={(date) => setLuckyDate(date)} /> </div>
+                        </div>
+                    </div>
+                    <div className="flexcontainer5">
+                        <div className="totalprice">
+                            <h4>ยอดรวมทั้งหมด : {allprice} </h4>
                         </div>
                     </div>
                     
