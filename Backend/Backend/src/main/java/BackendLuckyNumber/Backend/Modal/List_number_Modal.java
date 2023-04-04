@@ -38,6 +38,8 @@ public class List_number_Modal {
 	private String id;
 	@Column(name = "transfer")
 	private String transfer;
+	@Column(name = "status_insert")
+	private String statusInsert;
 	
 	
 	
@@ -45,12 +47,23 @@ public class List_number_Modal {
 	
 	
 	
+	
+	
+	
+
+	public String getStatusInsert() {
+		return statusInsert;
+	}
+	public void setStatusInsert(String statusInsert) {
+		this.statusInsert = statusInsert;
+	}
 	public String getTransfer() {
 		return transfer;
 	}
 	public void setTransfer(String transfer) {
 		this.transfer = transfer;
 	}
+	
 	public String getAll_price() {
 		return all_price;
 	}

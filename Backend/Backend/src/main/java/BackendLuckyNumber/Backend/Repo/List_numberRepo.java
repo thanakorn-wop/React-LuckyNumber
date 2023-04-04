@@ -19,13 +19,18 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 //	@Query(" INSERT into list_number (number,price,option_purchase,date_buy,time,status_payment,id) VALUES(?1,?2,?3,?4,?5,?6,?7) ")
 //	void postInsertNumber(String number,String price,String option, String date, String time,String status,String id);
 
-	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' ORDER BY id_list desc ")
+	@Query(value = " SELECT * from list_number  Where id = ?1 and transfer = 'N'  ORDER BY id_list desc ",nativeQuery = true)
 	List<List_number_Modal> findItem(String id );
 	
 	@Modifying
 	@Query(" UPDATE list_number set status_payment = ?1 Where id = ?2 and id_list = ?3 ")
 	void postUpdateStatusPaymentRepo(String statuspayment, String id , String idList);
 	
+	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' and u.luckytime = ?2 ORDER BY id_list desc ")
+	List<List_number_Modal> findItembyDate(String id,String date);
+	
+	@Query(" SELECT u from list_number u Where u.id = ?1 and u.luckytime = ?2  ORDER BY id_list desc ")
+	List<List_number_Modal> getlistitem(String id,String luckytime );
 	@Modifying
 	@Query(" DELETE from list_number where id = ?1 and id_list = ?2 ")
 	void postDeleteDataRepo(String id,String idlist);
@@ -39,6 +44,13 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' and luckytime = ?2 ")
 	List<List_number_Modal> getItemListNumber(String id,String luckytime );
+	
+	
+	@Modifying
+	@Query(" UPDATE list_number set status_insert =?1 Where number = ?2 and price = ?3 and all_price = ?4 and option_purchase = ?5 and date_buy = ?6 "
+			+ " and  status_payment = ?7 and id = ?8 and status = ?9 and luckytime = ?10 and transfer = ?11" )
+	void updateStatusInsert(String messagesuccess,String number,String price,String allprice,String option, String date
+			,String statuspayment, String id, String status, String luckydate,String transferstatus);
 	
 //	@Query(" Insert into transfer_lottary (iduser,nickname,date,time_transfer) VALUES(?1,?2,?3,CURRENT_TIMESTAMP) ")
 //	void InsertDataTransfer(String iduser,String nickname,String date);

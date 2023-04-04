@@ -4,8 +4,12 @@
 }
 .boxmodalEdit{
     position: absolute;
-    border: solid 2px yellow;
+    border: solid 2px gray;
     width: 45%;
     top:100px;
     left: 450px;  
+}
+.cost{
+    width:50%;
+    margin: 0 auto;
 }

@@ -73,11 +73,12 @@ function NumberModal(props)
         // props.Data(userData)
        
         // props.status(e.target.name)
-        userData.date = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
-        userData.luckytime = (LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate());
-         console.log("check data again = ",userData)
+        // console.log("check date = ",String(DateMonth.getDate()).padStart(2, '0'))
+        userData.date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        userData.luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
+        console.log("check data again = ",userData)
         props.handleSavingNum(isSave,userData)
-
+       
         // console.log("check data = ",userData)
     }
    

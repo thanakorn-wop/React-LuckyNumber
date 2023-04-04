@@ -15,11 +15,11 @@ function EditinfoModal(props)
     }
     return(
         <div className="boxmodalEdit" >
-                <div className="modal-header"  ><div className="header-title"><h4>Modal title</h4></div></div>
+                <div className="modal-header"   style={{"borderBottom":"solid gray"}}  ><div className="header-title" style={{"padding":"15px"}}><h4>Modal title</h4></div></div>
                 <div className="boxbody">
                     <div style={{"marginLeft":"10px","marginRight":"20px"}}>
                     <div className="text">  <label>จำนวนเงินทุน</label></div>
-                    <div>  <input type="text" className="form-control " name = "cost" onChange={(e)=>handleChange(e)}/></div>
+                    <div className="cost">  <input type="text" className="form-control " name = "cost" onChange={(e)=>handleChange(e)}/></div>
                     {/* <div className="text">  <label>การแทง</label></div>
                     <div> 
                         <select className="form-select form-select-sm "  name = "option"   style={{"width":"15%"}} onChange={(e)=>handleChange(e)}>
@@ -35,7 +35,7 @@ function EditinfoModal(props)
                     <div>  <input type="text" className="form-control price "  name = "price"  onChange={(e)=>handleChange(e)}/></div> */}
                     </div>
                 </div>
-                <div className="modal-footer" style={{"marginTop":"20px"}}>
+                <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
                    <div className="footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => props.onClose(false)}>Close</button>
                         <button type="button" className="btn btn-primary"  style={{"marginLeft":"10px"}} name = "save" onClick={()=>saveData()}>Save changes</button>

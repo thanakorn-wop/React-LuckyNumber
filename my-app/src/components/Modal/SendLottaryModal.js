@@ -9,7 +9,7 @@ function SendLottaryModal(props)
     {
         if(status ==="Yes")
         {
-            date["luckytime"] = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
+            date["luckytime"] = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
             props.onClose(status,date)
         }
         else{

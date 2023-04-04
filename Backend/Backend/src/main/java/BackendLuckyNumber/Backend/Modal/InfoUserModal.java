@@ -29,32 +29,39 @@ public class InfoUserModal {
 	private String pay;
 	@Column(name = "notpay")
 	private String notpay;
-	@Column(name = "time")
-	private String time;
+	@Column(name = "date")
+	private String date;
 	@Column(name = "balance")
 	private String balance;
 	@Column(name = "id")
 	private String id;
 	@Column(name = "nickname")
 	private String nickname;
+	@Column(name = "status_transfer")
+	private String statusTransfer;
+	
+	
 
 	
 
-	public InfoUserModal(String idSeller, String cost, String totalPurchase, String totalLost, String peoplewin,
-			String peoplelost, String pay, String notpay, String time, String balance, String id, String nickname) {
-		super();
-		this.idSeller = idSeller;
-		this.cost = cost;
-		this.totalPurchase = totalPurchase;
-		this.totalLost = totalLost;
-		this.peoplewin = peoplewin;
-		this.peoplelost = peoplelost;
-		this.pay = pay;
-		this.notpay = notpay;
-		this.time = time;
-		this.balance = balance;
-		this.id = id;
-		this.nickname = nickname;
+
+	public String getStatusTransfer() {
+		return statusTransfer;
+	}
+
+
+	public void setStatusTransfer(String statusTransfer) {
+		this.statusTransfer = statusTransfer;
+	}
+
+
+	public String getDate() {
+		return date;
+	}
+
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 
@@ -163,12 +170,9 @@ public class InfoUserModal {
 	}
 
 
-	public String getTime() {
-		return time;
-	}
 
-	public void setTime(String time) {
-		this.time = time;
-	}
+
+
+	
 
 }

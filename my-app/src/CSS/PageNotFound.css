@@ -1,14 +1,15 @@
 .container{
-width: 500px;
-height: 200px;
-position: absolute;
-top: 50%;
-left: 45%;
-margin-top: -100px;
-margin-left: -100px;
-background-color: white;
+/* width: 100px;
+height: 100px; */
+
+/* position: absolute;
+top: 35%;
+left: 10%; */
+/* margin-top: -100px;
+margin-left: -100px; */
+
 }
-.trerrorpage,.tderrorpage, .x{
+.trerrorpage,.tderrorpage, .deleteimg{
     background-color: white;
 }
 .errpage{

@@ -32,7 +32,7 @@ public class LoginService {
 
 	public List<UserModal> validateLoginService(JwtRequestModel userLogin) {
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
-		InfoUserModal infoUser = new InfoUserModal();
+//		InfoUserModal infoUser = new InfoUserModal();
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
 		UserModal dataUser = new UserModal();
 		Boolean validatepass = false;

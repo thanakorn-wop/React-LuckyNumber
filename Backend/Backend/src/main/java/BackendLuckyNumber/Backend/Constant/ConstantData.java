@@ -28,6 +28,8 @@ public class ConstantData {
 	public static String MESSAGE_TOD = "Tod";
 	public static String MESSAGE_YES = "Yes";
 	public static String MESSAGE_NO = "No";
+	public static String MESSAGE_Y = "Y";
+	public static String MESSAGE_N = "N";
 	public static String MESSAGE_EMPTY = "empty";
 
 	public static String USER_DETAILS ="userDetails";

@@ -18,8 +18,8 @@ public interface LottaryRepo extends JpaRepository<LottaryModal,String>  {
 	@Query(value = " SELECT p  FROM lottary p WHERE p.date = ?1 ")
 	LottaryModal findByDate(String date);
 	
-	@Query(value = " SELECT * FROM lottary  ORDER BY date DESC LIMIT 1",nativeQuery = true)
-	LottaryModal findDate();
+	@Query(value = " SELECT * FROM lottary where luckytime = ?1  ORDER BY date DESC LIMIT 1",nativeQuery = true)
+	LottaryModal findDate(String luckytime);
 	
 	@Query(value = " SELECT * FROM lottary  Where date = ?1",nativeQuery = true)
 	LottaryModal findSelectDate(String date);

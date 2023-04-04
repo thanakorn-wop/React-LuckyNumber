@@ -13,6 +13,7 @@ import axios from 'axios';
 
 function Lottary()
 {
+    let navigate = useNavigate();
     //** pagination  */
     const [currentPage,setCurrentPage] = useState(1);
     const [postsPerPage] = useState(10);
@@ -67,7 +68,8 @@ function Lottary()
         if(status ===500)
         {
           console.log("error server");
-          alert("ERROR 500")
+           
+           window.location.assign("/internalserver")
         }
         if(status === 401)
         {
@@ -398,21 +400,26 @@ function Lottary()
                     const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
                     if(answer)
                     {
-                    const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
-                        headers: { 'Content-Type': 'application/json' }
-                    }).then(res =>{
-                        console.log("check response num = ",res.data)
-                        if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                        try{
+                            const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                                headers: { 'Content-Type': 'application/json' }
+                            }).then(res =>{
+                                // console.log("check response num = ",res.data)
+                                if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                                {
+                                    alert("ทำรายการไม่สำเร็จกรุณาตรวจสอบข้อมูล");
+                                }
+                                else{
+                                    alert("ทำรายการสำเร็จ");
+                                    setpopup(false);
+                                    reload()
+                                    // window.location.reload(false)
+                                }
+                            })
+                        }catch(error)
                         {
-                            alert("ทำรายการไม่สำเร็จ");
+                            console.error(error)
                         }
-                        else{
-                            alert("ทำรายการสำเร็จ");
-                            setpopup(false);
-                            reload()
-                            // window.location.reload(false)
-                        }
-                    })
                     }
                  
                 }
@@ -790,11 +797,12 @@ function Lottary()
     }
 
     // ** get current post
+    console.log("check DATASET = ",dataSet)
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
     const paginate = pageNumber =>setCurrentPage(pageNumber)
-//   console.log("check currentpost = ",currentPosts);
+   console.log("check currentpost = ",currentPosts.length);
     return(
         <div className="mainpage">
             <div className="boxpage" >
@@ -893,9 +901,9 @@ function Lottary()
                            <tbody>
                         
                             {
-                            currentPosts.length<=0 || currentPosts[0]['idlist'] ==='' ?
+                            currentPosts.length ===0 || currentPosts[0]['idlist'] ==='' ?
                             <tr key = {index}>
-                               <td colSpan="11" style={{"textAlign":"center"}}>ไม่พบข้อมูล</td>  
+                               <td colSpan="11" style={{"textAlign":"center","color":"white"}}>ไม่พบข้อมูล</td>  
                             </tr> : 
                                     currentPosts.map((resp,index)=>{
                                    // console.log(resp.number);
