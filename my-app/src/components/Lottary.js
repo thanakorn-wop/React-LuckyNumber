@@ -6,10 +6,10 @@ import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 import PaymentStatusModal from "../components/Modal/PaymentStatusModal"
 import DeleteModal from "./Modal/DeleteDataModal"
 import DatePicker from "react-datepicker";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import SendLottaryModal from "./Modal/SendLottaryModal";
 import axios from 'axios';
-
+import { Route, Link, BrowserRouter,Routes } from 'react-router-dom'  
 
 function Lottary()
 {
@@ -481,17 +481,18 @@ function Lottary()
         let dateBuy = null;
         let dateTimeLucky = null;
         
-        console.log("check = asdasd",newItem)
+        // console.log("check = asdasd",newItem)
         if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
-        {
-            dateBuy = (DateBuy.getFullYear()+"-"+(1+Number(DateBuy.getMonth()))+"-"+DateBuy.getDate());
+        {         
+            dateBuy = (DateBuy.getFullYear()+"-"+String(1+Number(DateBuy.getMonth())).padStart(2, '0')+"-"+String(DateBuy.getDate()).padStart(2, '0'));
         }
         if(dateLucky !== null && dateLucky !== '' && dateLucky !== undefined)
         {
-            dateTimeLucky = (dateLucky.getFullYear()+"-"+(1+Number(dateLucky.getMonth()))+"-"+dateLucky.getDate());
+            dateTimeLucky = (dateLucky.getFullYear()+"-"+String(1+Number(dateLucky.getMonth())).padStart(2, '0')+"-"+String(dateLucky.getDate()).padStart(2, '0'));
         }
         if(select ==="Yes")
         {
+            console.log("date buy = ",dateTimeLucky)
             //** use object.values because the output is [Object,Object] */
             if(dateBuy !== null && dateBuy !== undefined && dateBuy !== '' && dateLucky !== null && dateLucky !=='' && dateLucky !== undefined )
             {
@@ -773,6 +774,7 @@ function Lottary()
                         setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky && data.status === statusLucky))
                     }
                     else{
+                        console.log("check lucky time = ",dateTimeLucky)
                         setDataSet(newItem.filter(data=> data.luckytime === dateTimeLucky))
                     }
                 }
@@ -863,7 +865,9 @@ function Lottary()
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
                                     <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
                                         <div className=" Action-btn">
-                                            <button type="button" className="btn btn-light"  onClick={()=>setpopup(true)}>เพิ่มข้อมูล</button>
+                                            <Link to="/calculate/insert"><button type="button" className="btn btn-light" >เพิ่มข้อมูล</button></Link>
+                                           {/* <Outlet/> */}
+                                            {/* <button type="button" className="btn btn-light"  onClick={()=>setpopup(true)}>เพิ่มข้อมูล</button> */}
                                         </div>
                                         {/* <div className=" Action-btn">
                                             <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>

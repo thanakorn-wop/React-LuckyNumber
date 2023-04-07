@@ -5,14 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
-import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 import BackendLuckyNumber.Backend.Repo.LottaryRepo;
-
 
 
 @Service
@@ -24,8 +23,9 @@ public class ReportService {
 	
 	@Autowired
 	InfoUserRepo infouserRepo;
-	public InfoUserModal getReportService(String id,String nickname)
+	public InfoUserModal getReportService(String id,String nickname,String searchDate)
 	{
+	
 		Boolean Status = false;
 		String people_win ="";
 		String people_lost = "";
@@ -37,7 +37,13 @@ public class ReportService {
 		List<List_number_Modal> listItem = new ArrayList<>();
 		InfoUserModal infoUser = new InfoUserModal();
 		try {
-			infoUser = infouserRepo.findLastInfoUser(id,nickname);
+			if(!"last".equals(searchDate))
+			{
+				infoUser = infouserRepo.finInfoUserReportPage(id,searchDate,nickname);
+			}
+			else {
+				infoUser = infouserRepo.findLastInfoUserReportPage(id,nickname);
+			}
 		
 //			LottaryModal dateLottary = lottaryRepo.findDate();
 //			if(null != dateLottary)

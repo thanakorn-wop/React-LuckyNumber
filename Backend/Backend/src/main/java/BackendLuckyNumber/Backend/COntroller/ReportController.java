@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,9 +25,10 @@ public class ReportController {
 	
 	@Autowired ReportService reportService;
 	
-	@GetMapping("/report")
-	public ResponseEntity getReport(Authentication auth)
+	@GetMapping("/report/{date}")
+	public ResponseEntity getReport(@PathVariable String date,Authentication auth)
 	{
+		System.out.println("date = "+date);
 		HttpStatus status = HttpStatus.OK;
 		InfoUserRespModal response = new InfoUserRespModal();
 		Boolean statusInsert;
@@ -35,7 +37,7 @@ public class ReportController {
 		InfoUserModal infoUser = new InfoUserModal();
 		if(user != null)
 		{
-			infoUser = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getNickname());
+			infoUser = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getNickname(),date);
 			if(null !=infoUser)
 			{
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);

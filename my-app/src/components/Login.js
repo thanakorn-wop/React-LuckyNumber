@@ -3,16 +3,17 @@ import React, { useContext, useState } from "react";
 import "../CSS/Login.css"
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
-import {AuthContext} from "../components/Authen"
-function Login()
+// import {AuthContext} from "../components/Authen"
+function Login({ setIsLoggedIn   })
 {
     
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
     // const data = [1,2,3,4]
-    let {setauth} = useContext(AuthContext);
+    // let {setauth} = useContext(AuthContext);
 
     // console.log(data);
+    console.log("check setIsLoggedIn  ",setIsLoggedIn )
     sessionStorage.setItem("token","");
     let navigate = useNavigate();
   
@@ -84,10 +85,11 @@ function Login()
                             const accessToken = res.data.token;
     
                           //  setAuth = accessToken;
-                          setauth(accessToken)
+                        //  Outlet
                             sessionStorage.setItem("token", res.data.token);
-                            console.log("check session  = ",sessionStorage.getItem("token"))
-                            navigate("/dashboard")
+                            // console.log("check session  = ",sessionStorage.getItem("token"))
+                            // setIsLoggedIn(true);
+                            navigate("/dashboard") 
                          }
                        }
                        else{

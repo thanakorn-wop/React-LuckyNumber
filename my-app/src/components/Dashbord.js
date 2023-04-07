@@ -4,7 +4,7 @@ import { Line } from "react-chartjs-2";
 import axios from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./Authen";
+// import { AuthContext } from "./Authen";
 
 function Dashbord()
 {
@@ -18,7 +18,7 @@ function Dashbord()
   {
     window.location.assign("/login")
   }
-   const {auth,setauth} = useContext(AuthContext);
+  //  const {auth,setauth} = useContext(AuthContext);
   // console.log("auth = ",auth);
   // console.log(auth.accessToken)
   let navaigate = useNavigate();

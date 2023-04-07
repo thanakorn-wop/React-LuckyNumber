@@ -11,15 +11,24 @@ function Report ()
     const [cost,setCost] = useState(0);
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
     const [DateMonth, setDateMonth] = useState(new Date());
-    const [dateSelect,setDateSelect] = useState('');
-    const [dataReport,setDataReport] = useState('');
-    
+    const [dateSelect,setDateSelect] = useState("last");
+    const [dataReport,setDataReport] = useState({balance:0,cost:0,date:0,id:0,idSeller:0,nickname:0,notpay:0,pay:0,peoplelost:0,peoplewin:0,statusTransfer:'',totalLost:0,totalPurchase:0});
+    const mykeysVAlues = window.location.search;
+    const urlParams = new URLSearchParams(mykeysVAlues)
+    const param = urlParams.get('date');
+    console.log("param =  ",param)
 
     let session =  sessionStorage.getItem("token");
     if(session === null || session === undefined || session ==="")
     {
       window.location.assign("/login")
     }
+    let config = {
+        headers: {
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
+          }
+        }
     axios.interceptors.request.use(
         config =>{
           config.headers.Authorization = `Bearer ${session}`;
@@ -56,12 +65,13 @@ function Report ()
             async function GetReport()
             {
                 console.log("run useEffect")
+                console.log("url = ",urlConstant.GET_REPORT+{dateSelect})
               try{
-                const response = await axios.get(urlConstant.GET_REPORT,{
+                const response = await axios.get(urlConstant.GET_REPORT+dateSelect,{
                     headers: { 'Content-Type': 'application/json' }   
                 }
                 )
-                if(response !==null)
+                if(response !==null && response.data.datalist !==null)
                 {
                     console.log("check response = ",response)
                     setDataReport(response.data.datalist)
@@ -76,7 +86,7 @@ function Report ()
             }
             GetReport()
 
-    },[])
+    },[dateSelect])
     const monthjsx = 
     (
         month.map(data =>{
@@ -86,8 +96,8 @@ function Report ()
     function searchData()
      {  
         //(String(DateMonth.getDate()).padStart(2, '0')+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
-        let date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        console.log(date)
+        let date = DateMonth.getFullYear()+"-"+String(1+Number(DateMonth.getMonth())).padStart(2, '0')+"-"+String(DateMonth.getDate()).padStart(2, '0');
+        setDateSelect(date);
     }
  
     
