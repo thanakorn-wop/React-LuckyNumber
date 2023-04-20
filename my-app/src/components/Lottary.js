@@ -865,9 +865,9 @@ function Lottary()
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
                                     <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
                                         <div className=" Action-btn">
-                                            <Link to="/calculate/insert"><button type="button" className="btn btn-light" >เพิ่มข้อมูล</button></Link>
+                                            {/* <Link to="/calculate/insert"><button type="button" className="btn btn-light" >เพิ่มข้อมูล</button></Link> */}
                                            {/* <Outlet/> */}
-                                            {/* <button type="button" className="btn btn-light"  onClick={()=>setpopup(true)}>เพิ่มข้อมูล</button> */}
+                                            <button type="button" className="btn btn-light"  onClick={()=>setpopup(true)}>เพิ่มข้อมูล</button>
                                         </div>
                                         {/* <div className=" Action-btn">
                                             <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
