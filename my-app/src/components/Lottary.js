@@ -308,7 +308,7 @@ function Lottary()
         // console.log(newItem)
         //console.log("check paymnet = ",status_saving,DataPayment)
     }
-    async function HandleNumberModal(isSave,dataNum)
+    async function HandleNumberModal(isSave,dataNum,setUserData)
     {
         if(isSave)
         {
@@ -427,6 +427,20 @@ function Lottary()
         }
         else{
             setpopup(false)
+            setUserData({setData:[{
+     
+                id: "",
+                date: "",
+                option:"",
+                number:"",
+                price:"",
+                all_price:"",
+                idLine:"",
+                phoneNumber:"",
+                luckytime:"",
+                set:""
+        
+            }]})
         }
     }
     function SetPaymentMethod(index)
@@ -905,6 +919,7 @@ function Lottary()
                            <tbody>
                         
                             {
+                                
                             currentPosts.length ===0 || currentPosts[0]['idlist'] ==='' ?
                             <tr key = {index}>
                                <td colSpan="11" style={{"textAlign":"center","color":"white"}}>ไม่พบข้อมูล</td>  
@@ -944,7 +959,7 @@ function Lottary()
                 </div>
             </div>
             {/* // list insert purachse number  modal */}
-            <NumberModal  handleSavingNum={(isSave,dataNum) => HandleNumberModal(isSave,dataNum)}  show={popup}   />
+            <NumberModal  handleSavingNum={(isSave,dataNum,setUserData) => HandleNumberModal(isSave,dataNum,setUserData)}  show={popup}   />
 
             {
             // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 

@@ -3,32 +3,63 @@ import "../../CSS/ModalCss/NumberModalCss.css"
 import Calendar from 'moedim';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import plus from "../../Icons/plus.png"
+
+
 function NumberModal(props)
 {
   
     // const [value, onChange] = useState(new Date());
-    const [allprice,setallprice] = useState(0);
-    const [data,setdata] = useState();
-    const [userData, setUserData] = useState({
-        id: "",
+    const [totalprice,setTotalPrice] = useState(0);
+    const [rank,setRank] = useState(0);
+    const [eachPrice,setEachPrice] = useState([]);
+    const [add,setAdd] = useState(0);
+    // const [data,setdata] = useState();
+    // const [row,setRow] = useState()
+    const [userData, setUserData] = useState({dataSet:[{
+     
+        id: add,
         date: "",
         option:"",
-        number:"",
+        number:'',
         price:"",
         all_price:"",
         idLine:"",
         phoneNumber:"",
-        luckytime:""
+        luckytime:"",
+        set:""
 
-
-    });
+    }]});
+ 
+    // console.log("check dataset = ",userData)
     const [DateMonth, setDateMonth] = useState(new Date());
     const [LuckyDate, setLuckyDate] = useState(new Date());
+    const [mark,setmark] = useState(0);
+    const defaulData = [];
+    const [object,setObject] = useState({
+     
+        id: "",
+        date: "",
+        option:"",
+        number:'',
+        price:"",
+        all_price:"",
+        idLine:"",
+        phoneNumber:"",
+        luckytime:"",
+        set:""
+
+    })
 
     useEffect(()=>{
-        console.log("check price = ",userData.price);
-        let number = userData.number;
-        let price = userData.price;
+        console.log("check useEffect")
+        // defaulData.push(object)
+        // console.log("check data again = ",defaulData)
+        // console.log("check price = ",userData);
+        let number = userData.dataSet[rank].number;
+        let price = userData.dataSet[rank].price;
+        //console.log("number check = ",number);
+        //console.log("price check  = ",price);
         number = number.trim();
         number = number.replaceAll(","," ")
         number = number.split(" ");
@@ -46,91 +77,148 @@ function NumberModal(props)
                 }
             }
         }
-   
-        setallprice(arrNo.length * price )
+        const allprice = arrNo.length * price 
+        eachPrice[rank] = allprice;
+        //  setTotalPrice((totalprice+allprice))
+        //console.log("each all price = ",eachPrice,rank)
+        const newData = { 
+            ...userData,
+            dataSet: [
+              ...userData.dataSet.slice(0, rank), // copy everything before the updated item
+              {
+                ...userData.dataSet[rank], // copy the item you want to update
+                ['all_price']: allprice // update the property value using the computed property name
+              },
+              ...userData.dataSet.slice(rank + 1) // copy everything after the updated item
+            ]
+          };
+          setUserData(newData);
+          const sum = eachPrice.reduce((acc, curr) => acc + curr, 0);
+          setTotalPrice(sum)
 
-    },[userData.price,userData.number])
+    },[userData.dataSet[rank].number,userData.dataSet[rank].price])
     // console.log("check 1 = ",closepopup);
     if(props.show !== true)
     {
         return null;
     }
- 
-
-    const handleChange = (e) => {
+    console.log("check each price = ",eachPrice)
+    const handleChange = (e,index) => {
+        console.log("check index = ",index)
         const value = e.target.value;
-        setUserData({...userData,[ e.target.name]: value});
-        // if(Number(userData.number)){
-        //     console.log(true);
-        // }
-        // else{
-        //     console.log(false)
-        // }
-    
+        // setUserData(userData=>[...userData,{...object}])
+        const newData = { 
+            ...userData,
+            dataSet: [
+              ...userData.dataSet.slice(0, index), // copy everything before the updated item
+              {
+                ...userData.dataSet[index], // copy the item you want to update
+                [e.target.name]: value // update the property value using the computed property name
+              },
+              ...userData.dataSet.slice(index + 1) // copy everything after the updated item
+            ]
+          };
+          setUserData(newData);
+          setRank(index)
     }
     const Handlesaving = (isSave)=>{
-        // console.log("check number Modal = "+e);
-        // props.Data(userData)
-       
-        // props.status(e.target.name)
-        // console.log("check date = ",String(DateMonth.getDate()).padStart(2, '0'))
-        userData.date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        userData.luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
-        console.log("check data again = ",userData)
-        props.handleSavingNum(isSave,userData)
-       
-        // console.log("check data = ",userData)
+        // userData.dataSet.date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        // userData.dataSet.luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
+        // console.log("check data again = ",userData)
+        // props.handleSavingNum(isSave,userData,setUserData)
+        if(isSave)
+        {
+         
+             console.log("check data again = ",userData)
+        }
     }
+    function addRow()
+    {
+        const newData = {
+            id: add+1,
+            date: "",
+            option:"",
+            number:"",
+            price:"",
+            all_price:"",
+            idLine:"",
+            phoneNumber:"",
+            luckytime:"",
+            set:""
+    
+        }
+        setAdd(add+1)
+        // setUserData([...userData.setData,newData])
+        setUserData(prevState => ({
+            ...prevState,
+            dataSet: [...prevState.dataSet, newData]
+          }));
+       
+        
+    }
+    // console.log("update = ",test)
+      console.log("new data = ",userData)
    
     return(
         <div className="boxmodal">
                 <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>เพิ่มข้อมูล </h4></div></div>
                 <div className="boxbody"  style={{"marginLeft":"15px","marginRight":"20px"}}>
-                   
-                    <div className="flexcontainer1">
-                        <div className="text_numpagedate" style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>วันที่ซื้อ</label></div>
-                            <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date)} /> </div>
+                    <div className="header-table" style={{"display":"flex"}}>
+                        <div className="mark-no" >
+                            <label>ชุดที่</label>
+                            <input type="number"  className="number-mark" style={{"width":"30%"}} onChange={(data)=>setmark(data.target.value)} />
                         </div>
-                    
-                        <div className="text_numpagechoice" style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>การแทง</label></div>
-                            <div className="choice" style={{"text_numpageAlign":"center"}}> 
-                                <select className="form-select form-select-sm "  name = "option"   style={{"width":"60%","text_numpageAlign":"center"}} onChange={(e)=>handleChange(e)}>
-                                    <option value="empty">เลือก</option>
-                                    <option value="Top">บน</option>
-                                    <option value = "Below">ล่าง</option>
-                                    <option value = "Tod">โต๊ด</option>
-                                </select>
-                            </div>
-                        </div>
+                        <div className="plusImage"> <img src={plus} style = {{"width":"20px","height":"20px","cursor":"pointer"}} onClick={()=>addRow()}/> </div>
                     </div>
-                    <div className="flexcontainer2">
-                        <div className="text_numpageno" style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>เลข</label></div>
-                            <div>  <input type="text_numpage" className="form-control " style={{"width":"60%"}}  name = "number"  onChange={(e)=>handleChange(e)}/></div>
-                        </div>
-                        <div className="text_numpageprice2"  style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>ราคา (บาท)</label></div>
-                            <div>  <input type="number" className="form-control price " style={{"width":"60%"}} name = "price"  onChange={(e)=>handleChange(e)}/></div>
-                        </div>
+                    <div className="table-number">
+                        <table className="table table-bordered table-striped">
+                            <thead>
+                                <tr style={{"textAlign":"center"}}>
+                                    <td style={{"width":"5%"}}>ลำดับ</td>
+                                    <td style={{"width":"15%"}}>เลข</td>
+                                    <td style={{"width":"10%"}}>ราคา</td>
+                                    <td style={{"width":"12%"}}>การแทง</td>
+                                    <td style={{"width":"20%"}}>งวดประจำวันที่</td>
+                                    <td style={{"width":"20%"}}>วันที่ซื้อ</td>
+                                    <td>ราคาทั้งหมด</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {
+                                    userData.dataSet.map((data,index)=>{
+                                        return(
+                                            <tr key = {index}>
+                                            <td style={{"textAlign":"center"}}><span style={{"color":"white"}}>{index}</span></td>
+                                            <td> <input type="text" className="form-control "  name = "number"  onChange={(e)=>handleChange(e,index)}/></td>
+                                            <td> <input type="number" className="form-control price " name = "price"  onChange={(e)=>handleChange(e,index)}/></td>
+                                            <td>
+                                                <select className="form-select form-select-sm "  name = "option"    onChange={(e)=>handleChange(e,index)}>
+                                                    <option value="empty">เลือก</option>
+                                                    <option value="Top">บน</option>
+                                                    <option value = "Below">ล่าง</option>
+                                                    <option value = "Tod">โต๊ด</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                            <DatePicker className="form-control "   selected={LuckyDate}  onChange={(date) => setLuckyDate(date,index)} />
+                                            </td>
+                                            <td><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date,index)} /></td>
+                                            <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.all_price}</td>
+                                        </tr>
+                                     
+                                        )
+                                    })
+                                }
+                                <tr>
+                                    <td></td>
+                                    <td colSpan="5" style={{"textAlign":"right","color":"white"}}>ยอดรวมทั้งหมด</td>
+                                    <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}} >{totalprice}</td>
+                                </tr>
 
-                    </div>
-       
-                    <div className="flexcontainer4">
-                        <div className="LuckyDate" style={{"width":"50%"}}>
-                            <div className="text_numpage">  <label>งวดประจำวันที่</label></div>
-                            <div className="datepicker" style={{"width":"60%"}}><DatePicker className="form-control "   selected={LuckyDate}  onChange={(date) => setLuckyDate(date)} /> </div>
-                        </div>
-                    </div>
-                    <div className="flexcontainer5">
-                        <div className="totalprice">
-                            <h4>ยอดรวมทั้งหมด : {allprice} </h4>
-                        </div>
-                    </div>
-                    
-                  
-                  
+                            </tbody>
+                        </table>
+                    </div>  
                 </div>
                 <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
                     <div className="footer">
