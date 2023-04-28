@@ -314,103 +314,113 @@ function Lottary()
         console.log("handle number modal = ",dataNum.dataSet[0])
         console.log("mark = ",mark)
       
-        let arrNo = [];
+      
         let statusValidate = true;
         if(isSave)
         {
             // console.log("data price = ",dataNum.price[0]);
-           
+            
             if(mark !== '' && mark !== null && mark !== undefined)
             {
-                for(let i = 0; i<dataNum.dataSet.length; i++)
+                if(mark >0)
                 {
-                    if(dataNum.dataSet[i].option === null ||  dataNum.dataSet[i].option ===undefined || dataNum.dataSet[i].option ==='' || dataNum.dataSet[i].option ==='empty')
+                    for(let i = 0; i<dataNum.dataSet.length; i++)
                     {
-                        alert("กรุณาเลือกการแทง");
-                        statusValidate = false;
-                        break
-                        
-                    }
-                    else if(dataNum.dataSet[i].price  === null || dataNum.dataSet[i].price ===undefined || dataNum.dataSet[i].price ===''||  Number(dataNum.dataSet[i].price[0])=== 0 )
-                    {
-                        alert("กรุณาใส่ราคา");
-                        statusValidate = false;
-                        break
-                        
-                    }
-                    else if(dataNum.dataSet[i].number  === null || dataNum.dataSet[i].number ===undefined || dataNum.dataSet[i].number ==='' )
-                    {
-                        alert("กรุณาใส่เลข");
-                        statusValidate = false;
-                        break
-                        
-                    }
-                    else{
-                        let number = dataNum.dataSet[i].number;
-                        number = number.trim();
-                        number = number.replaceAll(","," ")
-                        number = number.split(" ");
-                        console.log("check number = ",number);
-                        if(dataNum.option === 'Tod')
+                        let arrNo = [];
+                        if(dataNum.dataSet[i].option === null ||  dataNum.dataSet[i].option ===undefined || dataNum.dataSet[i].option ==='' || dataNum.dataSet[i].option ==='empty')
                         {
-                            for(let i = 0 ; i<number.length ; i++)
-                            {
-                                if(number[i] != ""){
-                                    if(number[i].length === 3)
-                                    {
-                                        if(Number(number[i]))
-                                        {
-                                            arrNo.push(number[i]);  
-                                        }
-                                        else{
-                                            alert("ห้ามตัวอักษร");
-                                            statusValidate = false;
-                                            break;
-                                        }
-                                    }
-                                    else{
-                                        alert("มีบางเลขไม่ครบ3หลัก")
-                                        console.log("check qq = ",number[i])
-                                        statusValidate = false;
-                                        break;
-                                    }
-                                }
-                            }
+                            alert("กรุณาเลือกการแทง");
+                            statusValidate = false;
+                            break
+                            
+                        }
+                        else if(dataNum.dataSet[i].price  === null || dataNum.dataSet[i].price ===undefined || dataNum.dataSet[i].price ===''||  Number(dataNum.dataSet[i].price[0])=== 0 )
+                        {
+                            alert("กรุณาใส่ราคา");
+                            statusValidate = false;
+                            break
+                            
+                        }
+                        else if(dataNum.dataSet[i].number  === null || dataNum.dataSet[i].number ===undefined || dataNum.dataSet[i].number ==='' )
+                        {
+                            alert("กรุณาใส่เลข");
+                            statusValidate = false;
+                            break
+                            
                         }
                         else{
-                            for(let i = 0 ; i<number.length ; i++)
+                            let number = dataNum.dataSet[i].number;
+                            number = number.trim();
+                            number = number.replaceAll(","," ")
+                            number = number.split(" ");
+                            console.log("check number = ",number);
+                            if(dataNum.option === 'Tod')
                             {
-                                if(number[i] != ""){
-                                    if(number[i].length >1 && number[i].length<4)
-                                    {
-                                        if(Number(number[i]))
+                                for(let i = 0 ; i<number.length ; i++)
+                                {
+                                    if(Number(number[i])){
+                                        if(number[i].length === 3)
                                         {
-                                            arrNo.push(number[i]);  
+                                            if(Number(number[i]))
+                                            {
+                                                arrNo.push(number[i]);  
+                                            }
+                                            else{
+                                                alert("ห้ามตัวอักษร");
+                                                statusValidate = false;
+                                                break;
+                                            }
                                         }
                                         else{
-                                            alert("ห้ามตัวอักษร");
+                                            alert("มีบางเลขไม่ครบ3หลัก")
+                                            console.log("check qq = ",number[i])
                                             statusValidate = false;
                                             break;
                                         }
-                                    }
-                                    else{
-                                        if(Number(number[i]))
-                                        {
-                                            alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
-                                            statusValidate = false;
-                                        }
-                                        else{
-                                            alert("ห้ามตัวอักษร");
-                                            statusValidate = false;
-                                            break;
-                                        }
-                                        statusValidate = false;
-                                        break;
                                     }
                                 }
                             }
+                            else{
+                                for(let i = 0 ; i<number.length ; i++)
+                                {
+                                    if(Number(number[i])){
+                                        if(number[i].length >1 && number[i].length<4)
+                                        {
+                                            if(Number(number[i]))
+                                            {
+                                                arrNo.push(number[i]);  
+                                            }
+                                            else{
+                                                alert("ห้ามตัวอักษร");
+                                                statusValidate = false;
+                                                break;
+                                            }
+                                        }
+                                        else{
+                                            if(Number(number[i]))
+                                            {
+                                                alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
+                                                statusValidate = false;
+                                            }
+                                            else{
+                                                alert("ห้ามตัวอักษร");
+                                                statusValidate = false;
+                                                break;
+                                            }
+                                            statusValidate = false;
+                                            break;
+                                        }
+                                    }
+                                  
+                                }
+                                dataNum.dataSet[i].number = arrNo.join(",");
+                            }
                         }
                     }
+                }
+                else{
+                    alert("เลขชุดต้องมากกว่า 0")
+                    statusValidate = false;
                 }
             }
             else{
@@ -418,11 +428,12 @@ function Lottary()
                 statusValidate = false;
             }
            
-          
+            // console.log("check num = ",dataNum)
             if(statusValidate)
             {
-                dataNum.number = arrNo.join(",");
+                // dataNum.number = arrNo.join(",");
                 const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
+                console.log("check last data = ",dataNum)
                 if(answer)
                 {
                     dataNum.dataSet.map((data,index)=>{
@@ -436,6 +447,7 @@ function Lottary()
                             
                     })
                     try{
+                    
                         const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
                             headers: { 'Content-Type': 'application/json' }
                         }).then(res =>{
