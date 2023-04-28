@@ -20,7 +20,7 @@ function Lottary()
     const [pageNumberLimit, setpageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
     const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
-
+    const [add,setAdd] = useState(0);
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
@@ -308,136 +308,172 @@ function Lottary()
         // console.log(newItem)
         //console.log("check paymnet = ",status_saving,DataPayment)
     }
-    async function HandleNumberModal(isSave,dataNum,setUserData)
+    async function HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)
     {
+        console.log("handle number modal = ",dataNum)
+        console.log("handle number modal = ",dataNum.dataSet[0])
+        console.log("mark = ",mark)
+      
+        let arrNo = [];
+        let statusValidate = true;
         if(isSave)
         {
             // console.log("data price = ",dataNum.price[0]);
-            if(dataNum.option === null || dataNum.option ===undefined || dataNum.option ==='')
+           
+            if(mark !== '' && mark !== null && mark !== undefined)
             {
-                alert("กรุณาเลือกการแทง");
+                for(let i = 0; i<dataNum.dataSet.length; i++)
+                {
+                    if(dataNum.dataSet[i].option === null ||  dataNum.dataSet[i].option ===undefined || dataNum.dataSet[i].option ==='' || dataNum.dataSet[i].option ==='empty')
+                    {
+                        alert("กรุณาเลือกการแทง");
+                        statusValidate = false;
+                        break
+                        
+                    }
+                    else if(dataNum.dataSet[i].price  === null || dataNum.dataSet[i].price ===undefined || dataNum.dataSet[i].price ===''||  Number(dataNum.dataSet[i].price[0])=== 0 )
+                    {
+                        alert("กรุณาใส่ราคา");
+                        statusValidate = false;
+                        break
+                        
+                    }
+                    else if(dataNum.dataSet[i].number  === null || dataNum.dataSet[i].number ===undefined || dataNum.dataSet[i].number ==='' )
+                    {
+                        alert("กรุณาใส่เลข");
+                        statusValidate = false;
+                        break
+                        
+                    }
+                    else{
+                        let number = dataNum.dataSet[i].number;
+                        number = number.trim();
+                        number = number.replaceAll(","," ")
+                        number = number.split(" ");
+                        console.log("check number = ",number);
+                        if(dataNum.option === 'Tod')
+                        {
+                            for(let i = 0 ; i<number.length ; i++)
+                            {
+                                if(number[i] != ""){
+                                    if(number[i].length === 3)
+                                    {
+                                        if(Number(number[i]))
+                                        {
+                                            arrNo.push(number[i]);  
+                                        }
+                                        else{
+                                            alert("ห้ามตัวอักษร");
+                                            statusValidate = false;
+                                            break;
+                                        }
+                                    }
+                                    else{
+                                        alert("มีบางเลขไม่ครบ3หลัก")
+                                        console.log("check qq = ",number[i])
+                                        statusValidate = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            for(let i = 0 ; i<number.length ; i++)
+                            {
+                                if(number[i] != ""){
+                                    if(number[i].length >1 && number[i].length<4)
+                                    {
+                                        if(Number(number[i]))
+                                        {
+                                            arrNo.push(number[i]);  
+                                        }
+                                        else{
+                                            alert("ห้ามตัวอักษร");
+                                            statusValidate = false;
+                                            break;
+                                        }
+                                    }
+                                    else{
+                                        if(Number(number[i]))
+                                        {
+                                            alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
+                                            statusValidate = false;
+                                        }
+                                        else{
+                                            alert("ห้ามตัวอักษร");
+                                            statusValidate = false;
+                                            break;
+                                        }
+                                        statusValidate = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            else if(dataNum.price  === null || dataNum.price ===undefined || dataNum.price ===''||  Number(dataNum.price[0])=== 0 )
-            {
-                alert("กรุณาใส่ราคา");
-            }
-            else if(dataNum.number  === null || dataNum.number ===undefined || dataNum.number ==='' )
-            {
-                alert("กรุณาใส่เลข");
-            }
-        
             else{
-                let number = dataNum.number;
-                let arrNo = [];
-                let statusValidate = true;
-                number = number.trim();
-                number = number.replaceAll(","," ")
-                number = number.split(" ");
-                console.log("check number = ",number);
-                if(dataNum.option === 'Tod')
+                alert("กรุณาใส่เลขชุดที่")
+                statusValidate = false;
+            }
+           
+          
+            if(statusValidate)
+            {
+                dataNum.number = arrNo.join(",");
+                const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
+                if(answer)
                 {
-                    for(let i = 0 ; i<number.length ; i++)
-                    {
-                        if(number[i] != ""){
-                            if(number[i].length === 3)
-                            {
-                                if(Number(number[i]))
-                                {
-                                    arrNo.push(number[i]);  
-                                }
-                                else{
-                                    alert("ห้ามตัวอักษร");
-                                    statusValidate = false;
-                                    break;
-                                }
-                            }
-                            else{
-                                alert("มีบางเลขไม่ครบ3หลัก")
-                                console.log("check qq = ",number[i])
-                                statusValidate = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else{
-                    for(let i = 0 ; i<number.length ; i++)
-                    {
-                        if(number[i] != ""){
-                            if(number[i].length >1 && number[i].length<4)
-                            {
-                                if(Number(number[i]))
-                                {
-                                    arrNo.push(number[i]);  
-                                }
-                                else{
-                                    alert("ห้ามตัวอักษร");
-                                    statusValidate = false;
-                                    break;
-                                }
-                            }
-                            else{
-                                if(Number(number[i]))
-                                {
-                                    alert("มีบางเลขน้อยกว่า1หลักแต่ต้องไม่เกิน3หลัก")
-                                    statusValidate = false;
-                                }
-                                else{
-                                    alert("ห้ามตัวอักษร");
-                                    statusValidate = false;
-                                    break;
-                                }
-                                statusValidate = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-                  
-                if(statusValidate)
-                {
-                    dataNum.number = arrNo.join(",");
-                    const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
-                    if(answer)
-                    {
-                        try{
-                            const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
-                                headers: { 'Content-Type': 'application/json' }
-                            }).then(res =>{
+                    dataNum.dataSet.map((data,index)=>{
+                        let date = data.date;
+                        let lucky_date = data.luckytime;
+                        date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
+                        lucky_date =  lucky_date.getFullYear()+"-"+(1+Number(lucky_date.getMonth()))+"-"+lucky_date.getDate();
+                       // console.log("date = ",date);
+                        data.date = date;
+                        data.luckytime = lucky_date;
+                            
+                    })
+                    try{
+                        const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                            headers: { 'Content-Type': 'application/json' }
+                        }).then(res =>{
                                 // console.log("check response num = ",res.data)
-                                if(res.data.message === 'not_success' && res.data.statusCode === '01')
-                                {
-                                    alert("ทำรายการไม่สำเร็จกรุณาตรวจสอบข้อมูล");
-                                }
-                                else{
-                                    alert("ทำรายการสำเร็จ");
-                                    setpopup(false);
-                                    reload()
+                        if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                        {
+                            alert("ทำรายการไม่สำเร็จกรุณาตรวจสอบข้อมูล");
+                        }
+                        else{
+                            alert("ทำรายการสำเร็จ");
+                            setpopup(false);
+                            reload()
                                     // window.location.reload(false)
-                                }
-                            })
+                            }
+                        })
                         }catch(error)
                         {
                             console.error(error)
                         }
                     }
                  
-                }
+                
             }
         }
         else{
             setpopup(false)
-            setUserData({setData:[{
+            setRank(0)
+            setUserData({dataSet:[{
      
-                id: "",
-                date: "",
+                id: add,
+                date: new Date(),
                 option:"",
                 number:"",
                 price:"",
                 all_price:"",
                 idLine:"",
                 phoneNumber:"",
-                luckytime:"",
+                luckytime:new Date(),
                 set:""
         
             }]})
@@ -959,7 +995,7 @@ function Lottary()
                 </div>
             </div>
             {/* // list insert purachse number  modal */}
-            <NumberModal  handleSavingNum={(isSave,dataNum,setUserData) => HandleNumberModal(isSave,dataNum,setUserData)}  show={popup}   />
+            <NumberModal  handleSavingNum={(isSave,dataNum,setUserData,mark,setRank,setTotalPrice) => HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)}  show={popup}   />
 
             {
             // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 

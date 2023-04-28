@@ -14,136 +14,188 @@ function NumberModal(props)
     const [rank,setRank] = useState(0);
     const [eachPrice,setEachPrice] = useState([]);
     const [add,setAdd] = useState(0);
+    const [DateMonth, setDateMonth] = useState(new Date());
+    const [LuckyDate, setLuckyDate] = useState(new Date());
+    const [nameDate,setNameDate] = useState('');
     // const [data,setdata] = useState();
     // const [row,setRow] = useState()
     const [userData, setUserData] = useState({dataSet:[{
      
         id: add,
-        date: "",
+        date: new Date(),
         option:"",
         number:'',
         price:"",
         all_price:"",
         idLine:"",
         phoneNumber:"",
-        luckytime:"",
+        luckytime:new Date(),
         set:""
 
     }]});
  
     // console.log("check dataset = ",userData)
-    const [DateMonth, setDateMonth] = useState(new Date());
-    const [LuckyDate, setLuckyDate] = useState(new Date());
-    const [mark,setmark] = useState(0);
-    const defaulData = [];
-    const [object,setObject] = useState({
+    const [mark,setmark] = useState();
+    // const defaulData = [];
+    // const [object,setObject] = useState({
      
-        id: "",
-        date: "",
-        option:"",
-        number:'',
-        price:"",
-        all_price:"",
-        idLine:"",
-        phoneNumber:"",
-        luckytime:"",
-        set:""
+    //     id: "",
+    //     date: "",
+    //     option:"",
+    //     number:'',
+    //     price:"",
+    //     all_price:"",
+    //     idLine:"",
+    //     phoneNumber:"",
+    //     luckytime:"",
+    //     set:""
 
-    })
+    // })
 
     useEffect(()=>{
-        console.log("check useEffect")
+        console.log("check props = ",props.show)
+        if(props.show !== false)
+        {
+                 // console.log("check useEffect")
         // defaulData.push(object)
         // console.log("check data again = ",defaulData)
-        // console.log("check price = ",userData);
-        let number = userData.dataSet[rank].number;
-        let price = userData.dataSet[rank].price;
-        //console.log("number check = ",number);
-        //console.log("price check  = ",price);
-        number = number.trim();
-        number = number.replaceAll(","," ")
-        number = number.split(" ");
-        let arrNo = [];
-        for(let i = 0 ; i<number.length ; i++)
-        {
-            if(number[i] != ""){
-                if(number[i].length >1 && number[i].length<4)
-                {
-                    if(Number(number[i]))
-                    {
-                        arrNo.push(number[i]);  
-                    }
-                   
-                }
-            }
-        }
-        const allprice = arrNo.length * price 
-        eachPrice[rank] = allprice;
-        //  setTotalPrice((totalprice+allprice))
-        //console.log("each all price = ",eachPrice,rank)
-        const newData = { 
-            ...userData,
-            dataSet: [
-              ...userData.dataSet.slice(0, rank), // copy everything before the updated item
-              {
-                ...userData.dataSet[rank], // copy the item you want to update
-                ['all_price']: allprice // update the property value using the computed property name
-              },
-              ...userData.dataSet.slice(rank + 1) // copy everything after the updated item
-            ]
-          };
-          setUserData(newData);
-          const sum = eachPrice.reduce((acc, curr) => acc + curr, 0);
-          setTotalPrice(sum)
+         console.log("check price = ",userData);
+         let number = userData.dataSet[rank].number;
+         let price = userData.dataSet[rank].price;
+         //console.log("number check = ",number);
+         //console.log("price check  = ",price);
+         number = number.trim();
+         number = number.replaceAll(","," ")
+         number = number.split(" ");
+         let arrNo = [];
+         for(let i = 0 ; i<number.length ; i++)
+         {
+             if(number[i] != ""){
+                 if(number[i].length >1 && number[i].length<4)
+                 {
+                     if(Number(number[i]))
+                     {
+                         arrNo.push(number[i]);  
+                     }
+                    
+                 }
+             }
+         }
+         const allprice = arrNo.length * price 
+         console.log("each all price = ",eachPrice)
+         eachPrice[rank] = allprice;
+         //  setTotalPrice((totalprice+allprice))
+         console.log("each all price = ",eachPrice)
+         const newData = { 
+             ...userData,
+             dataSet: [
+               ...userData.dataSet.slice(0, rank), // copy everything before the updated item
+               {
+                 ...userData.dataSet[rank], // copy the item you want to update
+                 ['all_price']: allprice // update the property value using the computed property name
+               },
+               ...userData.dataSet.slice(rank + 1) // copy everything after the updated item
+             ]
+           };
+           setUserData(newData);
+           const sum = eachPrice.reduce((acc, curr) => acc + curr, 0);
+           setTotalPrice(sum)
+          }
+          else{
+           
+            setTotalPrice(0)
+            setEachPrice([])
+          }
 
     },[userData.dataSet[rank].number,userData.dataSet[rank].price])
     // console.log("check 1 = ",closepopup);
+    useEffect(()=>{
+        // console.log("check date , ",DateMonth);
+        // const  date_buy =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        // const 
+        if(nameDate!== null && nameDate !== '' && nameDate !== undefined)
+        {
+            let value = new Date();
+            if(nameDate === 'luckytime')
+            {
+                // value =  LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
+                value = LuckyDate;
+            }
+            else{
+                // value =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+                value = DateMonth;
+            }
+            const newData = UpdateData(nameDate,value,rank)
+            setUserData(newData);
+        }
+    },[nameDate])
     if(props.show !== true)
     {
         return null;
     }
     console.log("check each price = ",eachPrice)
-    const handleChange = (e,index) => {
-        console.log("check index = ",index)
-        const value = e.target.value;
-        // setUserData(userData=>[...userData,{...object}])
+    const handleChange = (...data) => {
+       
+        let value =   value = data[0].target.value;
+        let name =  name = data[0].target.name;
+        const index = data[1];
+        // let date_buy = new Date();
+        // let luckytime =  new Date();
+        const newData = UpdateData(name,value,index)
+        setUserData(newData);
+        setRank(index)
+    }
+    function handleDate(...data)
+    {
+        // const date_buy = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        // const name = data[2];
+        // const newData = UpdateData()
+        setDateMonth(data[0]);
+        setRank(data[1]);
+        setNameDate(data[2])
+    }
+    function handleLuckyTime(...data)
+    {
+        setLuckyDate(data[0])
+        setRank(data[1]);
+        setNameDate(data[2])
+
+    }
+    function UpdateData(name,value,index)
+    {
         const newData = { 
             ...userData,
             dataSet: [
               ...userData.dataSet.slice(0, index), // copy everything before the updated item
               {
                 ...userData.dataSet[index], // copy the item you want to update
-                [e.target.name]: value // update the property value using the computed property name
+                [name]: value // update the property value using the computed property name
               },
               ...userData.dataSet.slice(index + 1) // copy everything after the updated item
             ]
           };
-          setUserData(newData);
-          setRank(index)
+          return newData;
     }
     const Handlesaving = (isSave)=>{
-        // userData.dataSet.date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        // userData.dataSet.luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
+        // userData.dataSet[rank].date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        // userData.dataSet[rank].luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
         // console.log("check data again = ",userData)
-        // props.handleSavingNum(isSave,userData,setUserData)
-        if(isSave)
-        {
-         
-             console.log("check data again = ",userData)
-        }
-    }
+       // console.log("check userdata = ",userData)
+        props.handleSavingNum(isSave,userData,setUserData,mark,setRank,setTotalPrice)
+     }
+ 
     function addRow()
     {
         const newData = {
             id: add+1,
-            date: "",
+            date: new Date(),
             option:"",
             number:"",
             price:"",
             all_price:"",
             idLine:"",
             phoneNumber:"",
-            luckytime:"",
+            luckytime:new Date(),
             set:""
     
         }
@@ -201,9 +253,9 @@ function NumberModal(props)
                                                 </select>
                                             </td>
                                             <td>
-                                            <DatePicker className="form-control "   selected={LuckyDate}  onChange={(date) => setLuckyDate(date,index)} />
+                                            <DatePicker className="form-control "   selected={data.luckytime} name = "luckytime" onChange={(e) =>handleLuckyTime(e,index,'luckytime') } />
                                             </td>
-                                            <td><DatePicker className="form-control "   selected={DateMonth}  onChange={(date) => setDateMonth(date,index)} /></td>
+                                            <td><DatePicker className="form-control "   selected={data.date}  name = "date" onChange={(e) => handleDate(e,index,'date')} /></td>
                                             <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.all_price}</td>
                                         </tr>
                                      
