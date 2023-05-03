@@ -21,7 +21,7 @@ public class List_number_Modal {
 	@Column(name = "price")
 	private String price;
 	@Column(name = "all_price")
-	private String all_price;
+	private String allPrice;
 	@Column(name = "option_purchase")
 	private String optinpurchase;
 	@Column(name = "status")
@@ -40,17 +40,20 @@ public class List_number_Modal {
 	private String transfer;
 	@Column(name = "status_insert")
 	private String statusInsert;
+	@Column(name = "sequence")
+	private String sequence;
 	
 	
 	
 	
 	
 	
-	
-	
-	
-	
-
+	public String getSequence() {
+		return sequence;
+	}
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
 	public String getStatusInsert() {
 		return statusInsert;
 	}
@@ -64,11 +67,13 @@ public class List_number_Modal {
 		this.transfer = transfer;
 	}
 	
-	public String getAll_price() {
-		return all_price;
+	
+	
+	public String getAllPrice() {
+		return allPrice;
 	}
-	public void setAll_price(String all_price) {
-		this.all_price = all_price;
+	public void setAllPrice(String allPrice) {
+		this.allPrice = allPrice;
 	}
 	public String getIdlist() {
 		return idlist;

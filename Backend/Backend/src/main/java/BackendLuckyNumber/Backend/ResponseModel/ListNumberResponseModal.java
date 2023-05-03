@@ -1,7 +1,7 @@
-package BackendLuckyNumber.Backend.RequestModel;
+package BackendLuckyNumber.Backend.ResponseModel;
 
-public class listNumberRquestModal {
-	private String idlist;
+public class ListNumberResponseModal {
+private String idlist;
 	
 	private String number;
 	
@@ -20,20 +20,6 @@ public class listNumberRquestModal {
 	private String luckytime;
 
 	private String id;
-	
-	private String sequence;
-	
-	
-
-	
-
-	public String getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
 
 	public String getIdlist() {
 		return idlist;
@@ -114,6 +100,5 @@ public class listNumberRquestModal {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
 	
 }

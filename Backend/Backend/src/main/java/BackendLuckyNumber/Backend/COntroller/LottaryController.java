@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import BackendLuckyNumber.Backend.Header;
+import BackendLuckyNumber.Backend.RequestModel.DataSetModal;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.RequestModel.listNumberRquestModal;
 import BackendLuckyNumber.Backend.ResponseModel.LuckyNumberResponModal;
-import BackendLuckyNumber.Backend.ResponseModel.list_number_respModal;
+import BackendLuckyNumber.Backend.ResponseModel.ResponseData;
 import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
@@ -45,7 +46,7 @@ public class LottaryController extends ValidateUntil {
 	@GetMapping("/getlistlottary/{date}")
 	public ResponseEntity getListLottary(@PathVariable String date, Authentication auth) {
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-		list_number_respModal dataitem = new list_number_respModal();
+		ResponseData dataitem = new ResponseData();
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		List<List_number_Modal> data = new ArrayList<>();
@@ -115,7 +116,7 @@ public class LottaryController extends ValidateUntil {
 	}
 
 	@PostMapping("/insertnumber")
-	public ResponseEntity postInsertNumber(@RequestBody NumberRequestModel NumRequest, Authentication auth)
+	public ResponseEntity postInsertNumber(@RequestBody DataSetModal NumRequest, Authentication auth)
 			throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
@@ -221,15 +222,18 @@ public class LottaryController extends ValidateUntil {
 		return new ResponseEntity(header, status);
 	}
 
-	public Boolean validateAPI(NumberRequestModel NumRequest) {
+	public Boolean validateAPI(DataSetModal NumRequest) {
 		Boolean validate = false;
 
 		try {
 
-			if (StringUtils.isNotBlank(NumRequest.getDate()) || StringUtils.isNotBlank(NumRequest.getOption())
-					|| StringUtils.isNotBlank(NumRequest.getNumber())
-					|| StringUtils.isNotBlank(NumRequest.getPrice())) {
-				validate = true;
+			for(NumberRequestModel data : NumRequest.getDataSet())
+			{
+				if (StringUtils.isNotBlank(data.getDate()) || StringUtils.isNotBlank(data.getOption())
+						|| StringUtils.isNotBlank(data.getNumber())
+						|| StringUtils.isNotBlank(data.getPrice())) {
+					validate = true;
+				}
 			}
 		} catch (NullPointerException e) {
 			System.out.println("API is EMPTY or NULL ");

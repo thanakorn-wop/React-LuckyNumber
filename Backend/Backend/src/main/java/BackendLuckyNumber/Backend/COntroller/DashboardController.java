@@ -54,9 +54,10 @@ public class DashboardController extends ValidateUntil {
 		System.out.println(user.getInfoUser().getIduser());
 		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
+		String idUser = user.getInfoUser().getId();
 
 		try {
-			Month = dashBoardService.getInfoUser(user.getInfoUser().getId());
+			Month = dashBoardService.getInfoUser(idUser);
 			if (null != Month ) {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_200);

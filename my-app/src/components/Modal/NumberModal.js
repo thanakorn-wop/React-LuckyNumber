@@ -21,37 +21,17 @@ function NumberModal(props)
     // const [row,setRow] = useState()
     const [userData, setUserData] = useState({dataSet:[{
      
-        id: add,
-        date: new Date(),
-        option:"",
+        idList: add,
         number:'',
         price:"",
-        all_price:"",
-        idLine:"",
-        phoneNumber:"",
+        allPrice:"",
         luckytime:new Date(),
-        set:""
+        date: new Date(),
+        option:"",
+        sequence:""
 
     }]});
- 
-    // console.log("check dataset = ",userData)
     const [mark,setmark] = useState();
-    // const defaulData = [];
-    // const [object,setObject] = useState({
-     
-    //     id: "",
-    //     date: "",
-    //     option:"",
-    //     number:'',
-    //     price:"",
-    //     all_price:"",
-    //     idLine:"",
-    //     phoneNumber:"",
-    //     luckytime:"",
-    //     set:""
-
-    // })
-
     useEffect(()=>{
         console.log("check props = ",props.show)
         if(props.show !== false)
@@ -92,7 +72,7 @@ function NumberModal(props)
                ...userData.dataSet.slice(0, rank), // copy everything before the updated item
                {
                  ...userData.dataSet[rank], // copy the item you want to update
-                 ['all_price']: allprice // update the property value using the computed property name
+                 ['allPrice']: allprice // update the property value using the computed property name
                },
                ...userData.dataSet.slice(rank + 1) // copy everything after the updated item
              ]
@@ -118,11 +98,9 @@ function NumberModal(props)
             let value = new Date();
             if(nameDate === 'luckytime')
             {
-                // value =  LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
                 value = LuckyDate;
             }
             else{
-                // value =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
                 value = DateMonth;
             }
             const newData = UpdateData(nameDate,value,rank)
@@ -187,16 +165,14 @@ function NumberModal(props)
     function addRow()
     {
         const newData = {
-            id: add+1,
+            idList: add+1,
             date: new Date(),
             option:"",
             number:"",
             price:"",
-            all_price:"",
-            idLine:"",
-            phoneNumber:"",
+            allPrice:"",
             luckytime:new Date(),
-            set:""
+            sequence:""
     
         }
         setAdd(add+1)
@@ -256,7 +232,7 @@ function NumberModal(props)
                                             <DatePicker className="form-control "   selected={data.luckytime} name = "luckytime" onChange={(e) =>handleLuckyTime(e,index,'luckytime') } />
                                             </td>
                                             <td><DatePicker className="form-control "   selected={data.date}  name = "date" onChange={(e) => handleDate(e,index,'date')} /></td>
-                                            <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.all_price}</td>
+                                            <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.allPrice}</td>
                                         </tr>
                                      
                                         )

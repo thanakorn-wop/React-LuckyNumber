@@ -4,19 +4,29 @@ import lombok.Data;
 
 
 public class NumberRequestModel {
-	private String id;
+	private String idList;
 	private String price;
 	private String date;
 	private String number;
-	private String idline;
-	private String phoneNumber;
 	private String option;
 	private String luckytime;
+	private String allPrice;
+	private String sequence;
+	
+	
 	
 	
 	 
+	 
 	
 
+	
+	public String getSequence() {
+		return sequence;
+	}
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
 	public String getLuckytime() {
 		return luckytime;
 	}
@@ -29,11 +39,13 @@ public class NumberRequestModel {
 	public void setOption(String option) {
 		this.option = option;
 	}
-	public String getId() {
-		return id;
+	
+	
+	public String getIdList() {
+		return idList;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setIdList(String idList) {
+		this.idList = idList;
 	}
 	public String getPrice() {
 		return price;
@@ -53,19 +65,13 @@ public class NumberRequestModel {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public String getIdline() {
-		return idline;
+	public String getAllPrice() {
+		return allPrice;
 	}
-	public void setIdline(String idline) {
-		this.idline = idline;
+	public void setAllPrice(String allPrice) {
+		this.allPrice = allPrice;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
+
 	
 	
 	

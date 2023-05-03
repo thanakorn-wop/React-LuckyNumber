@@ -4,7 +4,7 @@ import javax.persistence.Column;
 
 import BackendLuckyNumber.Backend.Header;
 
-public class list_number_respModal {
+public class ResponseData {
 
 	
 	private Header header;

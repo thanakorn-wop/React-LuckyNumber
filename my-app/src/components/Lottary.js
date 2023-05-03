@@ -31,8 +31,8 @@ function Lottary()
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
     const [dateLucky,setDateLucky] = useState("");
-    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
-    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",all_price:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
@@ -271,7 +271,7 @@ function Lottary()
     }
     function HandlePayment(status_saving,DataPayment)
     {
-        console.log("check index3 = ",newItem[0])
+        console.log("check index3 = ",newItem)
         if(status_saving === 'save')
         {
             let indexUpdate = 0;
@@ -287,13 +287,15 @@ function Lottary()
                 const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
                     headers: { 'Content-Type': 'application/json' }
                 }).then(res =>{
-                    if(res.data.message === 'success' && res.data.statusCode ==='01')
+                if(res.data.message === 'success' && res.data.statusCode ==='01')
                 {
                     alert("ทำรายการสำเร็จ")
-                    setIsOpenPayMentModal(false)      
+                    setIsOpenPayMentModal(false)  
+                    // reload()    
                 }
-
-                    window.location.reload()
+                else{
+                    alert("ทำรายการไม่สำเร็จ")
+                }
                 })
 
             }catch(err)
@@ -327,6 +329,7 @@ function Lottary()
                     for(let i = 0; i<dataNum.dataSet.length; i++)
                     {
                         let arrNo = [];
+                        dataNum.dataSet[i].sequence = mark;
                         if(dataNum.dataSet[i].option === null ||  dataNum.dataSet[i].option ===undefined || dataNum.dataSet[i].option ==='' || dataNum.dataSet[i].option ==='empty')
                         {
                             alert("กรุณาเลือกการแทง");
@@ -458,7 +461,7 @@ function Lottary()
                         }
                         else{
                             alert("ทำรายการสำเร็จ");
-                            setpopup(false);
+                            // setpopup(false);
                             reload()
                                     // window.location.reload(false)
                             }
@@ -482,7 +485,7 @@ function Lottary()
                 option:"",
                 number:"",
                 price:"",
-                all_price:"",
+                allPrice:"",
                 idLine:"",
                 phoneNumber:"",
                 luckytime:new Date(),
@@ -520,6 +523,9 @@ function Lottary()
             else if(response.data.message ==="duplicate_data")
             {
                 alert("ไม่สามารถทำรายการซ้ำได้");
+            }else if(response.data.message === "not_time_to_work")
+            {
+                alert("กรุณารอหวยออก");
             }
             else if(response.data.message ==="success")
             {
@@ -960,6 +966,7 @@ function Lottary()
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>วันที่ซื้อ</td>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>งวดประจำวันที่</td>
+                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ชุดที่</td>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
                             </tr>
@@ -979,12 +986,13 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.all_price}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.allPrice}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="Lucky" ? "Lucky":"unLucky"}>{resp.status}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.sequence}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
                                 <td  style={{"border":"solid 2px yellow"}}>
                                     <div className="allbuttom">

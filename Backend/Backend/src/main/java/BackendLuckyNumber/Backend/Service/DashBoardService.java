@@ -25,7 +25,7 @@ public class DashBoardService {
 		Integer[] Money_Each_Month = null;
 		MonthModal infoMonth_User = null;
 		try {
-			infoMonth_User = monthRepo.findByIdSeller(id);
+			infoMonth_User = monthRepo.findMonthOfUser(id,"2023");
 			if (null != infoMonth_User) {
 //				if(infoUser.size()>0)
 //				{

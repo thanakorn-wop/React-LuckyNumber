@@ -10,7 +10,7 @@ function Report ()
     const [isOpen ,setIsOpen] = useState(false);
     const [cost,setCost] = useState(0);
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
-    const [DateMonth, setDateMonth] = useState(new Date());
+    const [reportDate, setReportDate] = useState(new Date());
     const [dateSelect,setDateSelect] = useState("last");
     const [dataReport,setDataReport] = useState({balance:0,cost:0,date:0,id:0,idSeller:0,nickname:0,notpay:0,pay:0,peoplelost:0,peoplewin:0,statusTransfer:'',totalLost:0,totalPurchase:0});
     const mykeysVAlues = window.location.search;
@@ -19,10 +19,10 @@ function Report ()
     console.log("param =  ",param)
 
     let session =  sessionStorage.getItem("token");
-    if(session === null || session === undefined || session ==="")
-    {
-      window.location.assign("/login")
-    }
+    // if(session === null || session === undefined || session ==="")
+    // {
+    //   window.location.assign("/login")
+    // }
     let config = {
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ function Report ()
                 {
                     console.log("check response = ",response)
                     setDataReport(response.data.datalist)
-                    setDateMonth(new Date((response.data.datalist.date)));
+                    setReportDate(new Date((response.data.datalist.date)));
                  
                 }
               }catch(error)
@@ -96,7 +96,7 @@ function Report ()
     function searchData()
      {  
         //(String(DateMonth.getDate()).padStart(2, '0')+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
-        let date = DateMonth.getFullYear()+"-"+String(1+Number(DateMonth.getMonth())).padStart(2, '0')+"-"+String(DateMonth.getDate()).padStart(2, '0');
+        let date = reportDate.getFullYear()+"-"+String(1+Number(reportDate.getMonth())).padStart(2, '0')+"-"+String(reportDate.getDate()).padStart(2, '0');
         setDateSelect(date);
     }
  
@@ -117,7 +117,7 @@ function Report ()
                             <tbody>
                                 <tr className="table-listitem" >
                                     <td style={{"width":"20%"}}><span>งวดประจำวันที่</span></td>
-                                    <td> <div className="date-report"><DatePicker className="form-control" style={{}}  selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div></td>
+                                    <td> <div className="date-report"><DatePicker className="form-control" style={{}}  selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
                           
                                 </tr>
                            
