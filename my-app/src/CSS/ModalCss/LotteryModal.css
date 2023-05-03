@@ -1,0 +1,38 @@
+.lottaryModal{
+    position: absolute;
+    border: solid 2px yellow;
+    width: 45%;
+    top:25%;
+    left: 25%;
+}
+.date{
+    margin-bottom: 10px;
+}
+.dateLottary{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+.modal-footer .footer{
+    padding: 0 20px;
+    margin-top: 15px;
+}
+.modal-footer{
+    border-top: solid;
+}
+.dateLottary{
+    width: 45%;
+}
+.table-lottery{
+    margin-top: 15px;
+    text-align: center;
+}
+.mini-box {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+.textLotteryModal{
+    font-size: 25px;
+}

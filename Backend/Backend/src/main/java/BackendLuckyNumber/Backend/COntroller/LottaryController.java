@@ -204,7 +204,12 @@ public class LottaryController extends ValidateUntil {
 				} else if (mixTransfer.getDuplicateTransfer()) {
 					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				} else {
+				}else if(null == mixTransfer.getLuckytime())
+				{
+					header.setMessage(ConstantData.MESSAGE_NOT_TIME_TO_WORK);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				}
+				else {
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				}

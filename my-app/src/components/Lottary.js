@@ -8,6 +8,7 @@ import DeleteModal from "./Modal/DeleteDataModal"
 import DatePicker from "react-datepicker";
 import {  useNavigate } from "react-router-dom";
 import SendLottaryModal from "./Modal/SendLottaryModal";
+import LotteryModal from "./Modal/LotteryModal";
 import axios from 'axios';
 import { Route, Link, BrowserRouter,Routes } from 'react-router-dom'  
 
@@ -26,7 +27,8 @@ function Lottary()
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenDeleteModal,setIsOpenDeleteModal] = useState(false);
-    const [isOpenSendLottaryModa,setIsOpenSendLottaryModal] = useState(false);
+    const [isOpenSendLottaryModal,setIsOpenSendLottaryModal] = useState(false);
+    const [isOpenLotteryModal,setIsOpenLotteryModal] = useState(false);
     const [DateBuy, setDateBuy] = useState("");
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
@@ -931,7 +933,10 @@ function Lottary()
                                 </tr> */}
                                 <tr className="table-listitem" style={{"border":"none"}}>
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
-                                    <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
+                                    <div className="setBtn"style={{"display":"flex"}}>
+                                    <div className=" Action-btn">
+                                            <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
+                                        </div>
                                         <div className=" Action-btn">
                                             {/* <Link to="/calculate/insert"><button type="button" className="btn btn-light" >เพิ่มข้อมูล</button></Link> */}
                                            {/* <Outlet/> */}
@@ -941,10 +946,10 @@ function Lottary()
                                             <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
                                         </div> */}
                                         <div className=" Action-btn">
-                                            <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
-                                        </div>
-                                        <div className=" Action-btn">
                                             <button type="button" className="btn btn-warning" onClick = {() =>setIsOpenSendLottaryModal(true)} >ส่งหวย</button> 
+                                        </div>
+                                        <div className="Action-btn">
+                                            <button type="button" className="btn btn-success" onClick = {() =>setIsOpenLotteryModal(true)}  >ตรวจหวย</button> 
                                         </div>
                                     </div>
                                     </td>
@@ -1030,7 +1035,10 @@ function Lottary()
             isOpenDeleteModal &&   <DeleteModal onClose={(e) => DeleteData(e)}/>
             }
             {
-                isOpenSendLottaryModa && <SendLottaryModal onClose = {(status,date)=>HandleSendLottaryModal(status,date)}/>
+                isOpenSendLottaryModal && <SendLottaryModal onClose = {(status,date)=>HandleSendLottaryModal(status,date)}/>
+            }
+            {
+                isOpenLotteryModal && <LotteryModal/>
             }
 
         </div>
