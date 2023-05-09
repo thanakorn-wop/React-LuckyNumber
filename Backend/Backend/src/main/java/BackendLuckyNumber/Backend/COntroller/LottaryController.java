@@ -23,6 +23,7 @@ import BackendLuckyNumber.Backend.RequestModel.DataSetModal;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.NumberRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
+import BackendLuckyNumber.Backend.RequestModel.ValidateLottaryRequestModal;
 import BackendLuckyNumber.Backend.RequestModel.listNumberRquestModal;
 import BackendLuckyNumber.Backend.ResponseModel.LuckyNumberResponModal;
 import BackendLuckyNumber.Backend.ResponseModel.ResponseData;
@@ -30,6 +31,7 @@ import BackendLuckyNumber.Backend.Service.LottaryService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
+import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 
@@ -227,6 +229,64 @@ public class LottaryController extends ValidateUntil {
 		return new ResponseEntity(header, status);
 	}
 
+	@PostMapping("/getluckyitem")
+	public ResponseEntity getLuckyItem(@RequestBody LottaryModal datelottary, Authentication auth) {
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		ResponseData dataitem = new ResponseData();
+		LottaryModal get_Item = listLottaryService.getLuckyItemService();
+		if(null != get_Item)
+		{
+			header.setMessage(ConstantData.MESSAGE_SUCCESS);
+			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			dataitem.setHeader(header);
+			dataitem.setDatalist(get_Item);			
+		}
+		else {
+			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
+			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			dataitem.setHeader(header);
+			dataitem.setDatalist(get_Item);
+		}
+
+		return new ResponseEntity(dataitem, status);
+	}
+	
+	@PostMapping("/postluckyitem")
+	public ResponseEntity postLuckyItem(@RequestBody ValidateLottaryRequestModal datelottary, Authentication auth) {
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		ResponseData dataitem = new ResponseData();
+		String date = datelottary.getDate();
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		String id = user.getInfoUser().getId();
+		if(null != date)
+		{
+			Boolean statusUpdate = listLottaryService.postLuckyItemService(date,id);
+			if(statusUpdate)
+			{
+				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				dataitem.setHeader(header);
+			}
+			else {
+				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				dataitem.setHeader(header);
+			}
+			
+		}
+		else {
+			status = status.BAD_REQUEST;
+			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
+			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			dataitem.setHeader(header);
+		}
+		
+
+		return new ResponseEntity(dataitem, status);
+	}
+	
 	public Boolean validateAPI(DataSetModal NumRequest) {
 		Boolean validate = false;
 

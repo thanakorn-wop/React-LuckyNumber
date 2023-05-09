@@ -38,6 +38,7 @@ public class ConstantData {
 	//message duplciate 
 	public static String MESSAGE_DUPLICATE_DATA ="duplicate_data";
 	public static String MESSAGE_NOT_TIME_TO_WORK ="not_time_to_work";
+	public static String MESSAGE_NULL_POINTER ="Null Pointer";
 	public static String BAD_REQUEST ="bad_request";
 	
 	

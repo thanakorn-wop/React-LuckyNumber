@@ -4,9 +4,11 @@ import "../../CSS/ModalCss/LotteryModal.css"
 import { Await } from "react-router-dom";
 import axios from "axios";
 import * as urlConstant from "../Constant/UrlConstant"
-function LotteryModal()
+function LotteryModal(props)
 {
     const[daily,setDaily] = useState(new Date())
+    const [luckyItem ,setLuckyItem] = useState({date:new Date(),threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"});
+    const [dateTime,setDateTIme] = useState({date:""});
  let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
         config =>{
@@ -43,15 +45,25 @@ function LotteryModal()
     useEffect(()=>{
         async function getitem()
         {
-            const get_luckyitem = await axios.get(urlConstant.GET_LUCKYITEM,{
+            const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
+            luckyItem.date = date_format;
+            const get_luckyitem = await axios.post(urlConstant.GET_LUCKYITEM,luckyItem,{
                 headers: { 'Content-Type': 'application/json' }
             })
+            if(get_luckyitem !== null && get_luckyitem !== undefined && get_luckyitem.data.datalist !== null)
+            {
+                console.log("check response data = ",get_luckyitem.data.datalist);   
+                setLuckyItem(get_luckyitem.data.datalist)       
+                setDaily(new Date(get_luckyitem.data.datalist.date))       
+            }
         }
         getitem()
-    },[])
-    function SaveData(status_save)
+    },[daily])
+    function SaveData(status)
     {
-
+        const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
+        dateTime.date = date_format;
+        props.onSave(dateTime,status)
     }
     return(
         <div className="lottaryModal" >
@@ -76,15 +88,15 @@ function LotteryModal()
                         </tr>
                         <tr>
                             <td><span  className="textLotteryModal">เลขหน้า 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
-                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}} > 500 780</span></td>
+                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}} > {luckyItem.threeTop}</span></td>
                         </tr>
                         <tr>
                             <td><span  className="textLotteryModal">เลขท้าย 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
-                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}> 269 187</span></td>
+                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.threedow}</span></td>
                         </tr>
                         <tr>
                             <td><span  className="textLotteryModal">เลขท้าย 2 ตัว 1 รางวัลๆละ 2,000 บาท</span></td>
-                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>65</span></td>
+                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.twotop}</span></td>
                         </tr>
                     </tbody>
 

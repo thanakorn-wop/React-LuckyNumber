@@ -508,6 +508,31 @@ function Lottary()
          console.log("check id list = ",idlist,id)
         setDataDelete({...DataDelete,idlist:idlist,id:id})
     }
+    async function HandleValidateLottaryModal(date,status)
+    {
+        // let obj = {date:date}
+        console.log("date = ",date);
+        if(status)
+        {
+            const postItem = await axios.post(urlConstant.POST_LUCKY_LOTTARY,date,{
+                headers: { 'Content-Type': 'application/json' }
+            })
+            if(postItem !== null && postItem !== undefined)
+            {
+                console.log("check postItem = ",postItem.data)
+                if(postItem.data.header.statusCode == '01' && postItem.data.header.message =='success')
+                {
+                    alert("ทำรายการสำเร็จ")
+                }
+                else{
+                    alert("ทำรายการไม่สำเร็จ")
+                }
+            }
+        }
+        else{
+            isOpenLotteryModal(false)
+        }
+    }
     async function HandleSendLottaryModal(status,date)
     {
         console.log("check status sending = ",status,date)
@@ -1038,7 +1063,7 @@ function Lottary()
                 isOpenSendLottaryModal && <SendLottaryModal onClose = {(status,date)=>HandleSendLottaryModal(status,date)}/>
             }
             {
-                isOpenLotteryModal && <LotteryModal/>
+                isOpenLotteryModal && <LotteryModal onSave={(date,status) => HandleValidateLottaryModal(date,status)}/>
             }
 
         </div>

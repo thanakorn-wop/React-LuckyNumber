@@ -1,5 +1,6 @@
 package BackendLuckyNumber.Backend.Repo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +40,16 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Query(" UPDATE list_number set transfer ='Y'  Where id = ?1 and luckytime = ?2 ")
 	void postSendLottaryRepo(String id , String luckytime);
 	
+	@Modifying
+	@Query(value = " update list_number set status = 'lucky' where id_list in (SELECT id_list FROM list_number   where id = ?1 and id_list in (?2) and luckytime = ?3) ",nativeQuery = true)
+	void changeStatusLucky(String id ,ArrayList<String> idList,String luckydate);
+	
 	@Query(" SELECT u from transfer_lottary u Where u.iduser = ?1 and u.nickname = ?2 and date = ?3 ")
 	List<TransferLottaryModal> getDataTransferLottaryRepo(String iduser,String nickname , String date );
 	
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' and luckytime = ?2 ")
 	List<List_number_Modal> getItemListNumber(String id,String luckytime );
+	
 	
 	
 	@Modifying

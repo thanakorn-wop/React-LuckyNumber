@@ -287,7 +287,87 @@ public class LottaryService {
 		}
 		return updateStatus;
 	}
-
+	public LottaryModal getLuckyItemService()
+	{
+		LottaryModal item = new LottaryModal();
+		
+		try {
+			
+			item = lottaryRepo.findLastDate();
+		}catch(Exception e)
+		{
+			throw e;
+		}
+		return  item;
+	}
+	public Boolean postLuckyItemService(String luckydate,String id)
+	{
+		List<List_number_Modal> dataItem = null;
+		Boolean status = false;
+		LottaryModal luckyDate = new LottaryModal();
+		ArrayList<String> idlottary = new ArrayList<>();
+		
+		try {
+			luckyDate = lottaryRepo.findDate(luckydate);
+			if(null !=luckyDate)
+			{
+				dataItem = listNumberRepo.findItembyDate(id,luckydate);
+				if(null != dataItem && dataItem.size()> 0 )
+				{
+					for(List_number_Modal item : dataItem)
+					{
+						
+						String number ="";
+						number = item.getNumber();
+						String[] split_number = number.split(",");
+						for(String no : split_number)
+						{
+							if(item.getOptinpurchase().equals(ConstantData.MESSAGE_TOP))
+							{
+								if(no.equals(luckyDate.getThreeTop()))
+								{
+									
+//									listNumberRepo.changeStatusLucky(id,idLottary,date);
+									idlottary.add(item.getIdlist());
+									
+								}
+							}
+							else if(item.getOptinpurchase().equals(ConstantData.MESSAGE_BELOW))
+							{
+								
+								if(no.equals(luckyDate.getTwodown()))
+								{
+									
+									idlottary.add(item.getIdlist());					
+								}
+							}				
+						}
+					}
+					if(null != idlottary && idlottary.size()>0)
+					{
+						listNumberRepo.changeStatusLucky(id,idlottary,luckydate);
+						status = true;
+					}
+				}
+			}
+//			dataItem = listNumberRepo.findItembyDate(id,date);
+//			if(null != dataItem)
+//			{
+//				listNumberRepo.changeStatusLucky(id,date);
+//				status = true;
+//			}
+			
+		}catch(Exception e)
+		{
+			throw e;
+		}
+//		if(null != date)
+//		{
+//			listNumberRepo.changeStatusLucky(id,date);
+//		}
+		
+		return status;
+	}
 	public Boolean postDeleteDataService(listNumberRquestModal listRequest, Authentication auth) {
 		Boolean DeleteStatus = false;
 		try {
