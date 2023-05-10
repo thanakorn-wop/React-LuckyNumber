@@ -229,8 +229,8 @@ public class LottaryController extends ValidateUntil {
 		return new ResponseEntity(header, status);
 	}
 
-	@PostMapping("/getluckyitem")
-	public ResponseEntity getLuckyItem(@RequestBody LottaryModal datelottary, Authentication auth) {
+	@GetMapping("/getluckyitem")
+	public ResponseEntity getLuckyItem( Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
 		ResponseData dataitem = new ResponseData();
@@ -253,6 +253,29 @@ public class LottaryController extends ValidateUntil {
 	}
 	
 	@PostMapping("/postluckyitem")
+	public ResponseEntity postLuckyItem(@RequestBody LottaryModal datelottary, Authentication auth) {
+		HttpStatus status = HttpStatus.OK;
+		Header header = new Header();
+		ResponseData dataitem = new ResponseData();
+		String luckyDate = datelottary.getDate();
+		LottaryModal get_Item = listLottaryService.postLuckyItemService(luckyDate);
+		if(null != get_Item)
+		{
+			header.setMessage(ConstantData.MESSAGE_SUCCESS);
+			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			dataitem.setHeader(header);
+			dataitem.setDatalist(get_Item);			
+		}
+		else {
+			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
+			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			dataitem.setHeader(header);
+			dataitem.setDatalist(get_Item);
+		}
+
+		return new ResponseEntity(dataitem, status);
+	}
+	@PostMapping("/validateluckyitem")
 	public ResponseEntity postLuckyItem(@RequestBody ValidateLottaryRequestModal datelottary, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
@@ -262,7 +285,7 @@ public class LottaryController extends ValidateUntil {
 		String id = user.getInfoUser().getId();
 		if(null != date)
 		{
-			Boolean statusUpdate = listLottaryService.postLuckyItemService(date,id);
+			Boolean statusUpdate = listLottaryService.validateLuckyItemService(date,id);
 			if(statusUpdate)
 			{
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);

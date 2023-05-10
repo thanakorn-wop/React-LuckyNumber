@@ -117,7 +117,7 @@ function Report ()
                             <tbody>
                                 <tr className="table-listitem" >
                                     <td style={{"width":"20%"}}><span>งวดประจำวันที่</span></td>
-                                    <td> <div className="date-report"><DatePicker className="form-control" style={{}}  selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
+                                    <td> <div className="date-report"><DatePicker className="form-control" style={{}} dateFormat= "dd-MM-yyyy"   selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
                           
                                 </tr>
                            

@@ -7,8 +7,12 @@ import * as urlConstant from "../Constant/UrlConstant"
 function LotteryModal(props)
 {
     const[daily,setDaily] = useState(new Date())
+    const[newDaily,setNewDaily] = useState('')
     const [luckyItem ,setLuckyItem] = useState({date:new Date(),threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"});
+    const [status,setStatus] = useState(false);
+    const [empty,setEmpty] = useState(false)
     const [dateTime,setDateTIme] = useState({date:""});
+   
  let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
         config =>{
@@ -45,9 +49,8 @@ function LotteryModal(props)
     useEffect(()=>{
         async function getitem()
         {
-            const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
-            luckyItem.date = date_format;
-            const get_luckyitem = await axios.post(urlConstant.GET_LUCKYITEM,luckyItem,{
+           
+            const get_luckyitem = await axios.get(urlConstant.GET_LUCKYITEM,{
                 headers: { 'Content-Type': 'application/json' }
             })
             if(get_luckyitem !== null && get_luckyitem !== undefined && get_luckyitem.data.datalist !== null)
@@ -57,13 +60,57 @@ function LotteryModal(props)
                 setDaily(new Date(get_luckyitem.data.datalist.date))       
             }
         }
-        getitem()
-    },[daily])
+        async function postitem()
+        {
+            const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
+            luckyItem.date = date_format;
+            const post_luckyitem = await axios.post(urlConstant.POST_LUCKYITEM,luckyItem,{
+                headers: { 'Content-Type': 'application/json' }
+            })
+            if(post_luckyitem !== null && post_luckyitem !== undefined && post_luckyitem.data.datalist !== null)
+            {
+                console.log("check response data = ",post_luckyitem.data.datalist);   
+                setLuckyItem(post_luckyitem.data.datalist)       
+                setDaily(new Date(post_luckyitem.data.datalist.date))       
+                
+            }
+            else{
+                setLuckyItem({date:daily,threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"})
+                console.log("luckyitem = ",luckyItem)
+                setDaily(daily)       
+                setEmpty(true)
+                
+            }
+        }
+        console.log("status = ",status)
+        if(!status)
+        {
+             getitem()
+            console.log("check No change")
+            
+        }
+        else{
+            console.log("check change")
+            postitem()
+            setStatus(false)
+            
+
+        }
+
+    },[newDaily])
+    function HandleDate(date)
+    {
+        setDaily(date)
+        setStatus(true)
+        setNewDaily(date)
+    }
     function SaveData(status)
     {
+   
         const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
         dateTime.date = date_format;
-        props.onSave(dateTime,status)
+        props.onSave(dateTime,status,empty,setEmpty)
+       
     }
     return(
         <div className="lottaryModal" >
@@ -75,7 +122,7 @@ function LotteryModal(props)
                         <label className="date">งวดประจำวันที่</label>
                     </div>
                     <div className="dateLottery">
-                        <DatePicker className="form-control" selected={daily}  onChange={(date) => setDaily(date)} /> 
+                        <DatePicker className="form-control" selected={daily} dateFormat= "dd-MM-yyyy"   onChange={(date) => HandleDate(date) } /> 
                     </div>
                 
                 </div>

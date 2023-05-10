@@ -229,9 +229,9 @@ function NumberModal(props)
                                                 </select>
                                             </td>
                                             <td>
-                                            <DatePicker className="form-control "   selected={data.luckytime} name = "luckytime" onChange={(e) =>handleLuckyTime(e,index,'luckytime') } />
+                                            <DatePicker className="form-control "   selected={data.luckytime} name = "luckytime" dateFormat= "dd-MM-yyyy"  onChange={(e) =>handleLuckyTime(e,index,'luckytime') } />
                                             </td>
-                                            <td><DatePicker className="form-control "   selected={data.date}  name = "date" onChange={(e) => handleDate(e,index,'date')} /></td>
+                                            <td><DatePicker className="form-control "   selected={data.date}  name = "date" dateFormat= "dd-MM-yyyy"  onChange={(e) => handleDate(e,index,'date')} /></td>
                                             <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.allPrice}</td>
                                         </tr>
                                      

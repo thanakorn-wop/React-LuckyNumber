@@ -22,7 +22,7 @@ function SendLottaryModal(props)
             <div className="boxbody">
                 <div  className ="dateLottary" style={{"marginTop":"15px","marginLeft":"15px"}}>
                    <label className="textsendlottary">งวดที่ต้องการส่ง</label>
-                    <DatePicker className="form-control "  selected={DateMonth}  onChange={(date) => setDateMonth(date)} /> 
+                    <DatePicker className="form-control "  selected={DateMonth}   dateFormat= "dd-MM-yyyy" onChange={(date) => setDateMonth(date)} /> 
                  
              
                 </div>

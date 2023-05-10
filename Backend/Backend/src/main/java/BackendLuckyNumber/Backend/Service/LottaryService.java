@@ -293,14 +293,29 @@ public class LottaryService {
 		
 		try {
 			
-			item = lottaryRepo.findLastDate();
+				item = lottaryRepo.findLastDate();
+			
 		}catch(Exception e)
 		{
 			throw e;
 		}
 		return  item;
 	}
-	public Boolean postLuckyItemService(String luckydate,String id)
+	public LottaryModal postLuckyItemService(String luckyDate)
+	{
+		LottaryModal item = new LottaryModal();
+		
+		try {
+			
+				item = lottaryRepo.findDate(luckyDate);
+				
+		}catch(Exception e)
+		{
+			throw e;
+		}
+		return  item;
+	}
+	public Boolean validateLuckyItemService(String luckydate,String id)
 	{
 		List<List_number_Modal> dataItem = null;
 		Boolean status = false;

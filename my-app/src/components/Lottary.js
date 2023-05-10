@@ -508,29 +508,40 @@ function Lottary()
          console.log("check id list = ",idlist,id)
         setDataDelete({...DataDelete,idlist:idlist,id:id})
     }
-    async function HandleValidateLottaryModal(date,status)
+    async function HandleValidateLottaryModal(date,status,empty,setEmpty)
     {
         // let obj = {date:date}
-        console.log("date = ",date);
+        console.log("date = ",setEmpty);
         if(status)
         {
-            const postItem = await axios.post(urlConstant.POST_LUCKY_LOTTARY,date,{
-                headers: { 'Content-Type': 'application/json' }
-            })
-            if(postItem !== null && postItem !== undefined)
+            if(empty)
             {
-                console.log("check postItem = ",postItem.data)
-                if(postItem.data.header.statusCode == '01' && postItem.data.header.message =='success')
-                {
-                    alert("ทำรายการสำเร็จ")
-                }
-                else{
-                    alert("ทำรายการไม่สำเร็จ")
-                }
+                alert("หวยยังไม่ออก");
+                setEmpty(false)
             }
+            else{
+                const postItem = await axios.post(urlConstant.POST_VALIDATE_LOTTARY,date,{
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                if(postItem !== null && postItem !== undefined)
+                {
+                    console.log("check postItem = ",postItem.data)
+                    if(postItem.data.header.statusCode == '01' && postItem.data.header.message =='success')
+                    {
+                        alert("ทำรายการสำเร็จ")
+                        reload()
+                    }
+                    else{
+                        alert("ไม่มีรายการให้ทำ")
+                    }
+                }
+
+            }
+           
         }
         else{
-            isOpenLotteryModal(false)
+
+            setIsOpenLotteryModal(false)
         }
     }
     async function HandleSendLottaryModal(status,date)
@@ -1018,7 +1029,7 @@ function Lottary()
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.allPrice}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="Lucky" ? "Lucky":"unLucky"}>{resp.status}</span></td>
+                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="lucky" ? "lucky":"unLucky"}>{resp.status === 'lucky' ?'ถูกรางวัล':"ไม่ถูกรางวัล"}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
@@ -1063,7 +1074,7 @@ function Lottary()
                 isOpenSendLottaryModal && <SendLottaryModal onClose = {(status,date)=>HandleSendLottaryModal(status,date)}/>
             }
             {
-                isOpenLotteryModal && <LotteryModal onSave={(date,status) => HandleValidateLottaryModal(date,status)}/>
+                isOpenLotteryModal && <LotteryModal onSave={(date,status,empty,setEmpty) => HandleValidateLottaryModal(date,status,empty,setEmpty)}/>
             }
 
         </div>
