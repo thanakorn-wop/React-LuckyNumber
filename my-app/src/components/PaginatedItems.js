@@ -11,7 +11,7 @@ function PaginatedItems(props)
     const [postsPerPage] = useState(10);
     const [pageNumberLimit, setpageNumberLimit] = useState(5);
     const [pageNumber,setPageNumber] = useState([])
-      console.log("dataset = ",item)
+    //  console.log("dataset = ",item)
     
     useEffect(()=>{
         const indexOfLastPost = currentPage + postsPerPage;
@@ -22,22 +22,25 @@ function PaginatedItems(props)
                 setPageNumber([...pageNumber,i])
             }
         let currentPosts = item.slice(currentPage,indexOfLastPost);
+        console.log("check post item = ",item)
+        console.log("check post currentPage indexOfLastPost = ",currentPage,indexOfLastPost)
+        console.log("check post data = ",currentPosts)
         const paginate = pageNumber =>setCurrentPage(pageNumber)
         // const endOffset = itemOffset +itemPerPage;
         // setCurrentItem(item.slice(itemOffset,endOffset));
         // setPageCount(Math.ceil(item.length / itemPerPage));
-        console.log("useEffect again =",currentPosts)
+      //  console.log("useEffect again =",currentPosts)
         props.callBackItem(currentPosts)
 
 
 
     },[currentPage,postsPerPage,item])
 
-    console.log("item = ",item)
+    //console.log("item = ",item)
     const handlePageClick = (data)=>{
-        console.log("click = ",item)
+       // console.log("click = ",item)
         const newOffset = (data.selected * postsPerPage) % item.length ;
-        console.log("newOffset = ",newOffset)
+    //    console.log("newOffset = ",newOffset)
         setCurrentPage(newOffset);
     }
     return(

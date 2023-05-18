@@ -591,7 +591,7 @@ function Lottary()
         let dateBuy = null;
         let dateTimeLucky = null;
         
-        // console.log("check = asdasd",newItem)
+         console.log("check = asdasd",dataSet)
         // if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
         // {         
         //     dateBuy = (DateBuy.getFullYear()+"-"+String(1+Number(DateBuy.getMonth())).padStart(2, '0')+"-"+String(DateBuy.getDate()).padStart(2, '0'));
@@ -610,7 +610,7 @@ function Lottary()
                   
                     if(no !== null )
                     {
-                        console.log("check 1 = ",no)
+                       // console.log("check 1 = ",no)
                       //  console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no  && data.luckytime === dateTimeLucky))
                        setDataSet(dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no && data.luckytime === dateTimeLucky))
                     }
@@ -623,8 +623,8 @@ function Lottary()
                 {
                     if(no !== null )
                     {
-                        console.log("check ถูกรางงวัลไม่จ่าย = ",no)
-                        console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no ))
+                       // console.log("check ถูกรางงวัลไม่จ่าย = ",no)
+                        //console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no ))
                        setDataSet(dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no))
                     }
                     else{
@@ -638,7 +638,7 @@ function Lottary()
               
                 if(no !== null )
                 {
-                    console.log("check 1 = ",no)
+                   // console.log("check 1 = ",no)
                   //  console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no  && data.luckytime === dateTimeLucky))
                    setDataSet(dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no && data.luckytime === dateTimeLucky))
                 }
@@ -651,7 +651,7 @@ function Lottary()
             {
                 if(no !== null )
                 {
-                    console.log("check ถูกรางงวัลไม่จ่าย = ",no)
+                    //console.log("check ถูกรางงวัลไม่จ่าย = ",no)
                    // console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no ))
                    setDataSet(dataSet.filter(data=> data.statuspayment === selectPayment &&   data.sequence === no))
                 }
@@ -668,7 +668,7 @@ function Lottary()
               
                 if(no !== null )
                 {
-                    console.log("check 1 = ",no)
+                    //console.log("check 1 = ",no)
                   //  console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no  && data.luckytime === dateTimeLucky))
                    setDataSet(dataSet.filter(data=> data.sequence === no && data.luckytime === dateTimeLucky && data.status === statusLucky))
                 }
@@ -681,7 +681,7 @@ function Lottary()
             {
                 if(no !== null )
                 {
-                    console.log("check ถูกรางงวัลไม่จ่าย = ",no)
+                   // console.log("check ถูกรางงวัลไม่จ่าย = ",no)
                    // console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no ))
                    setDataSet(dataSet.filter(data=> data.status === statusLucky &&   data.sequence === no))
                 }
@@ -696,7 +696,7 @@ function Lottary()
               
                 if(no !== null )
                 {
-                    console.log("check 1 = ",no)
+                  //  console.log("check 1 = ",no)
                   //  console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no  && data.luckytime === dateTimeLucky))
                    setDataSet(dataSet.filter(data=> data.sequence === no && data.luckytime === dateTimeLucky))
                 }
@@ -708,8 +708,9 @@ function Lottary()
             {
                 if(no !== null )
                 {
-                    console.log("check ถูกรางงวัลไม่จ่าย = ",no)
+                   // console.log("check ถูกรางงวัลไม่จ่าย = ",no)
                    // console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no ))
+                   console.log('qqq')
                    setDataSet(dataSet.filter(data=>    data.sequence === no))
                 }       
             }
