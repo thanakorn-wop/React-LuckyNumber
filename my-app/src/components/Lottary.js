@@ -569,7 +569,11 @@ function Lottary()
             {
                 alert("กรุณารอหวยออก");
             }
-            else if(response.data.message ==="success")
+            else if(response.data.message ==="validate")
+            {
+                alert("กรุณาตรวจหวยก่อนทำรายการ")
+            }
+            else
             {
                 alert("ทำรายการสำเร็จ");
                 reload()

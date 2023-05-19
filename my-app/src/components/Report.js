@@ -71,12 +71,18 @@ function Report ()
                     headers: { 'Content-Type': 'application/json' }   
                 }
                 )
+                console.log("check response = ",response)
                 if(response !==null && response.data.datalist !==null)
                 {
                     console.log("check response = ",response)
                     setDataReport(response.data.datalist)
                     setReportDate(new Date((response.data.datalist.date)));
                  
+                }
+                else{
+                    console.log("data Report = ",dataReport)
+                    setDataReport({balance:0,cost:0,date:0,id:0,idSeller:0,nickname:0,notpay:0,pay:0,peoplelost:0,peoplewin:0,statusTransfer:'',totalLost:0,totalPurchase:0})
+
                 }
               }catch(error)
               {

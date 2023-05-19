@@ -99,12 +99,14 @@ function NumberModal(props)
             if(nameDate === 'luckytime')
             {
                 value = LuckyDate;
+                
             }
             else{
                 value = DateMonth;
             }
             const newData = UpdateData(nameDate,value,rank)
             setUserData(newData);
+            setNameDate("")
         }
     },[nameDate])
     if(props.show !== true)
@@ -155,10 +157,7 @@ function NumberModal(props)
           return newData;
     }
     const Handlesaving = (isSave)=>{
-        // userData.dataSet[rank].date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        // userData.dataSet[rank].luckytime = LuckyDate.getFullYear()+"-"+(1+Number(LuckyDate.getMonth()))+"-"+LuckyDate.getDate();
-        // console.log("check data again = ",userData)
-       // console.log("check userdata = ",userData)
+       
         props.handleSavingNum(isSave,userData,setUserData,mark,setRank,setTotalPrice)
      }
  

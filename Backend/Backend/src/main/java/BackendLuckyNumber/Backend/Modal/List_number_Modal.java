@@ -38,8 +38,8 @@ public class List_number_Modal {
 	private String id;
 	@Column(name = "transfer")
 	private String transfer;
-	@Column(name = "status_insert")
-	private String statusInsert;
+	@Column(name = "status_validate")
+	private String statusValidate;
 	@Column(name = "sequence")
 	private String sequence;
 	
@@ -54,11 +54,13 @@ public class List_number_Modal {
 	public void setSequence(String sequence) {
 		this.sequence = sequence;
 	}
-	public String getStatusInsert() {
-		return statusInsert;
+	
+	
+	public String getStatusValidate() {
+		return statusValidate;
 	}
-	public void setStatusInsert(String statusInsert) {
-		this.statusInsert = statusInsert;
+	public void setStatusValidate(String statusValidate) {
+		this.statusValidate = statusValidate;
 	}
 	public String getTransfer() {
 		return transfer;

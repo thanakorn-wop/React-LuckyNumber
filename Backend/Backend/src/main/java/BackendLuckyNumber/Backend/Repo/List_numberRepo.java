@@ -44,6 +44,10 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Query(value = " update list_number set status = 'lucky' where id_list in (SELECT id_list FROM list_number   where id = ?1 and id_list in (?2) and luckytime = ?3) ",nativeQuery = true)
 	void changeStatusLucky(String id ,ArrayList<String> idList,String luckydate);
 	
+	@Modifying
+	@Query(value = " update list_number set status_validate = 'Y' where id_list in (SELECT id_list FROM list_number   where id = ?1 and id_list in (?2) and luckytime = ?3) ",nativeQuery = true)
+	void changeStatusValidate(String id ,ArrayList<String> idValidate,String luckydate);
+	
 	@Query(" SELECT u from transfer_lottary u Where u.iduser = ?1 and u.nickname = ?2 and date = ?3 ")
 	List<TransferLottaryModal> getDataTransferLottaryRepo(String iduser,String nickname , String date );
 	

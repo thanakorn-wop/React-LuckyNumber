@@ -200,17 +200,23 @@ public class LottaryController extends ValidateUntil {
 			if (null != listRequest && listRequest.getLuckytime() != null) {
 				MixTransferListNumberModal mixTransfer = listLottaryService.postSendLottaryService(listRequest,
 						user.getInfoUser().getNickname(), user.getUsername(), user.getInfoUser().getId());
-				if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
-					header.setMessage(ConstantData.MESSAGE_EMPTY);
-					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				} else if (mixTransfer.getDuplicateTransfer()) {
+				if (mixTransfer.getDuplicateTransfer()) {
 					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				}else if(null == mixTransfer.getLuckytime())
+				}
+				else if(null == mixTransfer.getLuckytime())
 				{
 					header.setMessage(ConstantData.MESSAGE_NOT_TIME_TO_WORK);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				}
+				else if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
+					header.setMessage(ConstantData.MESSAGE_EMPTY);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				}
+				else if (mixTransfer.getStatusValidate()) {
+					header.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE);
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				} 
 				else {
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);

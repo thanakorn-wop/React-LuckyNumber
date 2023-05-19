@@ -190,7 +190,7 @@ public class LottaryService {
 					list_number_modal.setStatus("unLucky");
 					list_number_modal.setLuckytime(data.getLuckytime());
 					list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-					list_number_modal.setStatusInsert(ConstantData.MESSAGE_NOT_SUCCESS);
+					list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
 					list_number_modal.setSequence(data.getSequence());
 					;
 
@@ -209,7 +209,7 @@ public class LottaryService {
 					list_number_modal.setStatus("unLucky");
 					list_number_modal.setLuckytime(data.getLuckytime());
 					list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-					list_number_modal.setStatusInsert(ConstantData.MESSAGE_NOT_SUCCESS);
+					list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
 					list_number_modal.setSequence(data.getSequence());
 					listNumberRepo.save(list_number_modal);
 					status_Update = true;
@@ -321,6 +321,7 @@ public class LottaryService {
 		Boolean status = false;
 		LottaryModal luckyDate = new LottaryModal();
 		ArrayList<String> idlottary = new ArrayList<>();
+		ArrayList<String> idValidateLottary = new ArrayList<>();
 		
 		try {
 			luckyDate = lottaryRepo.findDate(luckydate);
@@ -331,7 +332,7 @@ public class LottaryService {
 				{
 					for(List_number_Modal item : dataItem)
 					{
-						
+						idValidateLottary.add(item.getIdlist());
 						String number ="";
 						number = item.getNumber();
 						String[] split_number = number.split(",");
@@ -361,8 +362,9 @@ public class LottaryService {
 					if(null != idlottary && idlottary.size()>0)
 					{
 						listNumberRepo.changeStatusLucky(id,idlottary,luckydate);
-						status = true;
 					}
+					listNumberRepo.changeStatusValidate(id, idValidateLottary, luckydate);
+					status = true;
 				}
 			}
 //			dataItem = listNumberRepo.findItembyDate(id,date);
@@ -399,6 +401,7 @@ public class LottaryService {
 			String iduser, String id) {
 		Boolean transferStatus = false;
 		Boolean duplicateTransfer = false;
+		Boolean statusValidate = false;
 		Integer sum = 0;
 		String date ="";
 		Integer oldMonth = 0;
@@ -426,443 +429,237 @@ public class LottaryService {
 					
 					listItem = listNumberRepo.getItemListNumber(id, listRequest.getLuckytime());
 					if (listItem.size() > 0 && listItem != null) {
-						listNumberRepo.postSendLottaryRepo(id, listRequest.getLuckytime());
-						infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
-						Integer convert_Total_Purchase = Integer.valueOf(infoUser.getTotalPurchase());
-						Integer convert_Total_lost = Integer.valueOf(infoUser.getTotalLost());
-						sum = convert_Total_Purchase-convert_Total_lost;	
-						date = infoUser.getDate();
-						String[] split_date = date.split("-");
-						String year = split_date[0];
-						String month = split_date[1];
-						monthModal = monthRepo.findMonthOfUser(id, year);
-						if(null != monthModal)
+						for(List_number_Modal data : listItem)
+						{
+							if(data.getStatusValidate().equals(ConstantData.MESSAGE_N))
 							{
-								if(month.equals("01"))
-								{
-									if(null != monthModal.getJan() || monthModal.getJan().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getJan());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth1(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth1(String.valueOf(sum), id, year);
-									}
-								
-								}
-								else if(month.equals("02")){
-									if(null != monthModal.getFeb() || monthModal.getFeb().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getFeb());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth2(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth2(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("03")){
-									if(null != monthModal.getMar() || monthModal.getMar().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getMar());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth3(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth3(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("04")){
-									if(null != monthModal.getApr() || monthModal.getApr().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getApr());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth4(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth4(String.valueOf(sum), id, year);
-									}
-				
-								}
-								else if(month.equals("05")){
-									if(null != monthModal.getMay() || monthModal.getMay().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getMay());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth5(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth5(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("06")){
-									if(null != monthModal.getJun() || monthModal.getJun().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getJun());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth6(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth6(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("07")){
-									if(null != monthModal.getJul() || monthModal.getJul().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getJul());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth7(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth7(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("08")){
-									if(null != monthModal.getAug() || monthModal.getAug().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getAug());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth8(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth8(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("09")){
-									if(null != monthModal.getSep() || monthModal.getSep().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getSep());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth9(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth9(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("10")){
-									if(null != monthModal.getOct() || monthModal.getOct().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getOct());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth10(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth10(String.valueOf(sum), id, year);
-									}
-								}
-								else if(month.equals("11")){
-									if(null != monthModal.getNov() || monthModal.getNov().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getNov());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth11(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth11(String.valueOf(sum), id, year);
-									}
-								}
-								else {
-									if(null != monthModal.getDec() || monthModal.getDec().equals('0'))
-									{
-										oldMonth = Integer.valueOf(monthModal.getDec());
-										allSum = oldMonth + sum;
-										monthRepo.updateMonth12(String.valueOf(allSum), id, year);
-										
-									}
-									else {
-										monthRepo.updateMonth12(String.valueOf(sum), id, year);
-									}
-								}
-								transferStatus = true;
-							}else
-							{
-								if(month.equals("01"))
-								{
-									monthMoal2.setJan(String.valueOf(sum));
-								}
-								else if(month.equals("02")){
-									monthMoal2.setFeb(String.valueOf(sum));
-								}
-								else if(month.equals("03")){
-									monthMoal2.setMar(String.valueOf(sum));
-								}
-								else if(month.equals("04")){
-									monthMoal2.setApr(String.valueOf(sum));
-				
-								}
-								else if(month.equals("05")){
-									monthMoal2.setMay(String.valueOf(sum));
-								}
-								else if(month.equals("06")){
-									monthMoal2.setJun(String.valueOf(sum));
-								}
-								else if(month.equals("07")){
-									monthMoal2.setJul(String.valueOf(sum));
-								}
-								else if(month.equals("08")){
-									monthMoal2.setAug(String.valueOf(sum));
-								}
-								else if(month.equals("09")){
-									monthMoal2.setSep(String.valueOf(sum));
-								}
-								else if(month.equals("10")){
-									monthMoal2.setOct(String.valueOf(sum));
-								}
-								else if(month.equals("11")){
-									monthMoal2.setNov(String.valueOf(sum));
-								}
-								else {
-									monthMoal2.setDec(String.valueOf(sum));
-								}
-								monthRepo.save(monthMoal2);
-								transferStatus = true;
+								statusValidate = true;
+								break;
 							}
-						if (transferStatus) {
-							itemTransfer.setIduser(iduser);
-							itemTransfer.setNickname(nickname);
-							itemTransfer.setDate(listRequest.getLuckytime());
-							itemTransfer.setTimeTransfer(formattedDate);
-							transferLottaryRepo.save(itemTransfer);
-							
+						}
+						if(!statusValidate)
+						{
+							listNumberRepo.postSendLottaryRepo(id, listRequest.getLuckytime());
+							infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
+							Integer convert_Total_Purchase = Integer.valueOf(infoUser.getTotalPurchase());
+							Integer convert_Total_lost = Integer.valueOf(infoUser.getTotalLost());
+							sum = convert_Total_Purchase-convert_Total_lost;	
+							date = infoUser.getDate();
+							String[] split_date = date.split("-");
+							String year = split_date[0];
+							String month = split_date[1];
+							monthModal = monthRepo.findMonthOfUser(id, year);
+							if(null != monthModal)
+								{
+									if(month.equals("01"))
+									{
+										if(null != monthModal.getJan() || monthModal.getJan().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getJan());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth1(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth1(String.valueOf(sum), id, year);
+										}
+									
+									}
+									else if(month.equals("02")){
+										if(null != monthModal.getFeb() || monthModal.getFeb().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getFeb());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth2(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth2(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("03")){
+										if(null != monthModal.getMar() || monthModal.getMar().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getMar());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth3(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth3(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("04")){
+										if(null != monthModal.getApr() || monthModal.getApr().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getApr());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth4(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth4(String.valueOf(sum), id, year);
+										}
+					
+									}
+									else if(month.equals("05")){
+										if(null != monthModal.getMay() || monthModal.getMay().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getMay());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth5(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth5(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("06")){
+										if(null != monthModal.getJun() || monthModal.getJun().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getJun());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth6(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth6(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("07")){
+										if(null != monthModal.getJul() || monthModal.getJul().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getJul());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth7(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth7(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("08")){
+										if(null != monthModal.getAug() || monthModal.getAug().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getAug());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth8(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth8(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("09")){
+										if(null != monthModal.getSep() || monthModal.getSep().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getSep());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth9(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth9(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("10")){
+										if(null != monthModal.getOct() || monthModal.getOct().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getOct());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth10(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth10(String.valueOf(sum), id, year);
+										}
+									}
+									else if(month.equals("11")){
+										if(null != monthModal.getNov() || monthModal.getNov().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getNov());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth11(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth11(String.valueOf(sum), id, year);
+										}
+									}
+									else {
+										if(null != monthModal.getDec() || monthModal.getDec().equals('0'))
+										{
+											oldMonth = Integer.valueOf(monthModal.getDec());
+											allSum = oldMonth + sum;
+											monthRepo.updateMonth12(String.valueOf(allSum), id, year);
+											
+										}
+										else {
+											monthRepo.updateMonth12(String.valueOf(sum), id, year);
+										}
+									}
+									transferStatus = true;
+								}else
+								{
+									if(month.equals("01"))
+									{
+										monthMoal2.setJan(String.valueOf(sum));
+									}
+									else if(month.equals("02")){
+										monthMoal2.setFeb(String.valueOf(sum));
+									}
+									else if(month.equals("03")){
+										monthMoal2.setMar(String.valueOf(sum));
+									}
+									else if(month.equals("04")){
+										monthMoal2.setApr(String.valueOf(sum));
+					
+									}
+									else if(month.equals("05")){
+										monthMoal2.setMay(String.valueOf(sum));
+									}
+									else if(month.equals("06")){
+										monthMoal2.setJun(String.valueOf(sum));
+									}
+									else if(month.equals("07")){
+										monthMoal2.setJul(String.valueOf(sum));
+									}
+									else if(month.equals("08")){
+										monthMoal2.setAug(String.valueOf(sum));
+									}
+									else if(month.equals("09")){
+										monthMoal2.setSep(String.valueOf(sum));
+									}
+									else if(month.equals("10")){
+										monthMoal2.setOct(String.valueOf(sum));
+									}
+									else if(month.equals("11")){
+										monthMoal2.setNov(String.valueOf(sum));
+									}
+									else {
+										monthMoal2.setDec(String.valueOf(sum));
+									}
+									monthRepo.save(monthMoal2);
+									transferStatus = true;
+								}
+							if (transferStatus) {
+								itemTransfer.setIduser(iduser);
+								itemTransfer.setNickname(nickname);
+								itemTransfer.setDate(listRequest.getLuckytime());
+								itemTransfer.setTimeTransfer(formattedDate);
+								transferLottaryRepo.save(itemTransfer);
+								
+							}
 						}
 					}
 				}
 
 			}
-//			listItem = listNumberRepo.getItemListNumber(id, listRequest.getLuckytime());
-//			if (listItem.size() > 0 && listItem != null) {
-//				System.out.println("check");
-//				dataTransfer = listNumberRepo.getDataTransferLottaryRepo(iduser, nickname, listRequest.getLuckytime());
-//				if (null != dataTransfer && dataTransfer.size() > 1) {
-//					duplicateTransfer = true;
-//				} else {
-//					listNumberRepo.postSendLottaryRepo(id, listRequest.getLuckytime());
-//					infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
-//					Integer convert_Total_Purchase = Integer.valueOf(infoUser.getTotalPurchase());
-//					Integer convert_Total_lost = Integer.valueOf(infoUser.getTotalLost());
-//					sum = convert_Total_Purchase-convert_Total_lost;	
-//					date = infoUser.getDate();
-//					String[] split_date = date.split("-");
-//					String year = split_date[0];
-//					String month = split_date[1];
-//					monthModal = monthRepo.findMonthOfUser(id, year);
-//					if(null != monthModal)
-//					{
-//						if(month.equals("01"))
-//						{
-//							if(null != monthModal.getJan() || monthModal.getJan().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getJan());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth1(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth1(String.valueOf(sum), id, year);
-//							}
-//						
-//						}
-//						else if(month.equals("02")){
-//							if(null != monthModal.getFeb() || monthModal.getFeb().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getFeb());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth2(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth2(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("03")){
-//							if(null != monthModal.getMar() || monthModal.getMar().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getMar());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth3(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth3(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("04")){
-//							if(null != monthModal.getApr() || monthModal.getApr().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getApr());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth4(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth4(String.valueOf(sum), id, year);
-//							}
-//		
-//						}
-//						else if(month.equals("05")){
-//							if(null != monthModal.getMay() || monthModal.getMay().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getMay());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth5(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth5(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("06")){
-//							if(null != monthModal.getJun() || monthModal.getJun().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getJun());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth6(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth6(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("07")){
-//							if(null != monthModal.getJul() || monthModal.getJul().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getJul());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth7(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth7(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("08")){
-//							if(null != monthModal.getAug() || monthModal.getAug().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getAug());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth8(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth8(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("09")){
-//							if(null != monthModal.getSep() || monthModal.getSep().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getSep());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth9(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth9(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("10")){
-//							if(null != monthModal.getOct() || monthModal.getOct().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getOct());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth10(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth10(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else if(month.equals("11")){
-//							if(null != monthModal.getNov() || monthModal.getNov().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getNov());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth11(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth11(String.valueOf(sum), id, year);
-//							}
-//						}
-//						else {
-//							if(null != monthModal.getDec() || monthModal.getDec().equals('0'))
-//							{
-//								oldMonth = Integer.valueOf(monthModal.getDec());
-//								allSum = oldMonth + sum;
-//								monthRepo.updateMonth12(String.valueOf(allSum), id, year);
-//								
-//							}
-//							else {
-//								monthRepo.updateMonth12(String.valueOf(sum), id, year);
-//							}
-//						}
-//					}else
-//					{
-//						if(month.equals("01"))
-//						{
-//							monthMoal2.setJan(String.valueOf(sum));
-//						}
-//						else if(month.equals("02")){
-//							monthMoal2.setFeb(String.valueOf(sum));
-//						}
-//						else if(month.equals("03")){
-//							monthMoal2.setMar(String.valueOf(sum));
-//						}
-//						else if(month.equals("04")){
-//							monthMoal2.setApr(String.valueOf(sum));
-//		
-//						}
-//						else if(month.equals("05")){
-//							monthMoal2.setMay(String.valueOf(sum));
-//						}
-//						else if(month.equals("06")){
-//							monthMoal2.setJun(String.valueOf(sum));
-//						}
-//						else if(month.equals("07")){
-//							monthMoal2.setJul(String.valueOf(sum));
-//						}
-//						else if(month.equals("08")){
-//							monthMoal2.setAug(String.valueOf(sum));
-//						}
-//						else if(month.equals("09")){
-//							monthMoal2.setSep(String.valueOf(sum));
-//						}
-//						else if(month.equals("10")){
-//							monthMoal2.setOct(String.valueOf(sum));
-//						}
-//						else if(month.equals("11")){
-//							monthMoal2.setNov(String.valueOf(sum));
-//						}
-//						else {
-//							monthMoal2.setDec(String.valueOf(sum));
-//						}
-//						monthRepo.save(monthMoal2);
-//					}
-//					transferStatus = true;
-//					if (transferStatus) {
-//						itemTransfer.setIduser(iduser);
-//						itemTransfer.setNickname(nickname);
-//						itemTransfer.setDate(listRequest.getLuckytime());
-//						itemTransfer.setTimeTransfer(formattedDate);
-//						transferLottaryRepo.save(itemTransfer);
-//						
-//					}
-//				}
-//			}
+
 			mixTransferNumber.setDuplicateTransfer(duplicateTransfer);
 			mixTransferNumber.setListNumberModal(listItem);
 			mixTransferNumber.setLuckytime(luckytime);
+			mixTransferNumber.setStatusValidate(statusValidate);
 
 //			
 //	

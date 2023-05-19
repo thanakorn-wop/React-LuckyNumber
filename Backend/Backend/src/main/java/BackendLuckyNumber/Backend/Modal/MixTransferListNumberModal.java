@@ -4,13 +4,20 @@ import java.util.List;
 
 public class MixTransferListNumberModal {
 
+
 	private List<List_number_Modal> listNumberModal;
 	private List<TransferLottaryModal> transferLottaryModal;
 	private LottaryModal luckytime;
 	private Boolean duplicateTransfer;
+	private Boolean statusValidate;
 	
 	
-
+	public Boolean getStatusValidate() {
+		return statusValidate;
+	}
+	public void setStatusValidate(Boolean statusValidate) {
+		this.statusValidate = statusValidate;
+	}
 	
 	public LottaryModal getLuckytime() {
 		return luckytime;
