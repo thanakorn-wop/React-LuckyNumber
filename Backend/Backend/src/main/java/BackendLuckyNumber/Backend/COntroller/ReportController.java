@@ -25,7 +25,7 @@ public class ReportController {
 	
 	@Autowired ReportService reportService;
 	
-	@GetMapping("/report/{date}")
+	@GetMapping("/summary/{date}")
 	public ResponseEntity getReport(@PathVariable String date,Authentication auth)
 	{
 		System.out.println("date = "+date);

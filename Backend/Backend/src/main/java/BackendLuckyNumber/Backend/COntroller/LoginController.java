@@ -131,6 +131,7 @@ public class LoginController extends ValidateUntil {
 					resp.setTimelogin(user.get(0).getTimelogin());
 					resp.setTimelogout(user.get(0).getTimelogout());
 					resp.setToken(user.get(0).getToken());
+					resp.setRole(user.get(0).getRole());
 					//final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
 //				    req.getSession().setAttribute("iduser", userDetails.getUsername());
 //				    final String jwtToken = jwt.generateJwtToken(userDetails);

@@ -166,6 +166,8 @@ public class LoginService {
 //				tokenpass = genjwt.encodeData(userLogin.getPassword());
 				usermodal.setIduser(userLogin.getIduser());
 				usermodal.setPassword(encodedPassword);
+				usermodal.setRole(userLogin.getRole());
+				usermodal.setNickname(userLogin.getNickname());
 				usermodal.setStatus("I");
 				loginRepo.save(usermodal);
 			}

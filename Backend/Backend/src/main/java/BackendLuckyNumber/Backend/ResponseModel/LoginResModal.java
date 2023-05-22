@@ -10,12 +10,20 @@ import BackendLuckyNumber.Backend.Header;
 public class LoginResModal implements Serializable {
 	private Header header;
 	private String iduser;
+	private String role;
 	private String timelogin;
 	private String timelogout;
 	private String status;
 	private String token;
 	
 	
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public String getToken() {
 		return token;
 	}

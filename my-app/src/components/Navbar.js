@@ -1,39 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../CSS/Navbar.css"
 import { Link, NavLink } from 'react-router-dom';
 import * as urlConstant from "../components/Constant/UrlConstant"
-import axios from "axios";
+import {AuthContext} from "../App"
+
 function Navbar()
-{
+{   const auth = useContext(AuthContext);
+    console.log("check nav auth1 = ",auth)
     function logout(){
         let session =  sessionStorage.getItem("token");
         sessionStorage.removeItem("token");
-    //    if(session === undefined || session === null)
-    //    {
-    //     // window.location.assign("/login")
-    //     console.log("no session ")
-    //     return;
-    //    }
-    //    else{
-    //     try{
-    //         axios.post(urlConstant.LOGOUT_USER,{token:session},{
-    //             headers: { 'Content-Type': 'application/json' }
-    //         }).then(res =>{
-    //             console.log(res)
-    //             if(res.status.ok == 200)
-    //             {
-    //                 sessionStorage.removeItem("token");
-    //                 window.location.assign("/login")
-    //             }
-    //         })
-    //     }catch(e){
-    //         console.log(e)
-    //     }
-       
-      
-    //    }
 
-//  sessionStorage.setItem("pageView", pageView);
     }
     return(
 
@@ -44,8 +21,13 @@ function Navbar()
                     <div className="Link">
                         <ul className=" setmenu">
                             <li><NavLink to="/dashboard" > หน้าหลัก </NavLink></li>
-                            <li><NavLink to="/calculate" > คิดหวย </NavLink></li>
-                            <li><NavLink to="/report" > ยอดสรุป </NavLink></li>
+                        {
+                            auth === 'member'?     <li><NavLink to="/calculate" > คิดหวย </NavLink></li>  : null
+                        }
+                        {
+                            auth !== 'member'?   <li><NavLink to="/report" > รายงาน </NavLink></li> : null
+                        }
+                            <li><NavLink to="/summary" > ยอดสรุป </NavLink></li>
                             <li><NavLink to="/contactus" > ติดต่อเรา </NavLink></li>
                             <li><NavLink to="/login" onClick={()=> logout()} > ออกจากระบบ </NavLink></li>
                            

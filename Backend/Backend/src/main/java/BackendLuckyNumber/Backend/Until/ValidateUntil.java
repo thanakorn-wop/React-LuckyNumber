@@ -18,7 +18,8 @@ public class ValidateUntil {
 	
 	public  Boolean validateRequest(LoginReqModel userLogin)
 	{
-		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) ? true:false;
+		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) 
+				&& StringUtils.isNotBlank(userLogin.getRole()) && StringUtils.isNotBlank(userLogin.getNickname()) ? true:false;
 		return validate;
 	}
 	

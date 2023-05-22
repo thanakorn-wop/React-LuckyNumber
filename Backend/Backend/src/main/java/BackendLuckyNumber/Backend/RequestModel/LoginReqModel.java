@@ -11,10 +11,24 @@ public class LoginReqModel implements UserDetails {
 	private Header header;
 	private String iduser;
 	private String password;
+	private String role;
+	private String nickname;
 	private String token;
 	
 	
-	
+
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public String getToken() {
 		return token;
 	}

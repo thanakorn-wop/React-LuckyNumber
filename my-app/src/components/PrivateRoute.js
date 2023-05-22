@@ -6,7 +6,7 @@ function PrivateRoute({children}) {
    const isAuthenticated = sessionStorage.getItem('token');
    console.log("check isAuthenticated = ",isAuthenticated)
   return (
-    isAuthenticated ? <>{children}</> : <Navigate to="/login" />
+    isAuthenticated  ? <>{children}</> : <Navigate to="/login" />
   
  
   );
