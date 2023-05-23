@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import plus from "../../Icons/plus.png"
 
 
+
 function NumberModal(props)
 {
   

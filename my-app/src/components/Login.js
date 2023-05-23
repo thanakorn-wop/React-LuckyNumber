@@ -5,6 +5,7 @@ import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
 // import {useUser} from "../components/Authen/AuthenProvider"
 //  import {Authen} from "../components/Authen/Authen"
+import home from "../Icons/home.png"
 function Login({ setauth   })
 {
     
@@ -127,7 +128,14 @@ function Login({ setauth   })
         <div className="Mainpage">
            
             <div className="login" style={{"border":"solid 10px"}}>
-                <div><h2 style={{"color":"white","textAlign":"center","marginTop":"20px"}}>Login</h2></div>
+                <div className="logoLogin" style={{"display":"flex","alignItems":"center","marginTop":"20px"}}> 
+                    <div className="imghome" style={{"width":"40%","textAlign":"right"}}>
+                        <img src={home} style={{"width":"15%"}}/>
+                    </div>
+                    <div className="labelLogin" style={{"width":"50%","marginLeft":"5px"}}>
+                        <label style={{"color":"white","fontSize":"24px"}}>BAN HUAI</label>
+                    </div>
+                </div>
                 <div className="formLogin">
                     <div className="textbox" >
                         <label style={{"color":"white","fontSize":"20px"}}>ID</label>
