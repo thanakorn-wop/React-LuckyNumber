@@ -44,7 +44,7 @@ function PaginatedItems(props)
         setCurrentPage(newOffset);
     }
     return(
-        <div className="paginate" style={{"marginTop":"15px"}}>
+        <div className="paginate" style={{"position":"relative","zIndex":"1","margin":"0 auto"}}>
             {/* {
                 currentItem.map((data,index)=>{
                     console.log("check data = ",index)
@@ -56,7 +56,7 @@ function PaginatedItems(props)
         breakLabel ={"..."}
         pageCount={pageNumber}
         onPageChange={handlePageClick}
-        containerClassName={"pagination justify-content-center"}
+        containerClassName={"pagination"}
         pageClassName={"page-item"}
         pageLinkClassName={"page-link"}
         previousClassName={"page-item"}

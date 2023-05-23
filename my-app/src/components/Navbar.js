@@ -2,11 +2,14 @@ import React, { useContext } from "react";
 import "../CSS/Navbar.css"
 import { Link, NavLink } from 'react-router-dom';
 import * as urlConstant from "../components/Constant/UrlConstant"
-import {AuthContext} from "../App"
+import {Authen} from "../components/Authen/Authen"
 
 function Navbar()
-{   const auth = useContext(AuthContext);
-    console.log("check nav auth1 = ",auth)
+{   const auth = "admin"
+    // const {user} = useContext(Authen);
+    const role = localStorage.getItem("userRole");
+    console.log(" user role = ",role)
+    // console.log("check nav auth1 = ",user.role)
     function logout(){
         let session =  sessionStorage.getItem("token");
         sessionStorage.removeItem("token");
@@ -22,10 +25,10 @@ function Navbar()
                         <ul className=" setmenu">
                             <li><NavLink to="/dashboard" > หน้าหลัก </NavLink></li>
                         {
-                            auth === 'member'?     <li><NavLink to="/calculate" > คิดหวย </NavLink></li>  : null
+                            role === 'member'?     <li><NavLink to="/calculate" > คิดหวย </NavLink></li>  : null
                         }
                         {
-                            auth !== 'member'?   <li><NavLink to="/report" > รายงาน </NavLink></li> : null
+                            role === 'admin'?   <li><NavLink to="/report" > รายงาน </NavLink></li> : null
                         }
                             <li><NavLink to="/summary" > ยอดสรุป </NavLink></li>
                             <li><NavLink to="/contactus" > ติดต่อเรา </NavLink></li>

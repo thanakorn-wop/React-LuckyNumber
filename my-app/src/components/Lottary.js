@@ -812,8 +812,8 @@ function Lottary()
                         </table>
                     </div>
              
-                    <div className="listdatanumber" style={{"marginBottom":"15px"}}>
-                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px"}}  className="table table-striped">
+                    <div className="listdatanumber" style={{"marginBottom":"15px","display":"flex","flexDirection":"column"}}>
+                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
@@ -836,7 +836,7 @@ function Lottary()
                                 
                             newItem.length ===0 || newItem[0]['idlist'] ==='' ?
                             <tr key = {index}>
-                               <td colSpan="11" style={{"textAlign":"center","color":"white"}}>ไม่พบข้อมูล</td>  
+                               <td colSpan="12" style={{"textAlign":"center","color":"white"}}>ไม่พบข้อมูล</td>  
                             </tr> : 
                                     newItem.map((resp,index)=>{
                                    // console.log(resp.number);
