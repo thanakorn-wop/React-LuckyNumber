@@ -5,13 +5,12 @@ import Login from './components/Login';
 import Dashbord from './components/Dashbord';
 import Navbar from './components/Navbar';
 import Lottary from './components/Lottary';
-import Report from './components/Report';
+import Summary from './components/Summary';
 import ContactUs from './components/ContactUs';
 import { useState } from 'react';
 import PangeNotFound from './components/Error/PageNotFound';
 import PrivateRoute from './components/PrivateRoute';
-import AuthenProvider  from './components/Authen/AuthenProvider';
-export const AuthContext = createContext();
+import Management from "../src/components/Manamgent"
 
 
 // function setAuth(data)
@@ -56,7 +55,8 @@ function App() {
               {/* <PrivateRoute path="/dashboard" element={<Dashbord />} /> */}
              <Route path='dashboard' element={<PrivateRoute>  <Dashbord /> </PrivateRoute>}  />
              <Route path='calculate' element={<PrivateRoute>  <Lottary /></PrivateRoute>}  />
-             <Route path='summary' element={<PrivateRoute>  <Report /></PrivateRoute>}  />
+             <Route path='manage' element={<PrivateRoute>  <Management /></PrivateRoute>}  />
+             <Route path='summary' element={<PrivateRoute>  <Summary /></PrivateRoute>}  />
              <Route path='contactus' element={<PrivateRoute>  <ContactUs /></PrivateRoute>}  />
             
           </Routes>

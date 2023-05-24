@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "../CSS/Report.css"
+import "../CSS/Summary.css"
 import EditinfoModal from "./Modal/EditinfoModal";
 import "../CSS/ModalCss/EditinfoModal.css"
 import DatePicker from "react-datepicker";
 import axios from "axios";
-import * as urlConstant from "../components/Constant/UrlConstant"
+import * as urlConstant from "./Constant/UrlConstant"
 function Report ()
 {
     const [isOpen ,setIsOpen] = useState(false);
@@ -111,7 +111,7 @@ function Report ()
         <div className="pathreport">
             <div className="boxreport">
                 <div className="title">
-                    <h3>Report</h3>
+                    <h3>Summary</h3>
                 </div>
                 <div className="table-search-report">  
                 <table className="table table-bordered table-striped">

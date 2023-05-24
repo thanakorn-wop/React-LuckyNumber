@@ -17,7 +17,7 @@ import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 
 //import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
-import BackendLuckyNumber.Backend.Repo.LoginRepo;
+import BackendLuckyNumber.Backend.Repo.UserRepo;
 import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
@@ -25,7 +25,7 @@ import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
 @Service
 public class LoginService {
 
-	@Autowired LoginRepo loginRepo;
+	@Autowired UserRepo userRepo;
 	@Autowired TokenManager jwt;
 //	@Autowired private JwtUserDetailsService userDetailsService;
 	// @Autowired InfoUserRepo infoUserRepo;
@@ -41,7 +41,7 @@ public class LoginService {
 		String jwtToken = "";
 		try {
 
-			dataUser = loginRepo.findidUser(userLogin.getUsername());
+			dataUser = userRepo.findidUser(userLogin.getUsername());
 			// final UserDetails userDetails =
 			// userDetailsService.loadUserByUsername(userLogin.getUsername());
 
@@ -59,7 +59,7 @@ public class LoginService {
 						dataUser.setStatus(status);
 						dataUser.setTimelogin(formattedDate);
 						dataUser.setToken(jwtToken);
-						loginRepo.updateStatusLoginUser(status, formattedDate, dataUser.getToken(),userLogin.getUsername(),dataUser.getPassword());
+						userRepo.updateStatusLoginUser(status, formattedDate, dataUser.getToken(),userLogin.getUsername(),dataUser.getPassword());
 
 					}
 					// case status == lock, user will not be able to access web site
@@ -95,7 +95,7 @@ public class LoginService {
 //	}
 
 	public UserModal getUser(String username) {
-		UserModal userDetails = loginRepo.findidUser(username);
+		UserModal userDetails = userRepo.findidUser(username);
 		return userDetails;
 	}
 
@@ -107,14 +107,14 @@ public class LoginService {
 		Boolean updateStatus = false;
 		try {
 
-			dataUser = loginRepo.findTokenUser(userLogin.getToken());
+			dataUser = userRepo.findTokenUser(userLogin.getToken());
 			if (!StringUtils.isEmpty(dataUser)) {
 				validateToken = validateToken(userLogin.getToken(), dataUser.getToken());
 				if (validateToken) {
 					LocalDateTime myDateObj = LocalDateTime.now();
 					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
-					loginRepo.updateStatusLogoutUser(status, formattedDate, dataUser.getToken());
+					userRepo.updateStatusLogoutUser(status, formattedDate, dataUser.getToken());
 					updateStatus = true;
 				}
 
@@ -158,7 +158,7 @@ public class LoginService {
 //		Boolean DuplicateRegister = false;
 		// String encodedPassword = BCryptPasswordDecoder(userLogin.getPassword());
 		try {
-			dataUser = loginRepo.findidUser(userLogin.getIduser());
+			dataUser = userRepo.findidUser(userLogin.getIduser());
 			if (!StringUtils.isEmpty(dataUser)) {
 				dataUser = null;
 				return dataUser;
@@ -169,7 +169,7 @@ public class LoginService {
 				usermodal.setRole(userLogin.getRole());
 				usermodal.setNickname(userLogin.getNickname());
 				usermodal.setStatus("I");
-				loginRepo.save(usermodal);
+				userRepo.save(usermodal);
 			}
 
 		} catch (Exception e) {

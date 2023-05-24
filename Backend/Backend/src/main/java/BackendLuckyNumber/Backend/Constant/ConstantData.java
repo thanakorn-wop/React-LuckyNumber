@@ -31,6 +31,8 @@ public class ConstantData {
 	public static String MESSAGE_Y = "Y";
 	public static String MESSAGE_N = "N";
 	public static String MESSAGE_EMPTY = "empty";
+	public static String ADMIN = "admin";
+	public static String MEMBER = "member";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";

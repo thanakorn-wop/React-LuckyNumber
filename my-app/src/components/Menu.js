@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import Dashbord from "./Dashbord";
 import Lottary from "./Lottary";
-import Report from "./Report";
+import Report from "./Summary";
 import ContactUs from "./ContactUs";
 function Menu()
 {

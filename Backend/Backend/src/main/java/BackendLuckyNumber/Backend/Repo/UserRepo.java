@@ -1,5 +1,7 @@
 package BackendLuckyNumber.Backend.Repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 
 @Transactional 
-public interface   LoginRepo  extends JpaRepository<UserModal,String>     {
+public interface   UserRepo  extends JpaRepository<UserModal,String>     {
 
 //	@Query("SELECT iduser FROM user WHERE iduser = ?1")
 //	UserModal findidUser(String name);
@@ -21,7 +23,10 @@ public interface   LoginRepo  extends JpaRepository<UserModal,String>     {
 	
 	@Query(value = " SELECT p FROM user p  WHERE p.token = ?1  ")
 	UserModal findTokenUser(String token);
-	 
+	
+	@Query(value =  " SELECT * from user   ",nativeQuery = true)
+	List<UserModal> getUser();
+	
 	@Modifying
 	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogin = ?2, p.token = ?3 WHERE p.iduser = ?4 and p.password = ?5  ")
 	void updateStatusLoginUser(String status,String date,String token,String user,String pass);
