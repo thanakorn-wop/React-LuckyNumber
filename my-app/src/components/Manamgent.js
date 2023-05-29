@@ -6,6 +6,8 @@ import * as urlConstanst from "../components/Constant/UrlConstant"
 function Management()
 {
     const [user,setUser] = useState([]);
+    const [checkBox,setCheckBox] = useState(false);
+    const [userInfo,setUserinfo] = useState("");
 
     let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
@@ -55,6 +57,11 @@ function Management()
         getAllUser()
 
     },[])
+
+    function getValueCheckBox(event)
+    {
+        console.log("check event = ",event.target.checked)
+    }
     return(
         <div className="containerManagement">
             <div className="boxManagement">
@@ -66,16 +73,21 @@ function Management()
                 <thead >
                     <tr style={{"border":"none"}} >
                         <td style={{"width":"50%","border":"none"}}>ชื่อเล่น</td>
-                        <td style={{"border":"none"}} >การจัดการ</td>
+                        <td style={{"border":"none"}} >ล็อคผุ้ใช้งาน</td>
                     </tr>
                 </thead>
                 <tbody >
                     {
                         user.map((data)=>{
                             return(
-                                <tr style={{"border":"none"}}>
+                                <tr style={{"border":"none"}}  key={data.nickname}>
                                 <td style={{"border":"none"}}><label>{data.nickname}</label></td>
-                                <td  style={{"border":"none"}}>  <input type="checkbox" id="coding" name="interest" value="coding" /></td>
+                                <td  style={{"border":"none"}}> 
+                                <span className="switch">
+                                <input type="checkbox" id={data.nickname} className={data.nickname}  name={data.nickname} onChange={getValueCheckBox}   />
+                                 <label for = {data.nickname} ></label>
+                                </span>
+                                </td>
                              
                             </tr>
                             )
