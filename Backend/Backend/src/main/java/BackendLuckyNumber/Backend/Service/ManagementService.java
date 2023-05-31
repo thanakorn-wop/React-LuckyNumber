@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.Repo.UserRepo;
+import BackendLuckyNumber.Backend.RequestModel.UserRequestModal;
 import BackendLuckyNumber.Backend.ResponseModel.UserResModal;
 
 @Service
@@ -41,6 +42,22 @@ public class ManagementService {
 		}
 		
 		return respModal;
+	}
+	
+	public Boolean postLockUser(UserRequestModal userModal)
+	{
+		Boolean status = false;
+		try {
+			
+			userRepo.updateStatusLogin(userModal.getStatus(),userModal.getIduser(),userModal.getNickname());
+			status = true;
+			
+			
+		}
+		catch (Exception e) {
+			System.out.println("postLockUser Service status =  " +status+" Error = "+ e);
+		}
+		return status;
 	}
 
 }

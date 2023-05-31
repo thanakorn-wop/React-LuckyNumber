@@ -871,7 +871,10 @@ function Lottary()
                            </tbody>
                         </table> 
                         {/* <Paginagtion   totalPosts={dataSet.length} postsPerPage = {postsPerPage} paginate={paginate} /> */}
-                        <PaginatedItems items = {dataSet} callBackItem ={(items)=>setNewItem(items) } />
+                        <div className="paginatedLottary "  style={{"position":"relative","zIndex":"1","margin":"0 auto"}}>
+                                <PaginatedItems items = {dataSet} callBackItem ={(items)=>setNewItem(items) } />
+                        </div>
+                        
                 </div>
             </div>
             {/* // list insert purachse number  modal */}

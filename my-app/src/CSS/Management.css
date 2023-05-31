@@ -104,3 +104,7 @@
     background: #1E1E1E;
     transition: left 0.4s 0.2s,right 0.5s,background 0.35s;
 }
+.paginatManage .paginate{
+    position: relative;
+    left: 40%;
+}

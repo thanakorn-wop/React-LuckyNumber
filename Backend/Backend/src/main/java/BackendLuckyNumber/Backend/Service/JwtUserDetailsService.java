@@ -19,14 +19,14 @@ import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 public class JwtUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	LoginService lognService;
+	LoginService loginService;
 	// @Autowired InfoUserRepo infoUser;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		try {
-			UserModal userDetails = lognService.getUser(username);
+			UserModal userDetails = loginService.getUser(username);
 		
 			if (null != userDetails ) {
 

@@ -35,4 +35,9 @@ public interface   UserRepo  extends JpaRepository<UserModal,String>     {
 	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogout = ?2 WHERE p.token = ?3 ")
 	void updateStatusLogoutUser(String status,String date,String token);
 	
+	
+	@Modifying
+	@Query(value = " UPDATE user p SET p.status =?1 Where  p.iduser = ?2 and p.nickname = ?3 ")
+	void updateStatusLogin(String status,String iduser,String nickname);
+	
 }

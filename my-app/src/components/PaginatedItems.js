@@ -44,12 +44,7 @@ function PaginatedItems(props)
         setCurrentPage(newOffset);
     }
     return(
-        <div className="paginate" style={{"position":"relative","zIndex":"1","margin":"0 auto"}}>
-            {/* {
-                currentItem.map((data,index)=>{
-                    console.log("check data = ",index)
-                })
-            } */}
+        <div className="paginate">
         <ReactPaginate 
         previousLabel ={"previous"}
         nextLabel = {"Next"}

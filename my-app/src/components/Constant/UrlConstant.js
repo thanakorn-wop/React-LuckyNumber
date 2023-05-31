@@ -13,3 +13,4 @@ export const POST_UPDATE__STATUS_PAYMENT ="http://localhost:8090/api/updatestatu
 export const POST_DELETEDATAT ="http://localhost:8090/api/deletedata"
 export const POST_SEND_LOTTARY ="http://localhost:8090/api/sendlottary"
 export const POST_VALIDATE_LOTTARY ="http://localhost:8090/api/validateluckyitem"
+export const POST_LOCK_USER ="http://localhost:8090/api/lockuser"
