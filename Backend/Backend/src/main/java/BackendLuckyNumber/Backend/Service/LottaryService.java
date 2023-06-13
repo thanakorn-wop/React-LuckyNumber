@@ -223,7 +223,7 @@ public class LottaryService {
 							if (null != dataItem && dataItem.size() > 0) {
 								for (List_number_Modal item : dataItem) {
 									total_purchase += Integer.valueOf(item.getAllPrice());
-									if (item.getTransfer().equals("N") && item.getStatus().equals("unLucky")) {
+									if (item.getTransfer().equals(ConstantData.MESSAGE_N) && item.getStatus().equals("unLucky")) {
 										count_lost += 1;
 									}
 								}
@@ -322,58 +322,64 @@ public class LottaryService {
 		LottaryModal luckyDate = new LottaryModal();
 		ArrayList<String> idlottary = new ArrayList<>();
 		ArrayList<String> idValidateLottary = new ArrayList<>();
+		InfoUserModal user = new InfoUserModal();
+		Integer sum = 0;
+		Integer index = 0;
+		String statusTransfer = null;
 		
 		try {
-			luckyDate = lottaryRepo.findDate(luckydate);
-			if(null !=luckyDate)
+			user =	infouserRepo.findInfoUser(id, luckydate);
+			statusTransfer = user.getStatusTransfer();
+			if(statusTransfer.equals(ConstantData.MESSAGE_N))
 			{
-				dataItem = listNumberRepo.findItembyDate(id,luckydate);
-				if(null != dataItem && dataItem.size()> 0 )
+				luckyDate = lottaryRepo.findDate(luckydate);
+				if(null !=luckyDate)
 				{
-					for(List_number_Modal item : dataItem)
+					dataItem = listNumberRepo.findItembyStatusTransfer(id,luckydate);
+					if(null != dataItem && dataItem.size()> 0 )
 					{
-						idValidateLottary.add(item.getIdlist());
-						String number ="";
-						number = item.getNumber();
-						String[] split_number = number.split(",");
-						for(String no : split_number)
+						for(List_number_Modal item : dataItem)
 						{
-							if(item.getOptinpurchase().equals(ConstantData.MESSAGE_TOP))
+							idValidateLottary.add(item.getIdlist());
+							String number ="";
+							number = item.getNumber();
+							String[] split_number = number.split(",");
+							for(String no : split_number)
 							{
-								if(no.equals(luckyDate.getThreeTop()))
+								if(item.getOptinpurchase().equals(ConstantData.MESSAGE_TOP))
+								{
+									if(no.equals(luckyDate.getThreeTop()))
+									{
+										
+//										listNumberRepo.changeStatusLucky(id,idLottary,date);
+										idlottary.add(item.getIdlist());
+										sum = sum + Integer.valueOf(item.getPrice());
+									}
+								}
+								else if(item.getOptinpurchase().equals(ConstantData.MESSAGE_BELOW))
 								{
 									
-//									listNumberRepo.changeStatusLucky(id,idLottary,date);
-									idlottary.add(item.getIdlist());
-									
-								}
+									if(no.equals(luckyDate.getTwodown()))
+									{
+										
+										idlottary.add(item.getIdlist());
+										sum = sum + Integer.valueOf(item.getPrice());
+									}
+								}				
 							}
-							else if(item.getOptinpurchase().equals(ConstantData.MESSAGE_BELOW))
-							{
-								
-								if(no.equals(luckyDate.getTwodown()))
-								{
-									
-									idlottary.add(item.getIdlist());					
-								}
-							}				
+							
 						}
+						System.out.println("check sum = "+sum);
+						if(null != idlottary && idlottary.size()>0)
+						{
+							listNumberRepo.changeStatusLucky(id,idlottary,luckydate);
+							
+						}
+						listNumberRepo.changeStatusValidate(id, idValidateLottary, luckydate);
+						status = true;
 					}
-					if(null != idlottary && idlottary.size()>0)
-					{
-						listNumberRepo.changeStatusLucky(id,idlottary,luckydate);
-					}
-					listNumberRepo.changeStatusValidate(id, idValidateLottary, luckydate);
-					status = true;
 				}
-			}
-//			dataItem = listNumberRepo.findItembyDate(id,date);
-//			if(null != dataItem)
-//			{
-//				listNumberRepo.changeStatusLucky(id,date);
-//				status = true;
-//			}
-			
+			}	
 		}catch(Exception e)
 		{
 			throw e;
@@ -647,6 +653,9 @@ public class LottaryService {
 								itemTransfer.setNickname(nickname);
 								itemTransfer.setDate(listRequest.getLuckytime());
 								itemTransfer.setTimeTransfer(formattedDate);
+								itemTransfer.setBalance(String.valueOf(sum));
+								itemTransfer.setTotalPurchase(infoUser.getTotalPurchase());
+								itemTransfer.setTotalLost(infoUser.getTotalLost());
 								transferLottaryRepo.save(itemTransfer);
 								
 							}

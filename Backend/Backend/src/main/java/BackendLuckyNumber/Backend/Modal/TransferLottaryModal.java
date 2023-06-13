@@ -24,10 +24,34 @@ public class TransferLottaryModal {
 	private String date;
 	@Column(name = "time_transfer")
 	private String timeTransfer;
+	@Column(name = "total_purchase")
+	private String totalPurchase;
+	@Column(name = "total_lost")
+	private String totalLost;
+	@Column(name = "balance")
+	private String balance;
 	
 	
 	
 	
+	public String getTotalPurchase() {
+		return totalPurchase;
+	}
+	public void setTotalPurchase(String totalPurchase) {
+		this.totalPurchase = totalPurchase;
+	}
+	public String getTotalLost() {
+		return totalLost;
+	}
+	public void setTotalLost(String totalLost) {
+		this.totalLost = totalLost;
+	}
+	public String getBalance() {
+		return balance;
+	}
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
 	public String getIduser() {
 		return iduser;
 	}

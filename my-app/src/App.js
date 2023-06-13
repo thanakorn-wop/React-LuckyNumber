@@ -11,8 +11,7 @@ import { useState } from 'react';
 import PangeNotFound from './components/Error/PageNotFound';
 import PrivateRoute from './components/PrivateRoute';
 import Management from "../src/components/Manamgent"
-
-
+import Report from "../src/components/Report"
 // function setAuth(data)
 // {
  
@@ -58,6 +57,7 @@ function App() {
              <Route path='manage' element={<PrivateRoute>  <Management /></PrivateRoute>}  />
              <Route path='summary' element={<PrivateRoute>  <Summary /></PrivateRoute>}  />
              <Route path='contactus' element={<PrivateRoute>  <ContactUs /></PrivateRoute>}  />
+             <Route path='report' element={<PrivateRoute>  <Report /></PrivateRoute>}  />
             
           </Routes>
   

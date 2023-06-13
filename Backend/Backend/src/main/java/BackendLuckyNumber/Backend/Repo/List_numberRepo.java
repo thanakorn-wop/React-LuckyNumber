@@ -30,6 +30,9 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' and u.luckytime = ?2 ORDER BY id_list desc ")
 	List<List_number_Modal> findItembyDate(String id,String date);
 	
+	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N'and status_validate = 'N' and u.luckytime = ?2 ORDER BY id_list desc ")
+	List<List_number_Modal> findItembyStatusTransfer(String id,String date);
+	
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.luckytime = ?2  ORDER BY id_list desc ")
 	List<List_number_Modal> getlistitem(String id,String luckytime );
 	@Modifying
