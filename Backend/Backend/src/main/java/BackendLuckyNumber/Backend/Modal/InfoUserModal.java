@@ -39,10 +39,23 @@ public class InfoUserModal {
 	private String nickname;
 	@Column(name = "status_transfer")
 	private String statusTransfer;
+	@Column(name = "time_transfer")
+	private String timeTransfer;
+	
 	
 	
 
 	
+
+
+	public String getTimeTransfer() {
+		return timeTransfer;
+	}
+
+
+	public void setTimeTransfer(String timeTransfer) {
+		this.timeTransfer = timeTransfer;
+	}
 
 
 	public String getStatusTransfer() {

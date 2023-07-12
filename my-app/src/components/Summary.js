@@ -114,15 +114,15 @@ function Report ()
                     <h3>Summary</h3>
                 </div>
                 <div className="table-search-report">  
-                <table className="table table-bordered table-striped">
+                <table className="table table-bordered table-striped"  >
                             <thead className="table-secondary">
                                 <tr className="table-listitem">
-                                    <td colSpan="4" style={{"color":"black"}}>รายการค้นหา</td>
+                                    <td colSpan="4" style={{"color":"black"}}><span>รายการค้นหา</span></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="table-listitem" >
-                                    <td style={{"width":"20%"}}><span>งวดประจำวันที่</span></td>
+                                    <td style={{"width":"20%","color":"white"}}><span>งวดประจำวันที่</span></td>
                                     <td> <div className="date-report"><DatePicker className="form-control" style={{}} dateFormat= "dd-MM-yyyy"   selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
                           
                                 </tr>
@@ -146,7 +146,7 @@ function Report ()
                         </table>
                 </div>
                 <div>
-                    <table className="table-report " style={{"marginBottom":"15px"}}>
+                    <table className="table-report " style={{"marginBottom":"15px","color":"white"}}>
                         <thead>
                             <tr style={{"border":"solid",}}>
                                 <td>จำนวนต้นทุน : </td>

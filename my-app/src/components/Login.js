@@ -151,7 +151,7 @@ function Login({ setauth   })
                         </div>
                       
                     </div>
-                    <div className="btnlogin" style={{"textAlign":"center","marginTop":"30px"}} > <button  style={{"width":"92%","fontSize":"20px"}}type="button" className="btn btn-light" onClick={()=>submitLogin()}>Login</button></div>
+                    <div className="btnlogin" style={{"textAlign":"center","marginTop":"30px"}} > <button  style={{"width":"92%","fontSize":"20px"}}type="button" className="btn btn-primary" onClick={()=>submitLogin()}>Login</button></div>
                 </div>
             </div>
         </div>

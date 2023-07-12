@@ -189,17 +189,19 @@ function NumberModal(props)
    
     return(
         <div className="boxmodal">
-                <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>เพิ่มข้อมูล </h4></div></div>
+                <div className="modal-header" style={{"borderBottom":"solid gray"}} >
+                    <div className="header-title" style={{"padding":"15px","color":"white"}}><h4>เพิ่มข้อมูล </h4></div>
+                </div>
                 <div className="boxbody"  style={{"marginLeft":"15px","marginRight":"20px"}}>
                     <div className="header-table" style={{"display":"flex"}}>
-                        <div className="mark-no" >
+                        <div className="mark-no" style={{"color":"white"}} >
                             <label>ชุดที่</label>
                             <input type="number"  className="number-mark" style={{"width":"30%"}} onChange={(data)=>setmark(data.target.value)} />
                         </div>
                         <div className="plusImage"> <img src={plus} style = {{"width":"20px","height":"20px","cursor":"pointer"}} onClick={()=>addRow()}/> </div>
                     </div>
-                    <div className="table-number">
-                        <table className="table table-bordered table-striped">
+                    <div className="table-number" >
+                        <table className="table table-bordered table-striped" style={{"color":"white"}}>
                             <thead>
                                 <tr style={{"textAlign":"center"}}>
                                     <td style={{"width":"5%"}}>ลำดับ</td>
@@ -248,7 +250,7 @@ function NumberModal(props)
                         </table>
                     </div>  
                 </div>
-                <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
+                <div className="modal-footer" style={{"marginTop":"15px","marginBottom":"15px","borderTop":"solid gray"}}>
                     <div className="footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => Handlesaving(false)}>Close</button>
                         <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>Handlesaving(true)}>Save changes</button>

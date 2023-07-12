@@ -4,6 +4,8 @@
     width: 45%;
     top:25%;
     left: 25%;
+    background-color: rgb(26, 45, 54);
+    border-radius: 15px;
 }
 .date{
     margin-bottom: 10px;

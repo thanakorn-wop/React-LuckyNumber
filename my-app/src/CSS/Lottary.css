@@ -1,20 +1,29 @@
+*{
+   
+}
 .boxpage{
     background-color: rgb(26, 45, 54);
-    width: 90%;
+    
     position: absolute;
-    left: 5%;
+    /* left: 5%; */
     z-index: -1;
     /* position: absolute; */
     /* top: 20%;
     left: 30%;
     margin-top: -100px;
     margin-left: -250px; */
-    margin-top: 30px;
-  
+   
+    width: 100%;
+    background-size: cover;
+
     border: solid white 2px;
+    height: 750px;
     /* height: 700px; */
 }
-
+.title{
+    background-color: rgb(26, 45, 54);
+    color: white;
+}
 .text{
     padding: 10px
 }

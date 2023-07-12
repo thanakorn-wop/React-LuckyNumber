@@ -578,7 +578,6 @@ function Lottary()
                 alert("ทำรายการสำเร็จ");
                 reload()
             }
-
         }
         else{
             setIsOpenSendLottaryModal(false);
@@ -745,7 +744,7 @@ function Lottary()
                             </thead>
                             <tbody>
                                 <tr className="table-listitem" >
-                                <td style={{"color":"white"}}>สถานะการถูกรางวัล</td>
+                                <td style={{"color":"white"}}><span>สถานะการถูกรางวัล</span></td>
                                     <td>  
                                         <div className=" Action-btn">
                                          
@@ -758,7 +757,7 @@ function Lottary()
                                             </select>
                                         </div>
                                     </td>
-                                    <td  style={{"color":"white"}} >สถานะการจ่ายเงิน</td>
+                                    <td  style={{"color":"white"}} ><span>สถานะการจ่ายเงิน</span></td>
                                     <td>  
                                         <div className=" Action-btn">
                                          
@@ -772,8 +771,8 @@ function Lottary()
                                         </div>
                                     </td>
                                 </tr>
-                                <tr className="table-listitem">
-                                    <td>ชุดที่</td>
+                                <tr className="table-listitem" style={{"color":"white"}}>
+                                    <td><span>ชุดที่</span></td>
                                     <td>   <div className="no" ><input type="number" className="form-control" onChange={(data)=>setNo(data.target.value)}/> </div> </td>
                                     <td>งวดประจำวันที่</td>
                                     <td>
@@ -813,7 +812,7 @@ function Lottary()
                     </div>
              
                     <div className="listdatanumber" style={{"marginBottom":"15px","display":"flex","flexDirection":"column"}}>
-                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px"}}  className="table table-striped">
+                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px","color":"white"}}  className="table table-striped">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
                                 <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
@@ -836,12 +835,12 @@ function Lottary()
                                 
                             newItem.length ===0 || newItem[0]['idlist'] ==='' ?
                             <tr key = {index}>
-                               <td colSpan="12" style={{"textAlign":"center","color":"white"}}>ไม่พบข้อมูล</td>  
+                               <td colSpan="12" style={{"textAlign":"center","color":"white"}}><span>ไม่พบข้อมูล</span></td>  
                             </tr> : 
                                     newItem.map((resp,index)=>{
                                    // console.log(resp.number);
                                    return(
-                                     <tr key = {index}>
+                                     <tr key = {index} >
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
                                 <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>

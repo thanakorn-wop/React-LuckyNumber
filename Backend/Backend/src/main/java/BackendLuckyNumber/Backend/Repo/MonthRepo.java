@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
@@ -43,8 +44,10 @@ public interface MonthRepo extends JpaRepository<MonthModal,String>   {
 	void updateMonth10(String money,String id,String years);
 	@Query(value = " UPDATE month  set nov = ?1 WHERE p.id = ?2 and p.years = ?3 ",nativeQuery = true)
 	void updateMonth11(String money,String id,String years);
-	@Query(value = " UPDATE month  set dec = ?1 WHERE p.id = ?2 and p.years = ?3 ",nativeQuery = true)
+	@Query(value = " UPDATE month  set decem = ?1 WHERE p.id = ?2 and p.years = ?3 ",nativeQuery = true)
 	void updateMonth12(String money,String id,String years);
 	
-
+	@Modifying
+	@Query(value = " INSERT INTO month  (jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,decem,id,years) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14) ",nativeQuery = true)
+	void insertMonth(String jan,String feb,String mar,String apr,String may,String jun,String jul,String aug,String sep,String oct,String nov,String dec,String id,String years);
 }

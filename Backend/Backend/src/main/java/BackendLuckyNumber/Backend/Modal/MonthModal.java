@@ -17,29 +17,29 @@ public class MonthModal {
 	@Column(name = "id_month")
 	private String id_month;
 	@Column(name = "jan")
-	private String jan;
+	private String jan="0";
 	@Column(name = "feb")
-	private String feb;
+	private String feb="0";
 	@Column(name = "mar")
-	private String mar;
+	private String mar="0";
 	@Column(name = "apr")
-	private String apr;
+	private String apr="0";
 	@Column(name = "may")
-	private String may;
+	private String may="0";
 	@Column(name = "jun")
-	private String jun;
+	private String jun="0";
 	@Column(name = "jul")
-	private String jul;
+	private String jul="0";
 	@Column(name = "aug")
-	private String aug;
+	private String aug="0";
 	@Column(name = "sep")
-	private String sep;
+	private String sep="0";
 	@Column(name = "oct")
-	private String oct;
+	private String oct="0";
 	@Column(name = "nov")
-	private String nov;
-	@Column(name = "dec")
-	private String dec;
+	private String nov="0";
+	@Column(name = "decem")
+	private String decem="0";
 	@Column(name = "id")
 	private String id;
 	@Column(name = "years")
@@ -131,11 +131,11 @@ public class MonthModal {
 	public void setNov(String nov) {
 		this.nov = nov;
 	}
-	public String getDec() {
-		return dec;
+	public String getDecem() {
+		return decem;
 	}
-	public void setDec(String dec) {
-		this.dec = dec;
+	public void setDecem(String decem) {
+		this.decem = decem;
 	}
 	
 

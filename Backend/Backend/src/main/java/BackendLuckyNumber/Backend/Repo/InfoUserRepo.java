@@ -29,4 +29,8 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	@Modifying
 	@Query(value = " UPDATE  info_user set total_purchase = ?1, people_lost = ?2 where nickname = ?3  and status_transfer = 'N' and date = ?4 and id = ?5 ")
 	void updateInfoUser(String total,String peoplelost, String nickname, String date,String id);
+	
+	@Modifying
+	@Query(value = " UPDATE  info_user set status_transfer = 'Y', balance = ?1 where id =?2  and nickname = ?3    and date = ?4 and time_transfer = ?5 ")
+	void updateTotalPurchase(String sum,String iduser,String nickname, String date, String timeTransfer);
 }

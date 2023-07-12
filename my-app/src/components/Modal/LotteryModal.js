@@ -114,11 +114,13 @@ function LotteryModal(props)
     }
     return(
         <div className="lottaryModal" >
-        <div className="modal-header" style={{"borderBottom":"solid gray"}} ><div className="header-title" style={{"padding":"15px"}}><h4>ตรวจสลากกินแบ่งรัฐบาล</h4></div></div>
+        <div className="modal-header" style={{"borderBottom":"solid gray"}} >
+            <div className="header-title" style={{"padding":"15px","color":"white"}}><h4>ตรวจสลากกินแบ่งรัฐบาล</h4></div>
+            </div>
         <div className="boxbody">
             <div className="mini-box" style={{"display":"flex","flexDirection":"column"}}>
                 <div  className ="dateLottary" style={{"display":"flex","flexDirection":"row","width":"100%"}}>
-                    <div style={{"width":"20%","alignItems":"center"}}>
+                    <div style={{"width":"20%","alignItems":"center","color":"white"}}>
                         <label className="date">งวดประจำวันที่</label>
                     </div>
                     <div className="dateLottery">
@@ -127,22 +129,22 @@ function LotteryModal(props)
                 
                 </div>
                 <div className="table-lottery">
-                    <table className="table table-bordered table-striped">
+                    <table className="table table-bordered table-striped" style={{"color":"white"}}>
                         <tbody>
                         <tr>
-                            <td><span className="textLotteryModal">รางวัลที่ 1 รางวัลละ 6,000,000 บาท</span></td>
+                            <td><span className="textLotteryModal" style={{"color":"white"}}>รางวัลที่ 1 รางวัลละ 6,000,000 บาท</span></td>
                             <td><span className="textLotteryModal" style={{"color":"#99FF99"}}> 843019</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal">เลขหน้า 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขหน้า 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}} > {luckyItem.threeTop}</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal">เลขท้าย 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขท้าย 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.threedow}</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal">เลขท้าย 2 ตัว 1 รางวัลๆละ 2,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขท้าย 2 ตัว 1 รางวัลๆละ 2,000 บาท</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.twotop}</span></td>
                         </tr>
                     </tbody>
@@ -151,7 +153,7 @@ function LotteryModal(props)
                 </div>
             </div>
         </div>
-        <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
+        <div className="modal-footer" style={{"marginTop":"15px","marginBottom":"15px","borderTop":"solid gray"}}>
             <div className="footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" name = "No" onClick={(e) => SaveData(false)}>ยกเลิก</button>
                 <button type="button" className="btn btn-primary" style={{"marginLeft":"10px"}} data-bs-dismiss="modal" name = "Yes" onClick={(e) => SaveData(true)}>ตรวจรางวัล</button> 
