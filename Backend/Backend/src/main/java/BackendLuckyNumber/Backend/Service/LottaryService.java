@@ -16,6 +16,7 @@ import BackendLuckyNumber.Backend.Modal.List_number_Modal;
 import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
 import BackendLuckyNumber.Backend.Modal.MonthModal;
+import BackendLuckyNumber.Backend.Modal.SuccessAndFailModal;
 import BackendLuckyNumber.Backend.Modal.TransferLottaryModal;
 import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
@@ -135,10 +136,12 @@ public class LottaryService {
 		return statusUpdate;
 	}
 
-	public Boolean postInsertNumberService(DataSetModal NumRequest, UserdetailsIml user) throws Exception {
+	public SuccessAndFailModal postInsertNumberService(DataSetModal NumRequest, UserdetailsIml user) throws Exception {
 		Boolean status_Update = false;
 		LocalDateTime myDateObj = LocalDateTime.now();
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
+		SuccessAndFailModal successAndFaiModal = new SuccessAndFailModal();
+		successAndFaiModal.setStatusSuccess(false);
 		// List_number_Modal list_number_modal = new List_number_Modal();
 		InfoUserModal infoUser = new InfoUserModal();
 		List<List_number_Modal> dataItem = null;
@@ -160,65 +163,74 @@ public class LottaryService {
 //		formatter.format("%.8s", timenow);
 
 		Integer all_price = 0;
+		Boolean statusTransfer = false;
 		try {
 			for (NumberRequestModel data : NumRequest.getDataSet()) {
-				people_win = "";
-				people_lost = "";
-				total_purchase = 0;
-				balance = 0;
-				payNow = 0;
-				notPay = 0;
-				money_win = 0;
-				count_lost = 0;
-				count_win = 0;
-				List_number_Modal list_number_modal = new List_number_Modal();
-				String Cover_Number = data.getNumber().trim().replaceAll(regex, ",");
-				String[] Str_Number = Cover_Number.split(",");
-				Integer Length_Number = Str_Number.length;
-				all_price = Length_Number * Integer.valueOf(data.getPrice());
-				String joinNumber = String.join(",", Str_Number);
-				if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOP)
-						|| data.getOption().equals(ConstantData.MESSAGE_BELOW)) {
-					list_number_modal.setNumber(joinNumber);
-					list_number_modal.setPrice(data.getPrice());
-					list_number_modal.setAllPrice(String.valueOf(all_price));
-					list_number_modal.setOptinpurchase(data.getOption());
-					list_number_modal.setDatebuy(data.getDate());
-					list_number_modal.setTime(formattedDate);
-					list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
-					list_number_modal.setId(user.getInfoUser().getId());
-					list_number_modal.setStatus("unLucky");
-					list_number_modal.setLuckytime(data.getLuckytime());
-					list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-					list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
-					list_number_modal.setSequence(data.getSequence());
-					;
-
-					listNumberRepo.save(list_number_modal);
-					status_Update = true;
-
-				} else if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOD)) {
-					list_number_modal.setNumber(joinNumber);
-					list_number_modal.setPrice(data.getPrice());
-					list_number_modal.setAllPrice(String.valueOf(all_price));
-					list_number_modal.setOptinpurchase(data.getOption());
-					list_number_modal.setDatebuy(data.getDate());
-					list_number_modal.setTime(formattedDate);
-					list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
-					list_number_modal.setId(user.getInfoUser().getId());
-					list_number_modal.setStatus("unLucky");
-					list_number_modal.setLuckytime(data.getLuckytime());
-					list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-					list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
-					list_number_modal.setSequence(data.getSequence());
-					listNumberRepo.save(list_number_modal);
-					status_Update = true;
+				infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
+				if (null != infoUser) {
+					if (!infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_N)) {
+						statusTransfer = true;
+						break;
+					}
 				}
-				if (status_Update) {
-					infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
-					if (null != infoUser) {
-						System.out.println("update ");
-						if (infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_N)) {
+			}
+			if (statusTransfer) {
+				successAndFaiModal.setMessage(ConstantData.MESSAGE_LUCKYTIME_OVER);
+			} else {
+				for (NumberRequestModel data : NumRequest.getDataSet()) {
+					people_win = "";
+					people_lost = "";
+					total_purchase = 0;
+					balance = 0;
+					payNow = 0;
+					notPay = 0;
+					money_win = 0;
+					count_lost = 0;
+					count_win = 0;
+					List_number_Modal list_number_modal = new List_number_Modal();
+					String Cover_Number = data.getNumber().trim().replaceAll(regex, ",");
+					String[] Str_Number = Cover_Number.split(",");
+					Integer Length_Number = Str_Number.length;
+					all_price = Length_Number * Integer.valueOf(data.getPrice());
+					String joinNumber = String.join(",", Str_Number);
+					if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOP)
+							|| data.getOption().equals(ConstantData.MESSAGE_BELOW)) {
+						list_number_modal.setNumber(joinNumber);
+						list_number_modal.setPrice(data.getPrice());
+						list_number_modal.setAllPrice(String.valueOf(all_price));
+						list_number_modal.setOptinpurchase(data.getOption());
+						list_number_modal.setDatebuy(data.getDate());
+						list_number_modal.setTime(formattedDate);
+						list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
+						list_number_modal.setId(id);
+						list_number_modal.setStatus("unLucky");
+						list_number_modal.setLuckytime(data.getLuckytime());
+						list_number_modal.setTransfer(ConstantData.MESSAGE_N);
+						list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
+						list_number_modal.setSequence(data.getSequence());
+						listNumberRepo.save(list_number_modal);
+						status_Update = true;
+
+					} else if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOD)) {
+						list_number_modal.setNumber(joinNumber);
+						list_number_modal.setPrice(data.getPrice());
+						list_number_modal.setAllPrice(String.valueOf(all_price));
+						list_number_modal.setOptinpurchase(data.getOption());
+						list_number_modal.setDatebuy(data.getDate());
+						list_number_modal.setTime(formattedDate);
+						list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
+						list_number_modal.setId(user.getInfoUser().getId());
+						list_number_modal.setStatus("unLucky");
+						list_number_modal.setLuckytime(data.getLuckytime());
+						list_number_modal.setTransfer(ConstantData.MESSAGE_N);
+						list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
+						list_number_modal.setSequence(data.getSequence());
+						listNumberRepo.save(list_number_modal);
+						status_Update = true;
+					}
+					if (status_Update) {
+						if (null != infoUser) {
+							System.out.println("update ");
 							dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
 							if (null != dataItem && dataItem.size() > 0) {
 								for (List_number_Modal item : dataItem) {
@@ -231,33 +243,38 @@ public class LottaryService {
 								infouserRepo.updateInfoUser(total_purchase.toString(), count_lost.toString(),
 										user.getInfoUser().getNickname(), data.getLuckytime(),
 										user.getInfoUser().getId());
+								successAndFaiModal.setStatusSuccess(true);
+								successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
 								// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
 								// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
 							}
+
 						} else {
-							status_Update = false;
+							dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
+							if (null != dataItem && dataItem.size() > 0) {
+								for (List_number_Modal item : dataItem) {
+									total_purchase += Integer.valueOf(item.getAllPrice());
+									if (item.getTransfer().equals(ConstantData.MESSAGE_N)
+											&& item.getStatus().equals("unLucky")) {
+										count_lost += 1;
+									}
+								}
+								InfoUserModal saveinfoUser = new InfoUserModal();
+								saveinfoUser.setTotalPurchase(total_purchase.toString());
+								saveinfoUser.setNickname(user.getInfoUser().getNickname());
+								saveinfoUser.setPeoplelost(count_lost.toString());
+								saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
+								saveinfoUser.setDate(data.getLuckytime());
+								saveinfoUser.setId(user.getInfoUser().getId());
+								infouserRepo.save(saveinfoUser);
+								successAndFaiModal.setStatusSuccess(true);
+								successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
+								// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
+								// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
+							}
 						}
 					} else {
-						dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
-						if (null != dataItem && dataItem.size() > 0) {
-							for (List_number_Modal item : dataItem) {
-								total_purchase += Integer.valueOf(item.getAllPrice());
-								if (item.getTransfer().equals(ConstantData.MESSAGE_N)
-										&& item.getStatus().equals("unLucky")) {
-									count_lost += 1;
-								}
-							}
-							InfoUserModal saveinfoUser = new InfoUserModal();
-							saveinfoUser.setTotalPurchase(total_purchase.toString());
-							saveinfoUser.setNickname(user.getInfoUser().getNickname());
-							saveinfoUser.setPeoplelost(count_lost.toString());
-							saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
-							saveinfoUser.setDate(data.getLuckytime());
-							saveinfoUser.setId(user.getInfoUser().getId());
-							infouserRepo.save(saveinfoUser);
-							// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
-							// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
-						}
+						successAndFaiModal.setMessage(ConstantData.MESSAGE_UNALNE_TO_INSERT_NUMBER);
 					}
 				}
 			}
@@ -272,7 +289,7 @@ public class LottaryService {
 			throw new Exception("Error Lottary Service = " + e);
 		}
 
-		return status_Update;
+		return successAndFaiModal;
 
 	}
 
@@ -578,7 +595,10 @@ public class LottaryService {
 									monthMoal2.setDecem(String.valueOf(sum));
 								}
 //								monthRepo.save(monthMoal2);
-								monthRepo.insertMonth(monthMoal2.getJan(), monthMoal2.getFeb(), monthMoal2.getMar(), monthMoal2.getApr(), monthMoal2.getMay(), monthMoal2.getJun(), monthMoal2.getJul(), monthMoal2.getAug(), monthMoal2.getSep(), monthMoal2.getOct(), monthMoal2.getNov(), monthMoal2.getDecem(), id, year);
+								monthRepo.insertMonth(monthMoal2.getJan(), monthMoal2.getFeb(), monthMoal2.getMar(),
+										monthMoal2.getApr(), monthMoal2.getMay(), monthMoal2.getJun(),
+										monthMoal2.getJul(), monthMoal2.getAug(), monthMoal2.getSep(),
+										monthMoal2.getOct(), monthMoal2.getNov(), monthMoal2.getDecem(), id, year);
 								transferStatus = true;
 							}
 							if (transferStatus) {

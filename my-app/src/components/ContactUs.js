@@ -11,7 +11,7 @@ function ContactUs()
       window.location.assign("/login")
     }
     return(
-        <div className="boxContectUs">
+       
             <div className="ContactUsPage">
                 <div className="titleContact" style={{"textAlign":"center","marginTop":"25px"}}>
                     <h3>ข้อมูลการติดต่อ</h3>
@@ -42,7 +42,7 @@ function ContactUs()
                 </div>
 
             </div>
-        </div>
+       
 
     );
 }

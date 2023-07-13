@@ -1,18 +1,18 @@
 .boxReport{
     background-color: rgb(26, 45, 54);
-    width: 90%;
+    width: 100%;
     position: absolute;
-    left: 5%;
+    /* left: 5%; */
     z-index: -1;
     /* position: absolute; */
     /* top: 20%;
     left: 30%;
     margin-top: -100px;
     margin-left: -250px; */
-    margin-top: 30px;
+    /* margin-top: 30px; */
   
     border: solid white 2px;
-    /* height: 700px; */
+    height: 700px;
 }
 .headerReport{
    text-align: center;

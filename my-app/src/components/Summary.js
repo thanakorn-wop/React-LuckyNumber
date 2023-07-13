@@ -129,16 +129,9 @@ function Report ()
                            
                                 <tr className="table-listitem" style={{"border":"none"}}>
                                     <td colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
-                                    <div className="setBtn"style={{"display":"flex","margin":"0 auto"}}>
-                                        <div className=" Action-btn">
-                                        <button type="button" className="btn btn-warning" onClick={()=>setIsOpen(true)}>แก้ไขข้อมูล</button>
-                                        </div>
-                                        {/* <div className=" Action-btn">
-                                            <button type="button" className="btn btn-light"  onClick={()=>setLuckyModal(true)}>เลขถูก</button>
-                                        </div> */}
-                                        <div className=" Action-btn">
-                                            <button type="button" className="btn btn-primary" onClick={()=>searchData()}>ค้นหา</button>
-                                        </div>
+                                    <div className="setBtn"style={{}}>
+                                            <button type="button" className="btn btn-warning" onClick={()=>setIsOpen(true)}>แก้ไขข้อมูล</button>
+                                            <button type="button" className="btn btn-primary" style={{"marginLeft":"5px"}} onClick={()=>searchData()}>ค้นหา</button>
                                     </div>
                                     </td>
                                 </tr>

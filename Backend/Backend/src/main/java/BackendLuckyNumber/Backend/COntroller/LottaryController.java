@@ -33,6 +33,7 @@ import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
 import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
+import BackendLuckyNumber.Backend.Modal.SuccessAndFailModal;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 
 import org.apache.commons.lang3.StringUtils;
@@ -129,13 +130,15 @@ public class LottaryController extends ValidateUntil {
 			if (null != user) {
 			
 				if (validateAPI(NumRequest)) {
-					statusUpdate = listLottaryService.postInsertNumberService(NumRequest, user);
-					if (statusUpdate) {
-						header.setMessage(ConstantData.MESSAGE_SUCCESS);
+					SuccessAndFailModal successAndFaiModal  = listLottaryService.postInsertNumberService(NumRequest, user);
+					if (successAndFaiModal.getStatusSuccess()) {
+						header.setMessage(successAndFaiModal.getMessage());
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setStatusProcess(true);
 					} else {
-						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+						header.setMessage(successAndFaiModal.getMessage());
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setStatusProcess(false);
 					}
 				} else {
 					status = status.BAD_REQUEST;

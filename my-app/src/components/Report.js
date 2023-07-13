@@ -71,7 +71,7 @@ function Report()
                 <h3>รายระเอียดการส่งงวด</h3>
             </div>
         <div className="tableManagement" style={{"marginTop":"20px"}}>
-            <DataTable value={allUser} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
+            <DataTable value={allUser} paginator rows={5}  showGridlines  rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem'}}>
                 <Column field="nickname" header="ชื่อ" style={{ width: '10%' }} alignHeader={"center"}  align={"center"}></Column>
                 <Column field="totalPurchase" header="ยอดขายทั้งหมด" style={{ width: '20%' }} alignHeader={"center"} align={"center"} ></Column>
                 <Column field="totalLost" header="ยอดคนถูก" style={{ width: '20%' }} alignHeader={"center"}align={"center"}  ></Column>
