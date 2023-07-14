@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../../CSS/ModalCss/NumberModalCss.css"
-import Calendar from 'moedim';
+
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import plus from "../../Icons/plus.png"
+import { Calendar } from 'primereact/calendar';
+         
 
 
 
@@ -89,36 +91,52 @@ function NumberModal(props)
           }
 
     },[userData.dataSet[rank].number,userData.dataSet[rank].price])
-    // console.log("check 1 = ",closepopup);
-    useEffect(()=>{
-        // console.log("check date , ",DateMonth);
-        // const  date_buy =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        // const 
-        if(nameDate!== null && nameDate !== '' && nameDate !== undefined)
-        {
-            let value = new Date();
-            if(nameDate === 'luckytime')
-            {
-                value = LuckyDate;
-                
-            }
-            else{
-                value = DateMonth;
-            }
-            const newData = UpdateData(nameDate,value,rank)
-            setUserData(newData);
-            setNameDate("")
-        }
-    },[nameDate])
+    
     if(props.show !== true)
     {
+        // setUserData({dataSet:[{
+     
+        //     idList: add,
+        //     number:'',
+        //     price:"",
+        //     allPrice:"",
+        //     luckytime:new Date(),
+        //     date: new Date(),
+        //     option:"",
+        //     sequence:""
+    
+        // }]})
         return null;
     }
+    // console.log("check 1 = ",closepopup);
+    // useEffect(()=>{
+    //     // console.log("check date , ",DateMonth);
+    //     // const  date_buy =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+    //     // const 
+    //     if(nameDate!== null && nameDate !== '' && nameDate !== undefined)
+    //     {
+    //         let value = new Date();
+    //         if(nameDate === 'luckytime')
+    //         {
+    //             value = LuckyDate;
+                
+                
+    //         }
+    //         else{
+    //             value = DateMonth;
+    //         }
+    //         const newData = UpdateData(nameDate,value,rank)
+    //         console.log("newData = ",newData)
+    //         setUserData(newData);
+    //         setNameDate("")
+    //     }
+    // },[nameDate])
+   
     console.log("check each price = ",eachPrice)
     const handleChange = (...data) => {
        
-        let value =   value = data[0].target.value;
-        let name =  name = data[0].target.name;
+        let value = data[0].target.value;
+        let name =   data[0].target.name;
         const index = data[1];
         // let date_buy = new Date();
         // let luckytime =  new Date();
@@ -131,15 +149,22 @@ function NumberModal(props)
         // const date_buy = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
         // const name = data[2];
         // const newData = UpdateData()
-        setDateMonth(data[0]);
-        setRank(data[1]);
-        setNameDate(data[2])
+        // setDateMonth(data[0]);
+        // setRank(data[1]);
+        // setNameDate(data[2])
+        userData.dataSet[data[1]].date = data[0].target.value
     }
     function handleLuckyTime(...data)
-    {
-        setLuckyDate(data[0])
-        setRank(data[1]);
-        setNameDate(data[2])
+    {   
+        console.log("check qq = ",data[1])
+        //  console.log("check data = ", userData.dataSet[data[1]])
+        // console.log("data[0] =",data[0])
+        // setLuckyDate(data[0])
+        // setRank(data[1]);
+        // setNameDate(data[2])
+        userData.dataSet[data[1]].luckytime = data[0].target.value
+        console.log("check data = ", userData.dataSet[data[1]])
+        console.log("check data = ", userData.dataSet)
 
     }
     function UpdateData(name,value,index)
@@ -158,7 +183,7 @@ function NumberModal(props)
           return newData;
     }
     const Handlesaving = (isSave)=>{
-       
+       console.log("NUMBER modal = ",userData)
         props.handleSavingNum(isSave,userData,setUserData,mark,setRank,setTotalPrice)
      }
  
@@ -185,7 +210,7 @@ function NumberModal(props)
         
     }
     // console.log("update = ",test)
-      console.log("new data = ",userData)
+       console.log("new data = ",userData)
    
     return(
         <div className="boxmodal">
@@ -230,10 +255,8 @@ function NumberModal(props)
                                                     <option value = "Tod">โต๊ด</option>
                                                 </select>
                                             </td>
-                                            <td>
-                                            <DatePicker className="form-control "   selected={data.luckytime} name = "luckytime" dateFormat= "dd-MM-yyyy"  onChange={(e) =>handleLuckyTime(e,index,'luckytime') } />
-                                            </td>
-                                            <td><DatePicker className="form-control "   selected={data.date}  name = "date" dateFormat= "dd-MM-yyyy"  onChange={(e) => handleDate(e,index,'date')} /></td>
+                                            <td> <Calendar value={data.luckytime} onChange={(e) =>handleLuckyTime(e,index,'luckytime') } dateFormat="dd/mm/yy" style={{"height":"40px"}}/>  </td>
+                                            <td><Calendar value={data.date} onChange={(e) => handleDate(e,index,'date')} dateFormat="dd/mm/yy"  style={{"height":"40px"}} /> </td>
                                             <td style={{"color":"#99FF99","fontSize":"24px","textAlign":"center"}}>{data.allPrice}</td>
                                         </tr>
                                      

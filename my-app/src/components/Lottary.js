@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef  } from "react";
 import "../CSS/Lottary.css"
 import NumberModal from "./Modal/NumberModal"
 import * as urlConstant from "../components/Constant/UrlConstant"
@@ -12,15 +12,20 @@ import LotteryModal from "./Modal/LotteryModal";
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import PaginatedItems from "../components/PaginatedItems"
+import { Messages } from 'primereact/messages';
+import { useMountEffect } from 'primereact/hooks';
+import {useMessage} from './Constant/useMessage'
+import { Calendar } from 'primereact/calendar';
+         
+
 function Lottary()
 {
     let navigate = useNavigate();
-    //** pagination  */
-    // const [currentPage,setCurrentPage] = useState(1);
-    // const [postsPerPage] = useState(10);
-    // const [pageNumberLimit, setpageNumberLimit] = useState(5);
-    // const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
-    // const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
+    const msgs = useRef(null);
+    const addMessage = useMessage();
+    const [isOpenMessage,setIsOpenMessage] = useState(false);
+    const [msgWarning,setMsgWaring] = useState("");
+    const [process,setProcess] = useState(false);
     const [add,setAdd] = useState(0);
     const [popup,setpopup] =  useState(false);
     const [status,setStatus] = useState();
@@ -33,10 +38,8 @@ function Lottary()
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
     const [dateLucky,setDateLucky] = useState("");
-    const [dataSet,setDataSet] = useState(
-        [{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
-    const [newItem,setNewItem] = useState(
-        [{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
@@ -92,15 +95,11 @@ function Lottary()
     useEffect(()=>{
                   async function getListitem()
                   {
+                    console.log("test useEffect ")
                     let date = null;
-                    if(IsSelect)
-                    {
-                            // date = (DateSelect.getFullYear()+"-"+(1+Number(DateSelect.getMonth()))+"-"+DateSelect.getDate());
-                    }
-                    else{
+                 
                         date = "lastdata";
-                    }
-                        try{
+                          try{
                             const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
                                 headers: { 'Content-Type': 'application/json' }
                                 
@@ -110,19 +109,31 @@ function Lottary()
                             if(response.data != undefined && response.data.datalist != null)
                             {
                                 setDataSet(response.data.datalist)
-                                console.log("data = ",response.data.datalist)
+                               // console.log("data = ",response.data.datalist)
                                 // setDateLucky(response.data.datalist.luckytime)
                                 // setNewItem(response.data.datalist)   
+                            }
+                            if(isOpenMessage)
+                            {
+                                msgs.current.clear();
+                                addMessage(msgs,response.status,<b>{msgWarning}</b>)
+                                setProcess(false)
+                                setIsOpenMessage(false)
                             }
                            // console.log("check response data = ",response );
                         }catch(error)
                         {
                             console.error(error);
                         }
+                     
+                    
+                      
                   }
                 getListitem();
+                
 
-    },[])
+
+    },[process])
     // console.log("check 1 = ",popup.show)
  
 //     function Paginagtion({totalPosts,postsPerPage,paginate})
@@ -198,16 +209,12 @@ function Lottary()
                 const response =  axios.post(urlConstant.POST_DELETEDATAT,DataDelete,{
                     headers: { 'Content-Type': 'application/json' }
                 }).then((resp)=>{
-                    console.log(resp)
+                    // console.log(resp)
                     if(resp.status=== 200)
                     {
                         alert("ทำรายการสำเร็จ");
                         setIsOpenDeleteModal(false)
-                        let timeout;
-                        function myFunction() {
-                            timeout = setTimeout(()=>{window.location.reload(false)}, 1000);
-                          }
-                        myFunction()
+                        reload()
                     }
                 })
 
@@ -318,16 +325,10 @@ function Lottary()
     }
     async function HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)
     {
-        console.log("handle number modal = ",dataNum)
-        console.log("handle number modal = ",dataNum.dataSet[0])
-        console.log("mark = ",mark)
-      
-      
+        console.log("Datanum lottay = ",dataNum)
         let statusValidate = true;
         if(isSave)
         {
-            // console.log("data price = ",dataNum.price[0]);
-            
             if(mark !== '' && mark !== null && mark !== undefined)
             {
                 if(mark >0)
@@ -446,37 +447,55 @@ function Lottary()
                 if(answer)
                 {
                     dataNum.dataSet.map((data,index)=>{
-                        let date = data.date;
-                        let lucky_date = data.luckytime;
-                        date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
-                        lucky_date =  lucky_date.getFullYear()+"-"+(1+Number(lucky_date.getMonth()))+"-"+lucky_date.getDate();
+                        // console.log("data.date = ",data.date)
+                        let date = data.date
+                        // console.log("data after toISOString = ",date)
+                        let lucky_date = data.luckytime
+                         date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
+                         lucky_date =  lucky_date.getFullYear()+"-"+(1+Number(lucky_date.getMonth()))+"-"+lucky_date.getDate();
                        // console.log("date = ",date);
                         data.date = date;
                         data.luckytime = lucky_date;
+                        // console.log("data = ",data)
                             
                     })
                     try{
-                    
                         const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
                             headers: { 'Content-Type': 'application/json' }
                         }).then(res =>{
                                 // console.log("check response num = ",res.data)
-                        if(res.data.message === 'not_success' && res.data.statusCode === '01')
+                        if(res.data.statusProcess === false && res.data.statusCode === '01')
                         {
                             alert("ทำรายการไม่สำเร็จกรุณาตรวจสอบข้อมูล");
                         }
                         else{
-                            alert("ทำรายการสำเร็จ");
-                            // setpopup(false);
-                            reload()
+                            // alert("ทำรายการสำเร็จ");
+                            setpopup(false);
+                            setMsgWaring("ทำรายการสำเร็จ")
+                            setProcess(true);
+                            setIsOpenMessage(true)
+                            setUserData({dataSet:[{
+                                id: add,
+                                date: new Date(),
+                                option:"",
+                                number:"",
+                                price:"",
+                                allPrice:"",
+                                idLine:"",
+                                phoneNumber:"",
+                                luckytime:new Date(),
+                                set:""
+                        
+                            }]})
+                            //  addMessage(msgs,200,res.data.message)
                                     // window.location.reload(false)
                             }
                         })
-                        }catch(error)
+                    }catch(error)
                         {
                             console.error(error)
                         }
-                    }
+                }
                  
                 
             }
@@ -539,12 +558,9 @@ function Lottary()
                         alert("ไม่มีรายการให้ทำ")
                     }
                 }
-
-            }
-           
+            } 
         }
         else{
-
             setIsOpenLotteryModal(false)
         }
     }
@@ -594,7 +610,7 @@ function Lottary()
         let dateBuy = null;
         let dateTimeLucky = null;
         
-         console.log("check = asdasd",dataSet)
+         //console.log("check = asdasd",dataSet)
         // if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
         // {         
         //     dateBuy = (DateBuy.getFullYear()+"-"+String(1+Number(DateBuy.getMonth())).padStart(2, '0')+"-"+String(DateBuy.getDate()).padStart(2, '0'));
@@ -735,7 +751,7 @@ function Lottary()
                         <h3>รายการหวย ประจำวันที่  </h3>
                     </div>
                     <div className="listitem">
-              
+                    <Messages ref={msgs} />
                         <table className="table table-bordered table-striped">
                             <thead className="table-secondary">
                                 <tr className="table-listitem">
