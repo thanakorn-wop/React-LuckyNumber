@@ -15,19 +15,21 @@ import PaginatedItems from "../components/PaginatedItems"
 import { Messages } from 'primereact/messages';
 import { useMountEffect } from 'primereact/hooks';
 import {useMessage} from './Constant/useMessage'
-import { Calendar } from 'primereact/calendar';
-         
-
+import { BlockUI } from 'primereact/blockui';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import Loading from "./Constant/Loading";
 function Lottary()
 {
     let navigate = useNavigate();
     const msgs = useRef(null);
+    const blockRef = useRef(null)
     const addMessage = useMessage();
     const [isOpenMessage,setIsOpenMessage] = useState(false);
     const [msgWarning,setMsgWaring] = useState("");
     const [process,setProcess] = useState(false);
     const [add,setAdd] = useState(0);
     const [popup,setpopup] =  useState(false);
+    const [blocked, setBlocked] = useState(false);
     const [status,setStatus] = useState();
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
@@ -580,7 +582,9 @@ function Lottary()
             }
             else if(response.data.message ==="duplicate_data")
             {
-                alert("ไม่สามารถทำรายการซ้ำได้");
+                // alert("ไม่สามารถทำรายการซ้ำได้");
+                setMsgWaring("ไม่สามารถทำรายการซ้ำได้");
+                setProcess(true)
             }else if(response.data.message === "not_time_to_work")
             {
                 alert("กรุณารอหวยออก");
@@ -591,8 +595,18 @@ function Lottary()
             }
             else
             {
-                alert("ทำรายการสำเร็จ");
-                reload()
+                // alert("ทำรายการสำเร็จ");
+                // console.log("process = ",process)
+                setIsOpenSendLottaryModal(false);
+                blockRef.current.block()
+                setTimeout(() => {
+                    msgs.current.clear();
+                    // setMsgWaring("ทำรายการสำเร็จ");
+                    blockRef.current.unBlock()
+                    addMessage(msgs,response.status,<b>ทำรายการสำเร็จ</b>)
+                }, 500);
+               
+               
             }
         }
         else{
@@ -826,7 +840,7 @@ function Lottary()
                             </tbody>
                         </table>
                     </div>
-             
+                    <Loading ref={blockRef}/>
                     <div className="listdatanumber" style={{"marginBottom":"15px","display":"flex","flexDirection":"column"}}>
                         <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px","color":"white"}}  className="table table-striped">
                            <thead >
