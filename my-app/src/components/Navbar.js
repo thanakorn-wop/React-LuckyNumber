@@ -24,7 +24,7 @@ function Navbar()
                 <div className="Menu">
                     <div className="Logo" style={{"marginLeft":"20px","display":"flex","alignItems":"center"}}>
                         <div className="imgNavbar" style={{"display":"flex"}}>
-                            <img src={home} style={{"width":"5%"}}/>
+                            <img src={home} alt="logo" style={{"width":"5%"}}/>
                             <label style={{"fontSize":"20px","marginLeft":"15px"}}>BAN HUAI</label>
                             
                         </div>

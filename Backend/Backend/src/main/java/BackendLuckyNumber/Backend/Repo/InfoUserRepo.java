@@ -26,11 +26,14 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	@Query(value = " SELECT * FROM info_user  WHERE id = ?1  and date = ?2 and nickname = ?3 ORDER by date DESC LIMIT 1",nativeQuery = true)
 	InfoUserModal finInfoUserReportPage(String id,String date,String nickname);
 	
+	@Query(value = " SELECT * FROM info_user  WHERE id = ?1  and date = ?2 and nickname = ?3 and status_transfer = 'N' ",nativeQuery = true)
+	List<InfoUserModal> finInfoUserTransfer(String id,String date,String nickname);
+	
 	@Modifying
 	@Query(value = " UPDATE  info_user set total_purchase = ?1, people_lost = ?2 where nickname = ?3  and status_transfer = 'N' and date = ?4 and id = ?5 ")
 	void updateInfoUser(String total,String peoplelost, String nickname, String date,String id);
 	
 	@Modifying
-	@Query(value = " UPDATE  info_user set status_transfer = 'Y', balance = ?1 where id =?2  and nickname = ?3    and date = ?4 and time_transfer = ?5 ")
+	@Query(value = " UPDATE  info_user set status_transfer = 'Y', balance = ?1, time_transfer = ?5 where id =?2  and nickname = ?3    and date = ?4  ")
 	void updateTotalPurchase(String sum,String iduser,String nickname, String date, String timeTransfer);
 }

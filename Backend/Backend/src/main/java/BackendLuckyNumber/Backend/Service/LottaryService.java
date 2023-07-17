@@ -266,6 +266,12 @@ public class LottaryService {
 								saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
 								saveinfoUser.setDate(data.getLuckytime());
 								saveinfoUser.setId(user.getInfoUser().getId());
+								saveinfoUser.setTotalLost("0");
+								saveinfoUser.setPeoplewin("0");
+								saveinfoUser.setBalance("0");
+								saveinfoUser.setPeoplewin("0");
+								saveinfoUser.setPay("0");
+								saveinfoUser.setNotpay("0");
 								infouserRepo.save(saveinfoUser);
 								successAndFaiModal.setStatusSuccess(true);
 								successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
@@ -420,16 +426,16 @@ public class LottaryService {
 		MonthModal monthModal = new MonthModal();
 		MonthModal monthMoal2 = new MonthModal();
 		LottaryModal luckytime = new LottaryModal();
-		List<TransferLottaryModal> dataTransfer = new ArrayList<>();
+		List<InfoUserModal> dataTransfer = new ArrayList<>();
 		TransferLottaryModal itemTransfer = new TransferLottaryModal();
 		List<List_number_Modal> listItem = new ArrayList<>();
 		InfoUserModal infoUser = new InfoUserModal();
 		MixTransferListNumberModal mixTransferNumber = new MixTransferListNumberModal();
 		LocalDateTime myDateObj = LocalDateTime.now();
-		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedDate = myDateObj.format(myFormatObj);
 		try {
-			dataTransfer = listNumberRepo.getDataTransferLottaryRepo(iduser, nickname, listRequest.getLuckytime());
+			dataTransfer = infouserRepo.finInfoUserTransfer(id,listRequest.getLuckytime(), nickname);
 			if (null != dataTransfer && dataTransfer.size() > 1) {
 				duplicateTransfer = true;
 			} else {

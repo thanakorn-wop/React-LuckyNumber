@@ -12,7 +12,7 @@ function PangeNotFound()
             <table className="table table-borderless" style={{"width":"100%"}}>
                 <thead>
                     <tr className="trerrorpage" >
-                        <td><img src={deleteimg} className="deleteimg" style = {{"width":"45px","height":"45px"}}/></td>
+                        <td><img src={deleteimg} alt ="error" className="deleteimg" style = {{"width":"45px","height":"45px"}}/></td>
                     </tr>
                     <tr className="trerrorpage">
                         <td className="tderrorpage"><p style={{"backgroundColor":"white","color":"black"}}>ไม่สามารถค้นหา Page หรือ URl ที่คุณต้องการเจอ</p></td>

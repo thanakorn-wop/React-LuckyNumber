@@ -214,9 +214,20 @@ function Lottary()
                     // console.log(resp)
                     if(resp.status=== 200)
                     {
-                        alert("ทำรายการสำเร็จ");
+                        // alert("ทำรายการสำเร็จ");
+                        // setIsOpenDeleteModal(false)
+                        // reload()
+
+                        blockRef.current.block()
+                        setTimeout(() => {
+                        msgs.current.clear();
+                    // setMsgWaring("ทำรายการสำเร็จ");
+                        blockRef.current.unBlock()
                         setIsOpenDeleteModal(false)
-                        reload()
+                        addMessage(msgs,resp.status,<b>ทำรายการสำเร็จ</b>)
+                        setProcess(true)
+                }, 500);
+                        
                     }
                 })
 
@@ -541,7 +552,7 @@ function Lottary()
         {
             if(empty)
             {
-                alert("หวยยังไม่ออก");
+                alert("กรุณารอหวยออก");
                 setEmpty(false)
             }
             else{
@@ -553,8 +564,16 @@ function Lottary()
                     console.log("check postItem = ",postItem.data)
                     if(postItem.data.header.statusCode == '01' && postItem.data.header.message =='success')
                     {
-                        alert("ทำรายการสำเร็จ")
-                        reload()
+                        // alert("ทำรายการสำเร็จ")
+                        blockRef.current.block()
+                        setTimeout(() => {
+                        msgs.current.clear();
+                    // setMsgWaring("ทำรายการสำเร็จ");
+                        blockRef.current.unBlock()
+                        setIsOpenLotteryModal(false)
+                        addMessage(msgs,postItem.status,<b>ทำรายการสำเร็จ</b>)
+                }, 500);
+                        // reload()
                     }
                     else{
                         alert("ไม่มีรายการให้ทำ")
@@ -568,7 +587,7 @@ function Lottary()
     }
     async function HandleSendLottaryModal(status,date)
     {
-        console.log("check status sending = ",status,date)
+       // console.log("check status sending = ",status,date)
 
         if(status ==="Yes")
         {
@@ -743,7 +762,7 @@ function Lottary()
                 {
                    // console.log("check ถูกรางงวัลไม่จ่าย = ",no)
                    // console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no ))
-                   console.log('qqq')
+                 
                    setDataSet(dataSet.filter(data=>    data.sequence === no))
                 }       
             }
@@ -751,13 +770,6 @@ function Lottary()
    
     }
 
-    // ** get current post
-//     console.log("check DATASET = ",dataSet)
-//     const indexOfLastPost = currentPage * postsPerPage;
-//     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-//     let currentPosts = dataSet.slice(indexOfFirstPost,indexOfLastPost);
-//     const paginate = pageNumber =>setCurrentPage(pageNumber)
-//    console.log("check currentpost = ",currentPosts.length);
     return(
         <div className="mainpage">
             <div className="boxpage" >

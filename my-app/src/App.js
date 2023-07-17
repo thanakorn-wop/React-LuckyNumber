@@ -12,6 +12,7 @@ import PangeNotFound from './components/Error/PageNotFound';
 import PrivateRoute from './components/PrivateRoute';
 import Management from "../src/components/Manamgent"
 import Report from "../src/components/Report"
+import InternalServer from './components/Error/InternalServer';
 // function setAuth(data)
 // {
  
@@ -49,6 +50,7 @@ function App() {
     {showMenu && <Navbar />}
           <Routes>  
           <Route path='pagenotfound' element={< PangeNotFound />}/>
+          <Route path='internalserver' element={< InternalServer />}/>
           <Route path='login' element={< Login   setauth = {setAuth} />}></Route>
               {/* <Route path='/' element={< Outlet />}> */}
               {/* <PrivateRoute path="/dashboard" element={<Dashbord />} /> */}
