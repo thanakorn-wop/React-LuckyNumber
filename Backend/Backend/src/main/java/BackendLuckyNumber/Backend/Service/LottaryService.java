@@ -143,7 +143,8 @@ public class LottaryService {
 		SuccessAndFailModal successAndFaiModal = new SuccessAndFailModal();
 		successAndFaiModal.setStatusSuccess(false);
 		// List_number_Modal list_number_modal = new List_number_Modal();
-		InfoUserModal infoUser = new InfoUserModal();
+		LottaryModal luckyLottary = new LottaryModal();
+		InfoUserModal infoUser = null;
 		List<List_number_Modal> dataItem = null;
 		String formattedDate = myDateObj.format(myFormatObj);
 		String regex = "[, ' ']";
@@ -165,10 +166,12 @@ public class LottaryService {
 		Integer all_price = 0;
 		Boolean statusTransfer = false;
 		try {
+			
 			for (NumberRequestModel data : NumRequest.getDataSet()) {
-				infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
-				if (null != infoUser) {
-					if (!infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_N)) {
+//				infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
+				luckyLottary = lottaryRepo.findByDate(data.getLuckytime());
+				if (null != luckyLottary) {
+					if (!luckyLottary.getStatusLottary().equals(ConstantData.MESSAGE_N)) {
 						statusTransfer = true;
 						break;
 					}

@@ -1,10 +1,10 @@
 
 export const  useMessage = () => {
 
-    const addMessages = (msgs, respStatusCode, respMessage) => {
+    const addMessages = (msgs, respStatusProcess, respMessage) => {
 
         msgs.current.show(
-            respStatusCode === 200? { severity: 'success', summary: respMessage, sticky: true, closable: true } :
+            respStatusProcess === true? { severity: 'success', summary: respMessage, sticky: true, closable: true } :
             { severity: 'error', summary: respMessage, sticky: true, closable: true }
         );
 

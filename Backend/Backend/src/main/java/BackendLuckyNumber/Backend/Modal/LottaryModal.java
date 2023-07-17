@@ -31,6 +31,9 @@ public class LottaryModal {
 	private String twodown;
 	@Column(name = "biglucky")
 	private String biglucky;
+	@Column(name = "status_lottary")
+	private String statusLottary;
+
 	
 	
 //	@OneToMany(mappedBy = "lucktime")
@@ -44,6 +47,12 @@ public class LottaryModal {
 //		this.listnumber = listnumber;
 //	}
 
+	public String getStatusLottary() {
+		return statusLottary;
+	}
+	public void setStatusLottary(String statusLottary) {
+		this.statusLottary = statusLottary;
+	}
 	public String getBiglucky() {
 		return biglucky;
 	}

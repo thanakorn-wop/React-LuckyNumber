@@ -33,7 +33,7 @@ public class ConstantData {
 	public static String MESSAGE_EMPTY = "empty";
 	public static String ADMIN = "admin";
 	public static String MEMBER = "member";
-	public static String MESSAGE_LUCKYTIME_OVER = "มีงวดที่ได้ทำการส่งหวยไปแล้ว";
+	public static String MESSAGE_LUCKYTIME_OVER = "ไม่สามารถซื้องวดย้อนหลังได้";
 	public static String MESSAGE_UNALNE_TO_INSERT_NUMBER = "ไม่สามารถเพิ่มข้อมูลได้";
 
 	public static String USER_DETAILS ="userDetails";

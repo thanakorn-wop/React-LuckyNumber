@@ -48,6 +48,7 @@ function Lottary()
     const [no,setNo] = useState(null);
     const [selectPayment ,setSelecPaymentt] = useState("All");
     const [statusLucky,setStatusLucky] = useState("All");
+    const [statusProcess,setStatusProcess] = useState("");
     const [collectNumber,setCollectNumber] = useState({date:"",threetop:"",threedown:"",twotop:"",twodown:""});
     const [ newData,setNewData] = useState({
         id: "",
@@ -118,9 +119,10 @@ function Lottary()
                             if(isOpenMessage)
                             {
                                 msgs.current.clear();
-                                addMessage(msgs,response.status,<b>{msgWarning}</b>)
+                                addMessage(msgs,statusProcess,<b>{msgWarning}</b>)
                                 setProcess(false)
                                 setIsOpenMessage(false)
+                                setStatusProcess("")
                             }
                            // console.log("check response data = ",response );
                         }catch(error)
@@ -224,7 +226,7 @@ function Lottary()
                     // setMsgWaring("ทำรายการสำเร็จ");
                         blockRef.current.unBlock()
                         setIsOpenDeleteModal(false)
-                        addMessage(msgs,resp.status,<b>ทำรายการสำเร็จ</b>)
+                        addMessage(msgs,statusProcess,<b>ทำรายการสำเร็จ</b>)
                         setProcess(true)
                 }, 500);
                         
@@ -479,13 +481,37 @@ function Lottary()
                                 // console.log("check response num = ",res.data)
                         if(res.data.statusProcess === false && res.data.statusCode === '01')
                         {
-                            alert("ทำรายการไม่สำเร็จกรุณาตรวจสอบข้อมูล");
+                          
+                            setpopup(false);
+                          
+                            blockRef.current.block()
+                            setTimeout(() => {
+                            msgs.current.clear();
+                        // setMsgWaring("ทำรายการสำเร็จ");
+                            blockRef.current.unBlock()
+                            setIsOpenLotteryModal(false)
+                            addMessage(msgs,res.data.statusProcess,<b>{res.data.message}</b>)
+                            }, 500);
+                            setUserData({dataSet:[{
+                                id: add,
+                                date: new Date(),
+                                option:"",
+                                number:"",
+                                price:"",
+                                allPrice:"",
+                                idLine:"",
+                                phoneNumber:"",
+                                luckytime:new Date(),
+                                set:""
+                        
+                            }]})
                         }
                         else{
                             // alert("ทำรายการสำเร็จ");
                             setpopup(false);
                             setMsgWaring("ทำรายการสำเร็จ")
                             setProcess(true);
+                            setStatusProcess(true);
                             setIsOpenMessage(true)
                             setUserData({dataSet:[{
                                 id: add,
