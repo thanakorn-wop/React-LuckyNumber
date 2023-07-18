@@ -8,6 +8,8 @@
     width: 45%;
     top:25%;
     left: 25%;
+    background-color: rgb(26, 45, 54);
+    color: white;
 }
 .modal-footer .footer{
     padding: 0 20px;

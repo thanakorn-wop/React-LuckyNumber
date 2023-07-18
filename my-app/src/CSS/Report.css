@@ -12,9 +12,18 @@
     /* margin-top: 30px; */
   
     border: solid white 2px;
-    height: 700px;
+    height: 1000px;
 }
 .headerReport{
    text-align: center;
    margin-top: 20px;
+}
+button.p-paginator-page.p-paginator-element.p-link {
+    color: white;
+}
+.p-paginator.p-component.p-paginator-bottom {
+    background-color: rgb(26, 45, 54);
+}
+.textCenterTable{
+    padding: 15px 0px;
 }

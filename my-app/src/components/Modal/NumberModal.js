@@ -221,9 +221,9 @@ function NumberModal(props)
                     <div className="header-table" style={{"display":"flex"}}>
                         <div className="mark-no" style={{"color":"white"}} >
                             <label>ชุดที่</label>
-                            <input type="number"  className="number-mark" style={{"width":"30%"}} onChange={(data)=>setmark(data.target.value)} />
+                            <input type="number"  className="number-mark" style={{"width":"25%","textAlign":"center"}} onChange={(data)=>setmark(data.target.value)} />
                         </div>
-                        <div className="plusImage"> <img src={plus} style = {{"width":"20px","height":"20px","cursor":"pointer"}} onClick={()=>addRow()}/> </div>
+                        <div className="plusImage"> <img src={plus} alt="plus" style = {{"width":"20px","height":"20px","cursor":"pointer"}} onClick={()=>addRow()}/> </div>
                     </div>
                     <div className="table-number" >
                         <table className="table table-bordered table-striped" style={{"color":"white"}}>

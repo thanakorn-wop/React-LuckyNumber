@@ -111,6 +111,7 @@ function Lottary()
                             // console.log("check response.data  = ",response.data );
                             if(response.data != undefined && response.data.datalist != null)
                             {
+                                console.log("response get data = ",response.data)
                                 setDataSet(response.data.datalist)
                                // console.log("data = ",response.data.datalist)
                                 // setDateLucky(response.data.datalist.luckytime)
@@ -123,6 +124,7 @@ function Lottary()
                                 setProcess(false)
                                 setIsOpenMessage(false)
                                 setStatusProcess("")
+                                setMsgWaring("")
                             }
                            // console.log("check response data = ",response );
                         }catch(error)
@@ -138,34 +140,6 @@ function Lottary()
 
 
     },[process])
-    // console.log("check 1 = ",popup.show)
- 
-//     function Paginagtion({totalPosts,postsPerPage,paginate})
-// {
-//     const pageNumber =[];
-//     for(let i = 1; i<=Math.ceil(totalPosts / postsPerPage); i++)
-//     {
-//         pageNumber.push(i);
-//     }
-//     // console.log("pageNumber = "+pageNumber)
-//     // console.log("qqq",paginate)
-//     return(
-//         <nav  className="Nopagination" style={{"marginLeft":"120px","marginTop":"30px","position":"absolute","zIndex":"-1"}}>
-//             <ul className="pagination" >
-//                 <li className="page-item disabled">
-//                 <a className="page-link">Previous</a>
-//                 </li>
-//                 {pageNumber.map((number) =>{
-//                      return(
-//                         <button className={number == currentPage ?'active':'inactive'} key = {number}  onClick={()=>paginate(number)}>{number}</button>
-//                      )
-//                 })}
-              
-//                 <li className="page-item">  <button > Next </button> </li>
-//             </ul>
-//         </nav>
-//     )
-// }
     function submitData(e)
     {
         if(e === "save")
@@ -206,7 +180,7 @@ function Lottary()
     // TODO : delete data from table 
     function DeleteData(status,value)
     {
-        console.log("check status delete = ",DataDelete);
+       // console.log("check status delete = ",DataDelete);
         if(status ==='Yes')
         {
             try{
@@ -219,16 +193,21 @@ function Lottary()
                         // alert("ทำรายการสำเร็จ");
                         // setIsOpenDeleteModal(false)
                         // reload()
-
-                        blockRef.current.block()
-                        setTimeout(() => {
-                        msgs.current.clear();
-                    // setMsgWaring("ทำรายการสำเร็จ");
-                        blockRef.current.unBlock()
-                        setIsOpenDeleteModal(false)
-                        addMessage(msgs,statusProcess,<b>ทำรายการสำเร็จ</b>)
+                      //  console.log("resp delete = ",resp.data)
                         setProcess(true)
-                }, 500);
+                        setIsOpenDeleteModal(false)
+                        setMsgWaring(resp.data.message)
+                        setStatusProcess(resp.data.statusProcess)
+                        setIsOpenMessage(true)
+                //         blockRef.current.block()
+                //         setTimeout(() => {
+                //         msgs.current.clear();
+                //     // setMsgWaring("ทำรายการสำเร็จ");
+                //         blockRef.current.unBlock()
+                //         setIsOpenDeleteModal(false)
+                //         addMessage(msgs,resp.statusProcess,<b>ทำรายการสำเร็จ</b>)
+                //         setProcess(true)
+                // }, 500);
                         
                     }
                 })
@@ -245,7 +224,7 @@ function Lottary()
     //todo validate the  saving status from InsertLuckyNumber model
     function HandleInsertLuckyNumber(e,DataLuckyNumber)
     {
-        console.log("save InsertNUmber = ",e,DataLuckyNumber);
+        //console.log("save InsertNUmber = ",e,DataLuckyNumber);
         if(e === "save")
         {  // todo validate field  of Insert LuckyNumber Model
             if(DataLuckyNumber.threetop === null || DataLuckyNumber.threetop === undefined || DataLuckyNumber.threetop === "" )
@@ -340,7 +319,7 @@ function Lottary()
     }
     async function HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)
     {
-        console.log("Datanum lottay = ",dataNum)
+      //  console.log("Datanum lottay = ",dataNum)
         let statusValidate = true;
         if(isSave)
         {
@@ -378,7 +357,7 @@ function Lottary()
                             number = number.trim();
                             number = number.replaceAll(","," ")
                             number = number.split(" ");
-                            console.log("check number = ",number);
+                          //  console.log("check number = ",number);
                             if(dataNum.option === 'Tod')
                             {
                                 for(let i = 0 ; i<number.length ; i++)
@@ -398,7 +377,7 @@ function Lottary()
                                         }
                                         else{
                                             alert("มีบางเลขไม่ครบ3หลัก")
-                                            console.log("check qq = ",number[i])
+                                           // console.log("check qq = ",number[i])
                                             statusValidate = false;
                                             break;
                                         }
@@ -458,7 +437,7 @@ function Lottary()
             {
                 // dataNum.number = arrNo.join(",");
                 const answer = window.confirm("ต้องการบันทึกข้อมูลไหม ?");
-                console.log("check last data = ",dataNum)
+                //console.log("check last data = ",dataNum)
                 if(answer)
                 {
                     dataNum.dataSet.map((data,index)=>{
@@ -620,7 +599,7 @@ function Lottary()
             const response = await axios.post(urlConstant.POST_SEND_LOTTARY,date,{
                 headers: { 'Content-Type': 'application/json' }
             })
-            console.log("check response sendding  ",response);
+           // console.log("check response sendding  ",response);
             if(response.data.message ==="empty")
             {
                 alert("ไม่มีข้อมูลให้ทำรายการ")

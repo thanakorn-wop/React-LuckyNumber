@@ -17,7 +17,9 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 
 	
 	
-
+	@Query(value = " SELECT * FROM info_user  ",nativeQuery = true)
+	List<InfoUserModal> getAllUser();
+	
 	@Query(value = " SELECT p FROM info_user p WHERE p.id = ?1 and p.date = ?2   ")
 	InfoUserModal findInfoUser(String id,String date);
 	@Query(value = " SELECT * FROM info_user  WHERE id = ?1  and nickname = ?2 ORDER by date DESC LIMIT 1",nativeQuery = true)

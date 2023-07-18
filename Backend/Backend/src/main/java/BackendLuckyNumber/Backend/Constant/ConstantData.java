@@ -35,6 +35,8 @@ public class ConstantData {
 	public static String MEMBER = "member";
 	public static String MESSAGE_LUCKYTIME_OVER = "ไม่สามารถซื้องวดย้อนหลังได้";
 	public static String MESSAGE_UNALNE_TO_INSERT_NUMBER = "ไม่สามารถเพิ่มข้อมูลได้";
+	public static String MESSAGE_NOT_SUCCESS_TH ="ทำรายการไม่สำเร็จ";
+	public static String MESSAGE_SUCCESS_TH ="ทำรายการสำเร็จ";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";

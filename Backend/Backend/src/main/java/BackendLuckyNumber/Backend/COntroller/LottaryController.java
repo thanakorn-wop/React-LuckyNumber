@@ -61,6 +61,16 @@ public class LottaryController extends ValidateUntil {
 				if (null != data && data.size() > 0) {
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setMessage(ConstantData.MESSAGE_SUCCESS);
+					header.setStatusProcess(true);
+//					 header.setDatalist(data);
+					dataitem.setDatalist(data);
+					dataitem.setHeader(header);
+				}
+				else {
+					
+					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setMessage(ConstantData.MESSAGE_EMPTY);
+					header.setStatusProcess(true);
 //					 header.setDatalist(data);
 					dataitem.setDatalist(data);
 					dataitem.setHeader(header);
@@ -182,9 +192,15 @@ public class LottaryController extends ValidateUntil {
 		if (null != listRequest && listRequest.getId() != null && listRequest.getIdlist() != null) {
 			Boolean DeleteStatus = listLottaryService.postDeleteDataService(listRequest, auth);
 			if (DeleteStatus) {
-				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				header.setStatusProcess(true);
 
+			}
+			else {
+				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				header.setStatusProcess(false);
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;

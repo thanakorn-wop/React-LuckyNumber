@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
+import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.TransferLottaryModal;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.ResponseModel.ResponseData;
@@ -32,7 +33,7 @@ public class ReportController {
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		Header header = new Header();
 		ResponseData res = new ResponseData();
-		List<TransferLottaryModal> allUser = new ArrayList<>();
+		List<InfoUserModal> allUser = new ArrayList<>();
 		HttpStatus status = HttpStatus.OK;
 		if (user.getInfoUser().getIduser() != null) {
 			allUser =  reportService.getAllUserService();
@@ -44,6 +45,8 @@ public class ReportController {
 		}
 		else {
 			status = status.UNAUTHORIZED;
+			header.setMessage(ConstantData.ERROR_MESSAGE_UNAUTHORIZED);
+			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 			
 		}
 		return new ResponseEntity(res,status);
