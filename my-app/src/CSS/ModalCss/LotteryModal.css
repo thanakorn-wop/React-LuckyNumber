@@ -1,6 +1,6 @@
 .lottaryModal{
     position: absolute;
-    border: solid 2px yellow;
+    border: solid 2px gray;
     width: 45%;
     top:25%;
     left: 25%;
@@ -31,7 +31,7 @@
     text-align: center;
 }
 .mini-box {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     margin-top: 15px;
 }

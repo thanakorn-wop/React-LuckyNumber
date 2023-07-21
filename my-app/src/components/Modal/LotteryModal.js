@@ -4,11 +4,12 @@ import "../../CSS/ModalCss/LotteryModal.css"
 import { Await } from "react-router-dom";
 import axios from "axios";
 import * as urlConstant from "../Constant/UrlConstant"
+import { Calendar } from "primereact/calendar";
 function LotteryModal(props)
 {
-    const[daily,setDaily] = useState(new Date())
+    const[daily,setDaily] = useState(null)
     const[newDaily,setNewDaily] = useState('')
-    const [luckyItem ,setLuckyItem] = useState({date:new Date(),threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"});
+    const [luckyItem ,setLuckyItem] = useState({date:new Date(),biglucky:"XXXXXX",threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"});
     const [status,setStatus] = useState(false);
     const [empty,setEmpty] = useState(false)
     const [dateTime,setDateTIme] = useState({date:""});
@@ -55,60 +56,59 @@ function LotteryModal(props)
             })
             if(get_luckyitem !== null && get_luckyitem !== undefined && get_luckyitem.data.datalist !== null)
             {
-                console.log("check response data = ",get_luckyitem.data.datalist);   
+                console.log("check response data = ",get_luckyitem.data);   
                 setLuckyItem(get_luckyitem.data.datalist)       
                 setDaily(new Date(get_luckyitem.data.datalist.date))       
             }
         }
         async function postitem()
         {
-            const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
-            luckyItem.date = date_format;
-            const post_luckyitem = await axios.post(urlConstant.POST_LUCKYITEM,luckyItem,{
+            // const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
+            // luckyItem.date = date_format;
+            const post_luckyitem = await axios.post(urlConstant.POST_LUCKYITEM,dateTime,{
                 headers: { 'Content-Type': 'application/json' }
             })
             if(post_luckyitem !== null && post_luckyitem !== undefined && post_luckyitem.data.datalist !== null)
             {
-                console.log("check response data = ",post_luckyitem.data.datalist);   
+               // console.log("check response data = ",post_luckyitem.data.datalist);   
                 setLuckyItem(post_luckyitem.data.datalist)       
                 setDaily(new Date(post_luckyitem.data.datalist.date))       
                 
             }
             else{
-                setLuckyItem({date:daily,threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"})
-                console.log("luckyitem = ",luckyItem)
+                setLuckyItem({date:daily,biglucky:"XXXXXX",threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"})
+           //     console.log("luckyitem = ",luckyItem)
                 setDaily(daily)       
                 setEmpty(true)
                 
             }
         }
-        console.log("status = ",status)
+     //   console.log("status = ",status)
         if(!status)
         {
              getitem()
-            console.log("check No change")
-            
         }
         else{
-            console.log("check change")
+          //  console.log("check change")
             postitem()
             setStatus(false)
-            
-
         }
 
     },[newDaily])
     function HandleDate(date)
     {
-        setDaily(date)
+        let date_format = date.value
+        // console.log("checkdate = ",date.value)
+        // console.log("checkdate = ",date.target.value)
+        setDaily(date_format)
         setStatus(true)
-        setNewDaily(date)
+        setNewDaily(date_format)
+        date_format = date_format.getFullYear()+"-"+(1+Number(date_format.getMonth()))+"-"+date_format.getDate();
+        setDateTIme({...dateTime,date:date_format});
     }
     function SaveData(status)
     {
    
-        const date_format = daily.getFullYear()+"-"+(1+Number(daily.getMonth()))+"-"+daily.getDate();
-        dateTime.date = date_format;
         props.onSave(dateTime,status,empty,setEmpty)
        
     }
@@ -116,16 +116,17 @@ function LotteryModal(props)
         <div className="lottaryModal" >
         <div className="modal-header" style={{"borderBottom":"solid gray"}} >
             <div className="header-title" style={{"padding":"15px","color":"white"}}><h4>ตรวจสลากกินแบ่งรัฐบาล</h4></div>
-            </div>
+        </div>
         <div className="boxbody">
             <div className="mini-box" style={{"display":"flex","flexDirection":"column"}}>
-                <div  className ="dateLottary" style={{"display":"flex","flexDirection":"row","width":"100%"}}>
-                    <div style={{"width":"20%","alignItems":"center","color":"white"}}>
+                <div  className ="dateLottary"style={{"display":"flex","flexDirection":"row","width":"100%"}} >
+                    <div style={{"width":"100%","alignItems":"center","color":"white"}}>
                         <label className="date">งวดประจำวันที่</label>
+                        <Calendar  selected={daily} dateFormat="dd/mm/yy" style={{"marginLeft":"20px"}}   onChange={(date) => HandleDate(date) } /> 
+                   
                     </div>
-                    <div className="dateLottery">
-                        <DatePicker className="form-control" selected={daily} dateFormat= "dd-MM-yyyy"   onChange={(date) => HandleDate(date) } /> 
-                    </div>
+                    
+                       
                 
                 </div>
                 <div className="table-lottery">
@@ -133,19 +134,23 @@ function LotteryModal(props)
                         <tbody>
                         <tr>
                             <td><span className="textLotteryModal" style={{"color":"white"}}>รางวัลที่ 1 รางวัลละ 6,000,000 บาท</span></td>
-                            <td><span className="textLotteryModal" style={{"color":"#99FF99"}}> 843019</span></td>
+                            <td><span className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.biglucky}</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขหน้า 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}> 3 ตัวบน</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}} > {luckyItem.threeTop}</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขท้าย 3 ตัว 2 รางวัลๆละ 4,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>3 ตัวล่าง</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.threedow}</span></td>
                         </tr>
                         <tr>
-                            <td><span  className="textLotteryModal"style={{"color":"white"}}>เลขท้าย 2 ตัว 1 รางวัลๆละ 2,000 บาท</span></td>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>2 ตัวบน</span></td>
                             <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.twotop}</span></td>
+                        </tr>
+                        <tr>
+                            <td><span  className="textLotteryModal"style={{"color":"white"}}>2 ตัวล่าง</span></td>
+                            <td><span  className="textLotteryModal" style={{"color":"#99FF99"}}>{luckyItem.twodown}</span></td>
                         </tr>
                     </tbody>
 

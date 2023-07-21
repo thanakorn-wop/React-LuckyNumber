@@ -20,30 +20,31 @@ function Login({ setauth   })
     sessionStorage.setItem("token","");
     let navigate = useNavigate();
   
-    axios.interceptors.response.use(undefined,(error) =>{
-        const {status,data,config} = error.response;
-        if(status === 404)
-        {
-          window.location.assign("pagenotfound")
-        }
-        if(status === 400)
-        {
-            alert("BAD Request 400")
-        }
-        if(status ===500)
-        {
-          console.log("error server");
-          alert("ERROR 500")
-        }
-        if(status === 401)
-        {
-             window.location.assign("/login")
-        }
-        if(status ===403)
-        {
-          window.location.assign("/login")
-        }
-      })
+    // axios.interceptors.response.use(undefined,(error) =>{
+    //     const {status,data,config} = error.response;
+    //     console.log("check error =",data)
+    //     if(status === 404)
+    //     {
+    //       window.location.assign("pagenotfound")
+    //     }
+    //     if(status === 400)
+    //     {
+    //         alert("BAD Request 400")
+    //     }
+    //     if(status ===500)
+    //     {
+    //       console.log("error server");
+    //       alert("ERROR 500")
+    //     }
+    //     if(status === 401)
+    //     {
+    //          window.location.assign("/login")
+    //     }
+    //     if(status ===403)
+    //     {
+    //       window.location.assign("/login")
+    //     }
+    //   })
 
   
 
@@ -110,11 +111,8 @@ function Login({ setauth   })
                     }
                    
                 }).catch((error)=>{
-                    if(error.response)
-                    {
-                        console.log("status errorr = ",error.response.status)
-                        alert("error")
-                    }
+                    console.log("Error = ",error.message)
+                    alert("Error "+error.message)
                 })
             }catch(error)
             {

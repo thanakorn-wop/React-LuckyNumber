@@ -7,8 +7,16 @@ public class LuckyNumberReq {
 	private String threedown;
 	private String twotop;
 	private String twodown;
+	private String biglucky;
+	
 	
 
+	public String getBiglucky() {
+		return biglucky;
+	}
+	public void setBiglucky(String biglucky) {
+		this.biglucky = biglucky;
+	}
 	public String getDate() {
 		return date;
 	}

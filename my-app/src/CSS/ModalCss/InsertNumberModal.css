@@ -1,13 +1,13 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
+
 .luckynumber{
     position: absolute;
-    border: solid 2px yellow;
-    width: 25%;
+    border: solid 2px gray;
+    width: 30%;
     top:100px;
-    left: 650px;  
+    left: 35%;  
+    background-color: rgb(26, 45, 54);
+    color: white;
+    border-radius: 15px;
 }
 .text{
     text-align: center;
@@ -18,4 +18,10 @@
 }
 .formtext{
     margin: 0 auto;
+}
+.formCalendar{
+    text-align: center;
+}
+.input.p-inputtext.p-component {
+    text-align: center;
 }

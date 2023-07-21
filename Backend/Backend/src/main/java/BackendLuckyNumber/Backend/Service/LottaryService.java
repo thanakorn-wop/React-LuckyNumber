@@ -31,6 +31,8 @@ import BackendLuckyNumber.Backend.RequestModel.listNumberRquestModal;
 //import BackendLuckyNumber.Backend.ResponseModel.listNumberInerJoinLottaryResponseModal;
 import BackendLuckyNumber.Backend.ResponseModel.ResponseData;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @Service
@@ -79,62 +81,62 @@ public class LottaryService {
 		return dataItem;
 	}
 
-	public Boolean postInsertNumberLuckyService(LuckyNumberReq luckyNumberReq) throws Exception {
-		Boolean status = false;
-		LottaryModal lottary = new LottaryModal();
+//	public Boolean postInsertNumberLuckyService(LuckyNumberReq luckyNumberReq) throws Exception {
+//		Boolean status = false;
+//		LottaryModal lottary = new LottaryModal();
+//
+//		lottary.setDate(luckyNumberReq.getDate());
+//		lottary.setThreedow(luckyNumberReq.getThreedown());
+//		lottary.setThreeTop(luckyNumberReq.getThreetop());
+//		lottary.setTwodown(luckyNumberReq.getTwodown());
+//		lottary.setTwotop(luckyNumberReq.getTwotop());
+//		try {
+//			LottaryModal dataLottary = lottaryRepo.findByDate(luckyNumberReq.getDate());
+//			if (null == dataLottary) {
+//
+//				lottaryRepo.save(lottary);
+//
+//				status = true;
+//			} else {
+//				System.out.println("Duplicate date ");
+//				status = false;
+//			}
+//
+//		} catch (Exception e) {
+//			throw new Exception("ERROR  Lottary is = " + e);
+//
+//		}
+//		return status;
+//
+//	}
 
-		lottary.setDate(luckyNumberReq.getDate());
-		lottary.setThreedow(luckyNumberReq.getThreedown());
-		lottary.setThreeTop(luckyNumberReq.getThreetop());
-		lottary.setTwodown(luckyNumberReq.getTwodown());
-		lottary.setTwotop(luckyNumberReq.getTwotop());
-		try {
-			LottaryModal dataLottary = lottaryRepo.findByDate(luckyNumberReq.getDate());
-			if (null == dataLottary) {
-
-				lottaryRepo.save(lottary);
-
-				status = true;
-			} else {
-				System.out.println("Duplicate date ");
-				status = false;
-			}
-
-		} catch (Exception e) {
-			throw new Exception("ERROR  Lottary is = " + e);
-
-		}
-		return status;
-
-	}
-
-	public Boolean postUpdateLuckyNumberService(LuckyNumberReq luckyNumberReq) {
-		Boolean statusUpdate = false;
-		try {
-
-			List<LottaryModal> LastDate = lottaryRepo.findLastDate(luckyNumberReq.getDate());
-			// Optional<List_number_Modal> allDataUser =
-			// listNumberRepo.findById(user.getInfoUser().getId());
-			if (null != LastDate && LastDate.size() > 1) {
-				lottaryRepo.updateStatusLucky(LastDate.get(0).getDate(), LastDate.get(1).getDate(),
-						luckyNumberReq.getThreetop(), luckyNumberReq.getTwodown(), luckyNumberReq.getTwotop());
-				statusUpdate = true;
-				System.out.println("check statusUpdate Many " + statusUpdate);
-
-			} else {
-				lottaryRepo.updateStatusLuckyOneonOne(LastDate.get(0).getDate(), luckyNumberReq.getThreetop(),
-						luckyNumberReq.getTwodown(), luckyNumberReq.getTwotop());
-				statusUpdate = true;
-				System.out.println("check statusUpdate one on one  " + statusUpdate);
-			}
-
-		} catch (Exception e) {
-			System.out.println("Not update = " + statusUpdate);
-			throw e;
-
-		}
-		return statusUpdate;
-	}
+//	public Boolean postUpdateLuckyNumberService(LuckyNumberReq luckyNumberReq) {
+//		Boolean statusUpdate = false;
+//		try {
+//
+//			List<LottaryModal> LastDate = lottaryRepo.findLastDate(luckyNumberReq.getDate());
+//			// Optional<List_number_Modal> allDataUser =
+//			// listNumberRepo.findById(user.getInfoUser().getId());
+//			if (null != LastDate && LastDate.size() > 1) {
+//				lottaryRepo.updateStatusLucky(LastDate.get(0).getDate(), LastDate.get(1).getDate(),
+//						luckyNumberReq.getThreetop(), luckyNumberReq.getTwodown(), luckyNumberReq.getTwotop());
+//				statusUpdate = true;
+//				System.out.println("check statusUpdate Many " + statusUpdate);
+//
+//			} else {
+//				lottaryRepo.updateStatusLuckyOneonOne(LastDate.get(0).getDate(), luckyNumberReq.getThreetop(),
+//						luckyNumberReq.getTwodown(), luckyNumberReq.getTwotop());
+//				statusUpdate = true;
+//				System.out.println("check statusUpdate one on one  " + statusUpdate);
+//			}
+//
+//		} catch (Exception e) {
+//			System.out.println("Not update = " + statusUpdate);
+//			throw e;
+//
+//		}
+//		return statusUpdate;
+//	}
 
 	public SuccessAndFailModal postInsertNumberService(DataSetModal NumRequest, UserdetailsIml user) throws Exception {
 		Boolean status_Update = false;
@@ -158,6 +160,7 @@ public class LottaryService {
 		Integer money_win = 0;
 		Integer count_lost = 0;
 		Integer count_win = 0;
+		Integer totalBuy = 0;
 
 //		Formatter formatter = new Formatter();
 //		formatter = new Formatter();
@@ -168,7 +171,6 @@ public class LottaryService {
 		try {
 			
 			for (NumberRequestModel data : NumRequest.getDataSet()) {
-//				infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
 				luckyLottary = lottaryRepo.findByDate(data.getLuckytime());
 				if (null != luckyLottary) {
 					if (!luckyLottary.getStatusLottary().equals(ConstantData.MESSAGE_N)) {
@@ -180,6 +182,7 @@ public class LottaryService {
 			if (statusTransfer) {
 				successAndFaiModal.setMessage(ConstantData.MESSAGE_LUCKYTIME_OVER);
 			} else {
+				
 				for (NumberRequestModel data : NumRequest.getDataSet()) {
 					people_win = "";
 					people_lost = "";
@@ -196,43 +199,26 @@ public class LottaryService {
 					Integer Length_Number = Str_Number.length;
 					all_price = Length_Number * Integer.valueOf(data.getPrice());
 					String joinNumber = String.join(",", Str_Number);
-					if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOP)
-							|| data.getOption().equals(ConstantData.MESSAGE_BELOW)) {
-						list_number_modal.setNumber(joinNumber);
-						list_number_modal.setPrice(data.getPrice());
-						list_number_modal.setAllPrice(String.valueOf(all_price));
-						list_number_modal.setOptinpurchase(data.getOption());
-						list_number_modal.setDatebuy(data.getDate());
-						list_number_modal.setTime(formattedDate);
-						list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
-						list_number_modal.setId(id);
-						list_number_modal.setStatus("unLucky");
-						list_number_modal.setLuckytime(data.getLuckytime());
-						list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-						list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
-						list_number_modal.setSequence(data.getSequence());
-						listNumberRepo.save(list_number_modal);
-						status_Update = true;
-
-					} else if (null != joinNumber && data.getOption().equals(ConstantData.MESSAGE_TOD)) {
-						list_number_modal.setNumber(joinNumber);
-						list_number_modal.setPrice(data.getPrice());
-						list_number_modal.setAllPrice(String.valueOf(all_price));
-						list_number_modal.setOptinpurchase(data.getOption());
-						list_number_modal.setDatebuy(data.getDate());
-						list_number_modal.setTime(formattedDate);
-						list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
-						list_number_modal.setId(user.getInfoUser().getId());
-						list_number_modal.setStatus("unLucky");
-						list_number_modal.setLuckytime(data.getLuckytime());
-						list_number_modal.setTransfer(ConstantData.MESSAGE_N);
-						list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
-						list_number_modal.setSequence(data.getSequence());
-						listNumberRepo.save(list_number_modal);
-						status_Update = true;
-					}
-					if (status_Update) {
-						if (null != infoUser) {
+					infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
+					list_number_modal.setNumber(joinNumber);
+					list_number_modal.setPrice(data.getPrice());
+					list_number_modal.setAllPrice(String.valueOf(all_price));
+					list_number_modal.setOptinpurchase(data.getOption());
+					list_number_modal.setDatebuy(data.getDate());
+					list_number_modal.setTime(formattedDate);
+					list_number_modal.setStatuspayment(ConstantData.MESSAGE_NO);
+					list_number_modal.setId(id);
+					list_number_modal.setStatus("unLucky");
+					list_number_modal.setLuckytime(data.getLuckytime());
+					list_number_modal.setTransfer(ConstantData.MESSAGE_N);
+					list_number_modal.setStatusValidate(ConstantData.MESSAGE_N);
+					list_number_modal.setSequence(data.getSequence());
+					listNumberRepo.save(list_number_modal);
+					successAndFaiModal.setStatusSuccess(true);
+					successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
+					status_Update = true;
+					if(null != infoUser)
+					{
 							System.out.println("update ");
 							dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
 							if (null != dataItem && dataItem.size() > 0) {
@@ -252,39 +238,31 @@ public class LottaryService {
 								// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
 							}
 
-						} else {
-							dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
-							if (null != dataItem && dataItem.size() > 0) {
-								for (List_number_Modal item : dataItem) {
-									total_purchase += Integer.valueOf(item.getAllPrice());
-									if (item.getTransfer().equals(ConstantData.MESSAGE_N)
-											&& item.getStatus().equals("unLucky")) {
-										count_lost += 1;
-									}
-								}
-								InfoUserModal saveinfoUser = new InfoUserModal();
-								saveinfoUser.setTotalPurchase(total_purchase.toString());
-								saveinfoUser.setNickname(user.getInfoUser().getNickname());
-								saveinfoUser.setPeoplelost(count_lost.toString());
-								saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
-								saveinfoUser.setDate(data.getLuckytime());
-								saveinfoUser.setId(user.getInfoUser().getId());
-								saveinfoUser.setTotalLost("0");
-								saveinfoUser.setPeoplewin("0");
-								saveinfoUser.setBalance("0");
-								saveinfoUser.setPeoplewin("0");
-								saveinfoUser.setPay("0");
-								saveinfoUser.setNotpay("0");
-								infouserRepo.save(saveinfoUser);
-								successAndFaiModal.setStatusSuccess(true);
-								successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
-								// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
-								// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
-							}
-						}
-					} else {
-						successAndFaiModal.setMessage(ConstantData.MESSAGE_UNALNE_TO_INSERT_NUMBER);
 					}
+					else {
+					
+							InfoUserModal saveinfoUser = new InfoUserModal();
+							saveinfoUser.setTotalPurchase(data.getAllPrice());
+							saveinfoUser.setNickname(user.getInfoUser().getNickname());
+							saveinfoUser.setPeoplelost("1");
+							saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
+							saveinfoUser.setDate(data.getLuckytime());
+							saveinfoUser.setId(user.getInfoUser().getId());
+							saveinfoUser.setTotalLost("0");
+							saveinfoUser.setPeoplewin("0");
+							saveinfoUser.setBalance("0");
+							saveinfoUser.setPay("0");
+							saveinfoUser.setNotpay("0");
+							infouserRepo.save(saveinfoUser);
+							successAndFaiModal.setStatusSuccess(true);
+							successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
+							// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
+							// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
+						
+					}
+					if (!status_Update) {
+						successAndFaiModal.setMessage(ConstantData.MESSAGE_UNALNE_TO_INSERT_NUMBER);
+					} 
 				}
 			}
 
@@ -357,13 +335,17 @@ public class LottaryService {
 			statusTransfer = user.getStatusTransfer();
 			if (statusTransfer.equals(ConstantData.MESSAGE_N)) {
 				luckyDate = lottaryRepo.findDate(luckydate);
-				if (null != luckyDate) {
+				String[]threeDown = luckyDate.getThreedow().split(",");
+				System.out.println(ArrayUtils.contains(threeDown, "20"));
+				System.out.println(ArrayUtils.contains(threeDown, "123"));
+				
+				
+ 				if (null != luckyDate) {
 					dataItem = listNumberRepo.findItembyStatusTransfer(id, luckydate);
 					if (null != dataItem && dataItem.size() > 0) {
 						for (List_number_Modal item : dataItem) {
 							idValidateLottary.add(item.getIdlist());
-							String number = "";
-							number = item.getNumber();
+							String number = item.getNumber();
 							String[] split_number = number.split(",");
 							for (String no : split_number) {
 								if (item.getOptinpurchase().equals(ConstantData.MESSAGE_TOP)) {
@@ -373,10 +355,20 @@ public class LottaryService {
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
 									}
+									else if(no.equals(luckyDate.getTwotop()))
+									{
+										idlottary.add(item.getIdlist());
+										sum = sum + Integer.valueOf(item.getPrice());
+									}
 								} else if (item.getOptinpurchase().equals(ConstantData.MESSAGE_BELOW)) {
 
 									if (no.equals(luckyDate.getTwodown())) {
 
+										idlottary.add(item.getIdlist());
+										sum = sum + Integer.valueOf(item.getPrice());
+									}
+									else if(ArrayUtils.contains(threeDown, no))
+									{
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
 									}

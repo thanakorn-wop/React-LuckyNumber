@@ -116,7 +116,7 @@ function Management()
                     <h3>การจัดการผู้ใช้งาน</h3>
                 </div>
             <div className="tableManagement" style={{"marginTop":"20px"}}>
-               <table className="table table-bordered table-striped" style={{"textAlign":"center","width":"100%"}}>
+               <table className="table table-bordered table-striped" style={{"textAlign":"center","width":"100%","color":"white"}}>
                 <thead >
                     <tr style={{"border":"none"}} >
                         <td style={{"width":"50%","border":"none"}}>ชื่อเล่น</td>

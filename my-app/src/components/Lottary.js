@@ -13,7 +13,6 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import PaginatedItems from "../components/PaginatedItems"
 import { Messages } from 'primereact/messages';
-import { useMountEffect } from 'primereact/hooks';
 import {useMessage} from './Constant/useMessage'
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -131,14 +130,8 @@ function Lottary()
                         {
                             console.error(error);
                         }
-                     
-                    
-                      
                   }
                 getListitem();
-                
-
-
     },[process])
     function submitData(e)
     {
@@ -190,25 +183,12 @@ function Lottary()
                     // console.log(resp)
                     if(resp.status=== 200)
                     {
-                        // alert("ทำรายการสำเร็จ");
-                        // setIsOpenDeleteModal(false)
-                        // reload()
-                      //  console.log("resp delete = ",resp.data)
+
                         setProcess(true)
                         setIsOpenDeleteModal(false)
                         setMsgWaring(resp.data.message)
                         setStatusProcess(resp.data.statusProcess)
                         setIsOpenMessage(true)
-                //         blockRef.current.block()
-                //         setTimeout(() => {
-                //         msgs.current.clear();
-                //     // setMsgWaring("ทำรายการสำเร็จ");
-                //         blockRef.current.unBlock()
-                //         setIsOpenDeleteModal(false)
-                //         addMessage(msgs,resp.statusProcess,<b>ทำรายการสำเร็จ</b>)
-                //         setProcess(true)
-                // }, 500);
-                        
                     }
                 })
 
@@ -486,7 +466,8 @@ function Lottary()
                             }]})
                         }
                         else{
-                            // alert("ทำรายการสำเร็จ");
+            
+
                             setpopup(false);
                             setMsgWaring("ทำรายการสำเร็จ")
                             setProcess(true);
@@ -567,7 +548,7 @@ function Lottary()
                 if(postItem !== null && postItem !== undefined)
                 {
                     console.log("check postItem = ",postItem.data)
-                    if(postItem.data.header.statusCode == '01' && postItem.data.header.message =='success')
+                    if(postItem.data.statusCode == '01' && postItem.data.statusProcess === true)
                     {
                         // alert("ทำรายการสำเร็จ")
                         blockRef.current.block()
@@ -576,7 +557,7 @@ function Lottary()
                     // setMsgWaring("ทำรายการสำเร็จ");
                         blockRef.current.unBlock()
                         setIsOpenLotteryModal(false)
-                        addMessage(msgs,postItem.status,<b>ทำรายการสำเร็จ</b>)
+                        addMessage(msgs,postItem.data.statusProcess,<b>{postItem.data.message}</b>)
                 }, 500);
                         // reload()
                     }
@@ -645,14 +626,7 @@ function Lottary()
     //TODO: filter data after click search buttom 
     function SearchData()
     {
-        let dateBuy = null;
         let dateTimeLucky = null;
-        
-         //console.log("check = asdasd",dataSet)
-        // if(DateBuy !== null && DateBuy !== '' && DateBuy !== undefined)
-        // {         
-        //     dateBuy = (DateBuy.getFullYear()+"-"+String(1+Number(DateBuy.getMonth())).padStart(2, '0')+"-"+String(DateBuy.getDate()).padStart(2, '0'));
-        // }
         if(dateLucky !== null && dateLucky !== '' && dateLucky !== undefined)
         {
             dateTimeLucky = (dateLucky.getFullYear()+"-"+String(1+Number(dateLucky.getMonth())).padStart(2, '0')+"-"+String(dateLucky.getDate()).padStart(2, '0'));
@@ -660,7 +634,7 @@ function Lottary()
       
         if(selectPayment !== "All" && statusLucky !=='All' )
         {
-            console.log("date buy = ",dateTimeLucky)
+         //   console.log("date buy = ",dateTimeLucky)
             //** use object.values because the output is [Object,Object] */
                 if(dateTimeLucky !== null  )
                 {
@@ -753,8 +727,6 @@ function Lottary()
               
                 if(no !== null )
                 {
-                  //  console.log("check 1 = ",no)
-                  //  console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment &&  data.status === statusLucky && data.sequence === no  && data.luckytime === dateTimeLucky))
                    setDataSet(dataSet.filter(data=> data.sequence === no && data.luckytime === dateTimeLucky))
                 }
                 else{
@@ -765,9 +737,6 @@ function Lottary()
             {
                 if(no !== null )
                 {
-                   // console.log("check ถูกรางงวัลไม่จ่าย = ",no)
-                   // console.log("check newItem = ",dataSet.filter(data=> data.statuspayment === selectPayment  && data.sequence === no ))
-                 
                    setDataSet(dataSet.filter(data=>    data.sequence === no))
                 }       
             }
@@ -926,10 +895,10 @@ function Lottary()
             {/* // list insert purachse number  modal */}
             <NumberModal  handleSavingNum={(isSave,dataNum,setUserData,mark,setRank,setTotalPrice) => HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)}  show={popup}   />
 
-            {
+            {/* {
             // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 
                 luckyModal && <InsertLuckyNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertLuckyNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
-            }
+            } */}
             {
                 // todo paymethod modal changing
             isOpenPaymentModal &&   <PaymentStatusModal HandlePayment = {(status_saving,DataPayment)=>HandlePayment(status_saving,DataPayment)} />

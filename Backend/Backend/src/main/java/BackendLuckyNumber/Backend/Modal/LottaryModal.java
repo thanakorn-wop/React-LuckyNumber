@@ -33,6 +33,10 @@ public class LottaryModal {
 	private String biglucky;
 	@Column(name = "status_lottary")
 	private String statusLottary;
+	@Column(name = "user_update")
+	private String userUpdate;
+	
+	
 
 	
 	
@@ -47,6 +51,12 @@ public class LottaryModal {
 //		this.listnumber = listnumber;
 //	}
 
+	public String getUserUpdate() {
+		return userUpdate;
+	}
+	public void setUserUpdate(String userUpdate) {
+		this.userUpdate = userUpdate;
+	}
 	public String getStatusLottary() {
 		return statusLottary;
 	}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../CSS/ModalCss/InsertNumberModal.css"
 import DatePicker from "react-datepicker";
+import { Calendar } from 'primereact/calendar';
 function InsertLuckyNumberModal (props)
 {
 
@@ -12,7 +13,8 @@ function InsertLuckyNumberModal (props)
         threedown: "",
         twotop: "",
         twodown:"",
-        lucktime:""
+        date:"",
+        biglucky:"",
       
     });
     console.log("check ",luckyNumber);
@@ -22,40 +24,48 @@ function InsertLuckyNumberModal (props)
             return <option key={data}>{data}</option>
          })
     )
+    const updateDate = (event)=>{
+        console.log("event = ",event.target.value)
+        let date = event.target.value;
+        date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
+        setDateMonth(event.target.value)
+        setLuckyNumber({...luckyNumber,date:date})
+
+    }
     const handleChange = (e) => {
         const value = e.target.value;
         setLuckyNumber({...luckyNumber,[ e.target.name]: value});
     }
     const handleSaving = (e)=>{
-       
-        luckyNumber.lucktime = (DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate());
-       // luckyNumber.date = (DateMonth.getDate()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getFullYear());
-        console.log(luckyNumber)
-        props.handleSaving(e.target.name,luckyNumber)
+
+
+        props.handleSaving(e.target.name,luckyNumber,setLuckyNumber)
     }
    
     return(
         <div className="luckynumber" >
-        <div className="modal-header" style={{"textAlign":"center"}} ><h4>Modal title</h4></div>
+        <div className="modal-header" style={{"textAlign":"center"}} ><h4 style={{"padding":"20px"}}>รางวัลที่ออก</h4></div>
         <div className="boxbody">
             <div style={{"marginLeft":"10px","marginRight":"20px"}}>
             <div className="text">  <label>วันที่</label></div>
-            <div className="formtext" style={{"width":"50%"}}>    <DatePicker className="form-control " name = "lucktime" selected={DateMonth}  onChange={(date) => setDateMonth(date)} /></div>
-            <div className="text">  <label>เลขหน้า 3 ตัว</label></div>
+            <div className="formCalendar">    <Calendar className="" name = "date" selected={DateMonth} style={{"width":"50%"}}  onChange={updateDate} /></div>
+            <div className="text">  <label>รางวัลที่ 1</label></div>
+            <div className="formtext">  <input type="textbox" className="form-control "   style={{"width":"50%"}} name = "biglucky"  onChange={(e)=>handleChange(e)}/></div>
+            <div className="text">  <label> 3 ตัวบน</label></div>
             <div className="formtext">  <input type="textbox" className="form-control "   style={{"width":"50%"}} name = "threetop"  onChange={(e)=>handleChange(e)}/></div>
-            <div className="text">  <label>เลขท้าย 3 ตัว</label></div>
+            <div className="text">  <label> 3 ตัว ล่าง</label></div>
             <div className="formtext">  <input type="textbox" className="form-control " style={{"width":"50%"}}  name = "threedown"  onChange={(e)=>handleChange(e)}/></div>
-            <div className="text">  <label>เลขท้าย 2 ตัว</label></div>
+            <div className="text">  <label> 2 ตัวบน</label></div>
             <div className="formtext">  <input type="textbox" className="form-control "  style={{"width":"50%"}} name = "twotop"  onChange={(e)=>handleChange(e)}/></div>
-            <div className="text">  <label>เลขท้าย 2 ตัว</label></div>
+            <div className="text">  <label> 2 ตัวล่าง</label></div>
             <div className="formtext">  <input type="textbox" className="form-control " style={{"width":"50%"}}  name = "twodown"  onChange={(e)=>handleChange(e)}/></div>
         
             </div>
         </div>
-        <div className="modal-footer" style={{"marginTop":"20px"}}>
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" name = "notsave" onClick={(e) =>handleSaving(e) }>Close</button>
-        <button type="button" className="btn btn-primary" name = "save" onClick={(e)=>handleSaving(e)}>Save changes</button>
-    </div>
+        <div className="modal-footer" style={{"marginTop":"20px","padding":"20px"}}>
+            <button type="button" className="btn btn-secondary" style={{"marginRight":"10px"}} data-bs-dismiss="modal" name = "No" onClick={(e) =>handleSaving(e) }>Close</button>
+            <button type="button" className="btn btn-primary" name = "Yes" onClick={(e)=>handleSaving(e)}>Save changes</button>
+        </div>
 </div>
     );
 }

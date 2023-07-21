@@ -14,7 +14,7 @@ import Loading from "./Constant/Loading";
 import { Messages } from 'primereact/messages'; 
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
-import {CSSCLASS} from "./Constant/CSSCLASS"
+import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 function Report()
 {
     const msgs = useRef(null);
@@ -22,6 +22,17 @@ function Report()
     const addMessage = useMessage();
     const [allUser,setAllUser] = useState([]);
     const [dataSearch,setDataSearch] = useState({name:"",statusTransfer:"",date:"",timeTransfer:""});
+    const [isOpenLuckNumberModal,setIsOpenLuckyNumberModal] = useState(false);
+    const [DataLuckyNumber,setDataLuckyNumber] = useState();
+    const [luckyNumber, setLuckyNumber] = useState({
+        threetop: "", 
+        threedown: "",
+        twotop: "",
+        twodown:"",
+        lucktime:"",
+        biglucky:"",
+      
+    });
    // console.log("dataSearch = ",dataSearch)
     let session =  sessionStorage.getItem("token");
     axios.interceptors.request.use(
@@ -85,20 +96,154 @@ function Report()
     const SearchData = ()=>{
         let date = new Date();
         date = dataSearch.date;
-        console.log("date = ",date.getFullYear())
+        console.log("data = ",dataSearch)
         if(date != '')
         {
-            date = date.getFullYear()+"-"+(Number(1)+date.getMonth())+"-"+date.getDate();
+            date =(date.getFullYear()+"-"+String(1+Number(date.getMonth())).padStart(2, '0')+"-"+String(date.getDate()).padStart(2, '0'));
         }
-        console.log("date = ",date)
-
+     
+        console.log("check = ", dataSearch.name === '')
         // console.log("search data ",dataSearch)
-        if(dataSearch.statusTransfer !== "" && dataSearch.date !== '' && dataSearch.name == '')
+        if(dataSearch.statusTransfer !== "" && dataSearch.date !== '' && dataSearch.name === '')
         {
-            console.log("Alluser = ",allUser)
-            setAllUser(allUser.filter(data => data.date === "2023-07-13" && data.statusTransfer === dataSearch.statusTransfer ))
+            // console.log("Alluser = ",date)
+            setAllUser(allUser.filter(data => data.date === date && data.statusTransfer === dataSearch.statusTransfer.status ))
+        }
+        else if(dataSearch.statusTransfer == "" && dataSearch.date !== '' && dataSearch.name !== '')
+        {
+            // console.log("Alluser = ",allUser)
+            setAllUser(allUser.filter(data => data.date === date && data.nickname === dataSearch.name ))
+        }
+       
+        else if(dataSearch.statusTransfer !== "" && dataSearch.date === '' && dataSearch.name !== '')
+        {
+            console.log("check4")
+            setAllUser(allUser.filter(data => data.statusTransfer === dataSearch.statusTransfer.status && data.nickname === dataSearch.name ))
         }
 
+        else if(dataSearch.statusTransfer == "" && dataSearch.date == '' && dataSearch.name !== '')
+        {
+            // console.log("Alluser = ",allUser)
+            setAllUser(allUser.filter(data =>  data.nickname === dataSearch.name ))
+        }
+       
+        else if(dataSearch.statusTransfer !== "" && dataSearch.date === '' && dataSearch.name === '')
+        {
+            console.log("check4")
+            setAllUser(allUser.filter(data => data.statusTransfer === dataSearch.statusTransfer.status ))
+        }
+        else if(dataSearch.statusTransfer === "" && dataSearch.date !== '' && dataSearch.name === '')
+        {
+            console.log("check4")
+            setAllUser(allUser.filter(data => data.date === date ))
+        }
+        else{
+            setAllUser(allUser.filter(data => data.statusTransfer === dataSearch.statusTransfer.status && data.date === date && data.nickname === dataSearch.name ))
+        }
+        setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
+
+    }
+    async function HandleInsertLuckyNumber(statusSaving,dataLucky,setLuckyNumber)
+    {   
+       
+        // console.log("dataLuck1y = ",dataLucky)
+        // console.log("dataLucky.threetop.length = ",dataLucky.threetop.length)
+        let threeDownSplit = dataLucky.threedown.trim().split(" ")
+         console.log("checkthreeDown = ",threeDownSplit.length !==4 )
+        if(statusSaving === "Yes")
+        {  // todo validate field  of Insert LuckyNumber Model
+            if(dataLucky.threetop === null || dataLucky.threetop === undefined || dataLucky.threetop === "" )
+            {
+                alert("กรุณาใส่เลข เลขหน้า 3 ตัว");  
+            }
+            else if(dataLucky.threedown === null || dataLucky.threedown === undefined || dataLucky.threedown === "" )
+            {
+                alert("กรุณาใส่เลข เลขหท้าย 3 ตัว");
+            }
+            else if(dataLucky.twotop === null || dataLucky.twotop === undefined || dataLucky.twotop === "" )
+            {
+                alert("กรุณาใส่เลขเลขท้าย 2 ตัว");
+            }
+            else if(dataLucky.twodown=== null || dataLucky.twodown === undefined || dataLucky.twodown === "" )
+            {
+                alert("กรุณาใส่เลข เลขท้าย 2 ตัว");
+            }
+            else{
+                console.log("dataLucky.threetop.length >3 || dataLucky.threetop.length <2 = ", dataLucky.threetop.length <2)
+                if(Number(dataLucky.threetop.length) !==3  )
+                {
+                 
+                    alert("กรุณาใส่เลขให้ครบ3หลักของสามตัวบน")
+                    
+                    
+                }
+                else if(threeDownSplit.length !==4  )
+                {
+                    alert("กรุณาใส่เลขให้ครบ4หลักของสามตัวล่าง")
+                    
+                }
+                else if(Number(dataLucky.twotop.length) !==2 )
+                {
+                    alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวบน")
+                   
+                }
+                else if(Number(dataLucky.twodown.length) !==2)
+                {
+                    alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวล่าง")
+                    
+                }
+                else{
+                    try{
+                        console.log("dataLucky = ",dataLucky)
+                        const respon = await axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,dataLucky,{
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                        console.log("respon = ",respon)
+                        let message = respon.data.message;
+                        let process =respon.data.statusProcess;
+
+                        // todo validate status insert from back end 
+                        if(process)
+                        {
+                            blockRef.current.block()
+                            setTimeout(() => {
+                            msgs.current.clear();
+                        // setMsgWaring("ทำรายการสำเร็จ");
+                            blockRef.current.unBlock()
+                            // setIsOpenLotteryModal(false)
+                            addMessage(msgs,process,<b>{message}</b>)
+                            }, 500);
+                        }
+                        else{
+                            blockRef.current.block()
+                            setTimeout(() => {
+                            msgs.current.clear();
+                        // setMsgWaring("ทำรายการสำเร็จ");
+                            blockRef.current.unBlock()
+                            // setIsOpenLotteryModal(false)
+                            addMessage(msgs,process,<b>{message}</b>)
+                            }, 500);
+                        }
+                        setIsOpenLuckyNumberModal(false)
+                        setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:""})
+                        setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
+                    
+                    }catch(error)
+                    {
+                        alert("ERROR is "+error.message)
+                    }
+                   
+                }
+            }
+            
+        }
+        else{
+            setIsOpenLuckyNumberModal(false)
+            setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:""})
+            setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
+        }
+        //* close InsertLucky Number Model  and set default value*/
+       
     }
     const optionTransfer = [
         {
@@ -115,6 +260,7 @@ function Report()
                 <h3>รายระเอียดการส่งงวด</h3>
             </div>
             <div className="listitem">
+            <Loading ref={blockRef}/>
                     <Messages ref={msgs} />
                         <table className="table table-bordered table-striped">
                             <thead className="table-secondary">
@@ -154,8 +300,11 @@ function Report()
                                     <td><input className = "form-control" type="text"/></td>
                                 </tr> */}
                                 <tr className="table-listitem" style={{"border":"none"}}>
-                                    <td  style={{"borderRight":"none","borderLeft":"none"}}>
-                                        <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
+                                    <td  colSpan="4" style={{"borderRight":"none","borderLeft":"none"}}>
+                                       <div style={{"display":"flex"}}>
+                                       <button type="button" className="btn btn-primary" onClick={()=>SearchData()}>ค้นหา</button> 
+                                        <button type="button" className="btn btn-warning" style={{"marginLeft":"10px"}} onClick={()=>setIsOpenLuckyNumberModal(true)}>เลขที่ออก</button> 
+                                       </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -177,6 +326,10 @@ function Report()
         </div>
               
         </div>
+        {
+            // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 
+                isOpenLuckNumberModal && <InsertLuckyNumberModal  handleSaving = {(status_saving,DataLuckyNumber,setLuckyNumber)=>HandleInsertLuckyNumber(status_saving,DataLuckyNumber,setLuckyNumber)}/>
+            }
 
     </div>
     );
