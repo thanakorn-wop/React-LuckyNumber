@@ -57,8 +57,16 @@ function LotteryModal(props)
             if(get_luckyitem !== null && get_luckyitem !== undefined && get_luckyitem.data.datalist !== null)
             {
                 console.log("check response data = ",get_luckyitem.data);   
+              
+                setDateTIme({...dateTime,date:get_luckyitem.data.datalist.date});
                 setLuckyItem(get_luckyitem.data.datalist)       
-                setDaily(new Date(get_luckyitem.data.datalist.date))       
+                setDaily(new Date(get_luckyitem.data.datalist.date))      
+                console.log("new Date(post_luckyitem.data.datalist.date) = ",new Date(get_luckyitem.data.datalist.date))
+            }
+            else{
+                setLuckyItem({date:daily,biglucky:"XXXXXX",threeTop:"XXX XXX",threedow:"XXX XXX",twodown:"XX",twotop:"XX"})
+                setDaily(daily)       
+                setEmpty(true)
             }
         }
         async function postitem()
@@ -72,6 +80,7 @@ function LotteryModal(props)
             {
                // console.log("check response data = ",post_luckyitem.data.datalist);   
                 setLuckyItem(post_luckyitem.data.datalist)       
+                console.log("new Date(post_luckyitem.data.datalist.date) = ",new Date(post_luckyitem.data.datalist.date))
                 setDaily(new Date(post_luckyitem.data.datalist.date))       
                 
             }
@@ -122,7 +131,7 @@ function LotteryModal(props)
                 <div  className ="dateLottary"style={{"display":"flex","flexDirection":"row","width":"100%"}} >
                     <div style={{"width":"100%","alignItems":"center","color":"white"}}>
                         <label className="date">งวดประจำวันที่</label>
-                        <Calendar  selected={daily} dateFormat="dd/mm/yy" style={{"marginLeft":"20px"}}   onChange={(date) => HandleDate(date) } /> 
+                        <Calendar  value={daily} dateFormat="dd/mm/yy" style={{"marginLeft":"20px"}}   onChange={(date) => HandleDate(date) } /> 
                    
                     </div>
                     

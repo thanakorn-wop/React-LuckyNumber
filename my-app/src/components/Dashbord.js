@@ -52,22 +52,22 @@ function Dashbord()
       }
     })
   useEffect(()=>{
-  try{
-    axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }}).then(res=>{
-      console.log(" tt = ",session)
-      if(res.data.statusCode !=='401')
-      {
-        setDataSet(res.data.datalist)
-      }
-    })
-   
-  }catch(e)
-  {
-    if(e.res.status ===401)
+    async function getIncomeUser()
     {
-     navaigate("/login");
+      try{
+        const response = await axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }})
+        console.log("response = ",response.data)
+        if(response.data !== null)
+        {
+          
+        }
+      }
+      catch(error)
+      {
+        console.error();
+      }
     }
-  }
+    getIncomeUser();
 },[])
 
 let sum = 0;

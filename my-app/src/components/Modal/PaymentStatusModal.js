@@ -28,17 +28,19 @@ function PaymentStatusModal (props)
         <div className="paymentmodal" >
                 <div className="modal-header" style={{"textAlign":"center","borderBottom":"solid gray"}} > <div className="header-title" style={{"padding":"15px"}}> <h4>สถานะการจ่ายเงิน</h4></div></div>
                 <div className="boxbody">
-                    <div style={{"marginLeft":"10px","marginRight":"20px"}}>
-                    <div className="text">  <label>สถานะการจ่าย</label></div>
-                    <div> 
-                        <select className="form-select form-select-sm "  name = "status"   style={{"width":"15%"}} onChange={(e)=>handleChange(e)}>
+                    <div  className = "modal-body" style={{"marginLeft":"10px","marginRight":"20px","marginTop":"20px"}}>
+                  
+                    
+                    <label>สถานะการจ่าย</label>
+                    <select className="select-status"  name = "status"   style={{"width":"15%","padding":"5px","marginLeft":"5px"}} onChange={(e)=>handleChange(e)}>
                             <option value="empty
                             ">เลือก</option>
                             <option value="Yes">จ่ายแล้ว</option>
                             <option value="No">ยังไม่จ่าย</option>
                             {/* <option value = "No">ยังไม่จ่าย</option> */}
                         </select>
-                    </div>
+                    
+                    
                  
                     </div>
                 </div>

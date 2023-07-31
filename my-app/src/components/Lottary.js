@@ -442,7 +442,7 @@ function Lottary()
                         {
                           
                             setpopup(false);
-                          
+                            setRank(0)
                             blockRef.current.block()
                             setTimeout(() => {
                             msgs.current.clear();
@@ -473,6 +473,7 @@ function Lottary()
                             setProcess(true);
                             setStatusProcess(true);
                             setIsOpenMessage(true)
+                            setRank(0)
                             setUserData({dataSet:[{
                                 id: add,
                                 date: new Date(),
@@ -828,21 +829,21 @@ function Lottary()
                     </div>
                     <Loading ref={blockRef}/>
                     <div className="listdatanumber" style={{"marginBottom":"15px","display":"flex","flexDirection":"column"}}>
-                        <table style={{"border":"solid 2px yellow","width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px","color":"white"}}  className="table table-striped">
+                        <table style={{"width":"95%","margin":"0 auto","marginTop":"30px","marginBottom":"15px","color":"white"}}  className="table">
                            <thead >
                             <tr style={{"border":"solid 2px white"}}>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ลำดับ</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>เลข</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ราคาเลขละ (บาท)</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ราคาทั้งหมด</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การแทง</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>สถานะ</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>วันที่ซื้อ</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>เวลา</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>งวดประจำวันที่</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>ชุดที่</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจ่าย</td>
-                                <td style={{"border":"solid 2px yellow","textAlign":"center"}}>การจัดการ</td>
+                                <td style={{"textAlign":"center"}}>ลำดับ</td>
+                                <td style={{"textAlign":"center"}}>เลข</td>
+                                <td style={{"textAlign":"center"}}>ราคาเลขละ (บาท)</td>
+                                <td style={{"textAlign":"center"}}>ราคาทั้งหมด</td>
+                                <td style={{"textAlign":"center"}}>การแทง</td>
+                                <td style={{"textAlign":"center"}}>สถานะ</td>
+                                <td style={{"textAlign":"center"}}>วันที่ซื้อ</td>
+                                <td style={{"textAlign":"center"}}>เวลา</td>
+                                <td style={{"textAlign":"center"}}>งวดประจำวันที่</td>
+                                <td style={{"textAlign":"center"}}>ชุดที่</td>
+                                <td style={{"textAlign":"center"}}>การจ่าย</td>
+                                <td style={{"textAlign":"center"}}>การจัดการ</td>
                             </tr>
                            </thead>
                            <tbody>
@@ -856,19 +857,19 @@ function Lottary()
                                     newItem.map((resp,index)=>{
                                    // console.log(resp.number);
                                    return(
-                                     <tr key = {index} >
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.allPrice}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="lucky" ? "lucky":"unLucky"}>{resp.status === 'lucky' ?'ถูกรางวัล':"ไม่ถูกรางวัล"}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span>{resp.sequence}</span></td>
-                                <td  style={{"border":"solid 2px yellow","textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
-                                <td  style={{"border":"solid 2px yellow"}}>
+                                     <tr key = {index} style={{"border":"solid white 2px"}} >
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{index+1}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.number}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.price}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.allPrice}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="lucky" ? "lucky":"unLucky"}>{resp.status === 'lucky' ?'ถูกรางวัล':"ไม่ถูกรางวัล"}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.sequence}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
+                                <td style={{"textAlign":"center","paddingTop":"12px"}}>
                                     <div className="allbuttom">
                                         <div  className="btn-edit">
                                         <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>

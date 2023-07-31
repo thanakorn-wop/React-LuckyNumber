@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Formatter;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -153,6 +156,7 @@ public class LottaryService {
 		String id = user.getInfoUser().getId();
 		String people_win = "";
 		String people_lost = "";
+		String oldSequence = "";
 		Integer total_purchase = 0;
 		Integer balance = 0;
 		Integer payNow = 0;
@@ -169,7 +173,7 @@ public class LottaryService {
 		Integer all_price = 0;
 		Boolean statusTransfer = false;
 		try {
-			
+
 			for (NumberRequestModel data : NumRequest.getDataSet()) {
 				luckyLottary = lottaryRepo.findByDate(data.getLuckytime());
 				if (null != luckyLottary) {
@@ -182,7 +186,7 @@ public class LottaryService {
 			if (statusTransfer) {
 				successAndFaiModal.setMessage(ConstantData.MESSAGE_LUCKYTIME_OVER);
 			} else {
-				
+
 				for (NumberRequestModel data : NumRequest.getDataSet()) {
 					people_win = "";
 					people_lost = "";
@@ -217,52 +221,55 @@ public class LottaryService {
 					successAndFaiModal.setStatusSuccess(true);
 					successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
 					status_Update = true;
-					if(null != infoUser)
-					{
-							System.out.println("update ");
-							dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
-							if (null != dataItem && dataItem.size() > 0) {
-								for (List_number_Modal item : dataItem) {
-									total_purchase += Integer.valueOf(item.getAllPrice());
-									if (item.getTransfer().equals(ConstantData.MESSAGE_N)
-											&& item.getStatus().equals("unLucky")) {
-										count_lost += 1;
-									}
-								}
-								infouserRepo.updateInfoUser(total_purchase.toString(), count_lost.toString(),
-										user.getInfoUser().getNickname(), data.getLuckytime(),
-										user.getInfoUser().getId());
-								successAndFaiModal.setStatusSuccess(true);
-								successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
-								// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
-								// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
+					if (null != infoUser) {
+						System.out.println("update ");
+						dataItem = listNumberRepo.findItembyDate(id, data.getLuckytime());
+						String[] arrSequence = new String[dataItem.size()];
+						String arrSeq = "";
+						Set<String> set = new LinkedHashSet<>(); 
+						if (null != dataItem && dataItem.size() > 0) {
+							Integer index = 0;
+							for (List_number_Modal item : dataItem) {
+								total_purchase += Integer.valueOf(item.getAllPrice());
+								arrSequence[index] = item.getSequence();
+								set.add(item.getSequence());
+								index+=1;
 							}
-
-					}
-					else {
-					
-							InfoUserModal saveinfoUser = new InfoUserModal();
-							saveinfoUser.setTotalPurchase(data.getAllPrice());
-							saveinfoUser.setNickname(user.getInfoUser().getNickname());
-							saveinfoUser.setPeoplelost("1");
-							saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
-							saveinfoUser.setDate(data.getLuckytime());
-							saveinfoUser.setId(user.getInfoUser().getId());
-							saveinfoUser.setTotalLost("0");
-							saveinfoUser.setPeoplewin("0");
-							saveinfoUser.setBalance("0");
-							saveinfoUser.setPay("0");
-							saveinfoUser.setNotpay("0");
-							infouserRepo.save(saveinfoUser);
+							String peopleLost = String.valueOf(set.size());
+							
+							// Object[] result = Arrays.stream(arrSequence).distinct().toArray();
+							infouserRepo.updateInfoUser(total_purchase.toString(),peopleLost,
+									user.getInfoUser().getNickname(), data.getLuckytime(), user.getInfoUser().getId());
 							successAndFaiModal.setStatusSuccess(true);
 							successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
 							// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
 							// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
-						
+						}
+
+					} else {
+
+						InfoUserModal saveinfoUser = new InfoUserModal();
+						saveinfoUser.setTotalPurchase(data.getAllPrice());
+						saveinfoUser.setNickname(user.getInfoUser().getNickname());
+						saveinfoUser.setPeoplelost("1");
+						saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
+						saveinfoUser.setDate(data.getLuckytime());
+						saveinfoUser.setId(user.getInfoUser().getId());
+						saveinfoUser.setTotalLost("0");
+						saveinfoUser.setPeoplewin("0");
+						saveinfoUser.setBalance("0");
+						saveinfoUser.setPay("0");
+						saveinfoUser.setNotpay("0");
+						infouserRepo.save(saveinfoUser);
+						successAndFaiModal.setStatusSuccess(true);
+						successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS);
+						// listNumberRepo.updateStatusInsert(ConstantData.MESSAGE_SUCCESS,joinNumber,NumRequest.getPrice(),all_price.toString(),NumRequest.getOption(),NumRequest.getDate()
+						// ,ConstantData.MESSAGE_NO,user.getInfoUser().getId(),"unLucky",NumRequest.getLuckytime(),ConstantData.MESSAGE_N);
+
 					}
 					if (!status_Update) {
 						successAndFaiModal.setMessage(ConstantData.MESSAGE_UNALNE_TO_INSERT_NUMBER);
-					} 
+					}
 				}
 			}
 
@@ -329,18 +336,18 @@ public class LottaryService {
 		Integer sum = 0;
 		Integer index = 0;
 		String statusTransfer = null;
+		Integer peopleWin = 0;
 
 		try {
 			user = infouserRepo.findInfoUser(id, luckydate);
 			statusTransfer = user.getStatusTransfer();
 			if (statusTransfer.equals(ConstantData.MESSAGE_N)) {
 				luckyDate = lottaryRepo.findDate(luckydate);
-				String[]threeDown = luckyDate.getThreedow().split(",");
+				String[] threeDown = luckyDate.getThreedow().split(",");
 				System.out.println(ArrayUtils.contains(threeDown, "20"));
 				System.out.println(ArrayUtils.contains(threeDown, "123"));
-				
-				
- 				if (null != luckyDate) {
+
+				if (null != luckyDate) {
 					dataItem = listNumberRepo.findItembyStatusTransfer(id, luckydate);
 					if (null != dataItem && dataItem.size() > 0) {
 						for (List_number_Modal item : dataItem) {
@@ -354,11 +361,12 @@ public class LottaryService {
 //										listNumberRepo.changeStatusLucky(id,idLottary,date);
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
+
 									}
-									else if(no.equals(luckyDate.getTwotop()))
-									{
+									if (no.equals(luckyDate.getTwotop())) {
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
+
 									}
 								} else if (item.getOptinpurchase().equals(ConstantData.MESSAGE_BELOW)) {
 
@@ -366,11 +374,12 @@ public class LottaryService {
 
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
+
 									}
-									else if(ArrayUtils.contains(threeDown, no))
-									{
+									if (ArrayUtils.contains(threeDown, no)) {
 										idlottary.add(item.getIdlist());
 										sum = sum + Integer.valueOf(item.getPrice());
+
 									}
 								}
 							}
@@ -430,7 +439,7 @@ public class LottaryService {
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedDate = myDateObj.format(myFormatObj);
 		try {
-			dataTransfer = infouserRepo.finInfoUserTransfer(id,listRequest.getLuckytime(), nickname);
+			dataTransfer = infouserRepo.finInfoUserTransfer(id, listRequest.getLuckytime(), nickname);
 			if (null != dataTransfer && dataTransfer.size() > 1) {
 				duplicateTransfer = true;
 			} else {

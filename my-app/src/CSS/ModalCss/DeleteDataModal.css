@@ -10,6 +10,7 @@
     left: 25%;
     background-color: rgb(26, 45, 54);
     color: white;
+    border-radius: 15px;
 }
 .modal-footer .footer{
     padding: 0 20px;

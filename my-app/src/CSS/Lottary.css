@@ -1,6 +1,4 @@
-*{
-   
-}
+
 .boxpage{
     background-color: rgb(26, 45, 54);
     
@@ -17,7 +15,7 @@
     background-size: cover;
 
     border: solid white 2px;
-    height: 1000px;
+    height: 1200px;
     /* height: 700px; */
 }
 

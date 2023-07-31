@@ -1,13 +1,13 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
+
 .boxmodalEdit{
     position: absolute;
     border: solid 2px gray;
     width: 45%;
     top:100px;
     left: 450px;  
+    background-color: rgb(26, 45, 54);
+    color: white;
+    border-radius: 15px;
 }
 .cost{
     width:50%;

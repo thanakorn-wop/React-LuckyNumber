@@ -84,51 +84,6 @@ public class LottaryController extends ValidateUntil {
 //		listLottaryService.get
 	}
 
-//	@PostMapping("/insertluckynumber")
-//	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq, Authentication auth)
-//			throws Exception {
-//		HttpStatus status = HttpStatus.OK;
-//		Boolean statusInsert;
-//		Header header = new Header();
-//		LuckyNumberResponModal resp = new LuckyNumberResponModal();
-////		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-//		try {
-//			if (validateRequestInsetNumberLucky(luckyNumberReq)) {
-//				statusInsert = listLottaryService.postInsertNumberLuckyService(luckyNumberReq);
-//				if (statusInsert) {
-//					Boolean statusUpdate = listLottaryService.postUpdateLuckyNumberService(luckyNumberReq);
-//					if (statusUpdate) {
-//						status = HttpStatus.OK;
-//						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-//						header.setMessage(ConstantData.MESSAGE_SUCCESS);
-////						resp.setDate(luckyNumberReq.getDate());
-////						resp.setThreedown(luckyNumberReq.getThreedown());
-////						resp.setThreetop(luckyNumberReq.getThreetop());
-////						resp.setTwodown(luckyNumberReq.getTwodown());
-////						resp.setTwotop(luckyNumberReq.getTwotop());
-////						header.setDatalist(resp);
-//
-//					} else {
-//						status = HttpStatus.OK;
-//						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-//						header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
-//					}
-//				} else {
-//					status = HttpStatus.OK;
-//					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-//					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
-//				}
-//			} else {
-//				status = HttpStatus.BAD_REQUEST;
-//				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-//				header.setMessage(ConstantData.BAD_REQUEST);
-//			}
-//		} catch (Exception e) {
-//			throw e;
-//		}
-//		return new ResponseEntity(header, status);
-//	}
-
 	@PostMapping("/insertnumber")
 	public ResponseEntity postInsertNumber(@RequestBody DataSetModal NumRequest, Authentication auth)
 			throws Exception {
@@ -265,12 +220,14 @@ public class LottaryController extends ValidateUntil {
 		{
 			header.setMessage(ConstantData.MESSAGE_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			header.setStatusProcess(true);
 			dataitem.setHeader(header);
 			dataitem.setDatalist(get_Item);			
 		}
 		else {
 			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			header.setStatusProcess(true);
 			dataitem.setHeader(header);
 			dataitem.setDatalist(get_Item);
 		}

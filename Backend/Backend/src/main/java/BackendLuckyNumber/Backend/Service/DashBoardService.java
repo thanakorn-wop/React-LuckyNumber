@@ -26,26 +26,6 @@ public class DashBoardService {
 		MonthModal infoMonth_User = null;
 		try {
 			infoMonth_User = monthRepo.findMonthOfUser(id,"2023");
-			if (null != infoMonth_User) {
-//				if(infoUser.size()>0)
-//				{
-//					for(Integer i = 1; i <=12; i ++)
-//					{
-//						for(InfoUserModal data: infoUser)
-//						{
-//							Month = data.getTime().split("-");
-//							Integer Convert_Month =Integer.valueOf(Month[1]);
-//							if(Convert_Month == i)
-//							{
-//								Sum = Sum+ Integer.valueOf(data.getBalance());
-//							}
-//						}
-//						Money_Each_Month[i] = Sum;
-//						Sum =0;
-//					}
-				return infoMonth_User;
-			} 
-
 		} catch (Exception e) {
 			System.out.println("ERROR happen at DashBoardService = " + e);
 		}

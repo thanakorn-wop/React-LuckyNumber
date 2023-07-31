@@ -36,13 +36,13 @@ function NumberModal(props)
     }]});
     const [mark,setmark] = useState();
     useEffect(()=>{
-        console.log("check props = ",props.show)
+       // console.log("check props = ",props.show)
         if(props.show !== false)
         {
                  // console.log("check useEffect")
         // defaulData.push(object)
         // console.log("check data again = ",defaulData)
-         console.log("check price = ",userData);
+         console.log("check price = ",userData.dataSet[rank].number);
          let number = userData.dataSet[rank].number;
          let price = userData.dataSet[rank].price;
          //console.log("number check = ",number);
@@ -53,7 +53,7 @@ function NumberModal(props)
          let arrNo = [];
          for(let i = 0 ; i<number.length ; i++)
          {
-             if(number[i] != ""){
+             if(number[i] !== ""){
                  if(number[i].length >1 && number[i].length<4)
                  {
                      if(Number(number[i]))
@@ -65,10 +65,10 @@ function NumberModal(props)
              }
          }
          const allprice = arrNo.length * price 
-         console.log("each all price = ",eachPrice)
+         //console.log("each all price = ",eachPrice)
          eachPrice[rank] = allprice;
          //  setTotalPrice((totalprice+allprice))
-         console.log("each all price = ",eachPrice)
+        // console.log("each all price = ",eachPrice)
          const newData = { 
              ...userData,
              dataSet: [
@@ -94,45 +94,11 @@ function NumberModal(props)
     
     if(props.show !== true)
     {
-        // setUserData({dataSet:[{
-     
-        //     idList: add,
-        //     number:'',
-        //     price:"",
-        //     allPrice:"",
-        //     luckytime:new Date(),
-        //     date: new Date(),
-        //     option:"",
-        //     sequence:""
-    
-        // }]})
         return null;
     }
-    // console.log("check 1 = ",closepopup);
-    // useEffect(()=>{
-    //     // console.log("check date , ",DateMonth);
-    //     // const  date_buy =  DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-    //     // const 
-    //     if(nameDate!== null && nameDate !== '' && nameDate !== undefined)
-    //     {
-    //         let value = new Date();
-    //         if(nameDate === 'luckytime')
-    //         {
-    //             value = LuckyDate;
-                
-                
-    //         }
-    //         else{
-    //             value = DateMonth;
-    //         }
-    //         const newData = UpdateData(nameDate,value,rank)
-    //         console.log("newData = ",newData)
-    //         setUserData(newData);
-    //         setNameDate("")
-    //     }
-    // },[nameDate])
+
    
-    console.log("check each price = ",eachPrice)
+    //console.log("check each price = ",eachPrice)
     const handleChange = (...data) => {
        
         let value = data[0].target.value;
@@ -146,25 +112,13 @@ function NumberModal(props)
     }
     function handleDate(...data)
     {
-        // const date_buy = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        // const name = data[2];
-        // const newData = UpdateData()
-        // setDateMonth(data[0]);
-        // setRank(data[1]);
-        // setNameDate(data[2])
         userData.dataSet[data[1]].date = data[0].target.value
     }
     function handleLuckyTime(...data)
     {   
-        console.log("check qq = ",data[1])
-        //  console.log("check data = ", userData.dataSet[data[1]])
-        // console.log("data[0] =",data[0])
-        // setLuckyDate(data[0])
-        // setRank(data[1]);
-        // setNameDate(data[2])
+        //console.log("check qq = ",data[1])
+
         userData.dataSet[data[1]].luckytime = data[0].target.value
-        console.log("check data = ", userData.dataSet[data[1]])
-        console.log("check data = ", userData.dataSet)
 
     }
     function UpdateData(name,value,index)
@@ -210,7 +164,7 @@ function NumberModal(props)
         
     }
     // console.log("update = ",test)
-       console.log("new data = ",userData)
+       //console.log("new data = ",userData)
    
     return(
         <div className="boxmodal">
