@@ -268,17 +268,17 @@ public class LottaryController extends ValidateUntil {
 		String id = user.getInfoUser().getId();
 		if(null != date)
 		{
-			Boolean statusUpdate = listLottaryService.validateLuckyItemService(date,id);
-			if(statusUpdate)
+			SuccessAndFailModal process = listLottaryService.validateLuckyItemService(date,id);
+			if(process.getStatusSuccess())
 			{
-				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
+				header.setMessage(process.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				header.setStatusProcess(true);
+				header.setStatusProcess(process.getStatusSuccess());
 			}
 			else {
-				header.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
+				header.setMessage(process.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				header.setStatusProcess(false);
+				header.setStatusProcess(process.getStatusSuccess());
 			}
 			
 		}

@@ -159,7 +159,7 @@ function Report ()
                                 <td>จำนวนเงินคนที่ถูก : </td>
                                 <td>{dataReport.totalLost} บาท</td>
                                 <td>ยอดคงเหลือ : </td>
-                                <td>{dataReport.totalPurchase - dataReport.totalLost} บาท</td>
+                                <td>{dataReport.balance} บาท</td>
                             </tr>
                             <tr style={{"border":"solid"}}>
                                 <td>จ่ายไปแล้วเป็นจำนวน : </td>

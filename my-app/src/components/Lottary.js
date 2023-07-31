@@ -558,7 +558,11 @@ function Lottary()
                     // setMsgWaring("ทำรายการสำเร็จ");
                         blockRef.current.unBlock()
                         setIsOpenLotteryModal(false)
-                        addMessage(msgs,postItem.data.statusProcess,<b>{postItem.data.message}</b>)
+                      //  addMessage(msgs,postItem.data.statusProcess,<b>{postItem.data.message}</b>)
+                        setProcess(true)
+                        setMsgWaring(postItem.data.message)
+                        setStatusProcess(postItem.data.statusProcess)
+                        setIsOpenMessage(true)
                 }, 500);
                         // reload()
                     }
