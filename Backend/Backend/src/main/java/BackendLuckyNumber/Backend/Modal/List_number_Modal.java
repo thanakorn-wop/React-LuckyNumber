@@ -42,12 +42,20 @@ public class List_number_Modal {
 	private String statusValidate;
 	@Column(name = "sequence")
 	private String sequence;
+	@Column(name = "reward")
+	private String reward;
 	
 	
 	
 	
 	
 	
+	public String getReward() {
+		return reward;
+	}
+	public void setReward(String reward) {
+		this.reward = reward;
+	}
 	public String getSequence() {
 		return sequence;
 	}

@@ -106,7 +106,6 @@ function Login({ setauth   })
                             else{
                                 alert("กรุณาสมัครสมาชิก")
                             }
-                          
                        }
                     }
                    

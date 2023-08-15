@@ -34,6 +34,7 @@ import BackendLuckyNumber.Backend.Modal.List_number_Modal;
 import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Modal.MixTransferListNumberModal;
 import BackendLuckyNumber.Backend.Modal.SuccessAndFailModal;
+import BackendLuckyNumber.Backend.Modal.UserModal;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 
 import org.apache.commons.lang3.StringUtils;
@@ -124,10 +125,12 @@ public class LottaryController extends ValidateUntil {
 	@PostMapping("/updatestatuspayment")
 	public ResponseEntity postUpdateStatusPayment(@RequestBody listNumberRquestModal listRequest, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		UserModal userModal = new UserModal();
 		Header header = new Header();
 		if (null != listRequest && listRequest.getId() != null
 				&& listRequest.getIdlist() != null & listRequest.getStatuspayment() != null) {
-			Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, auth);
+			Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, userModal);
 			if (updateStatus) {
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);

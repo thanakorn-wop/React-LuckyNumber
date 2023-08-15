@@ -1,31 +1,32 @@
 package BackendLuckyNumber.Backend.RequestModel;
 
 public class listNumberRquestModal {
+	
 	private String idlist;
-	
 	private String number;
-	
 	private String price;
-	
 	private String optinpurchase;
-	
 	private String status;
-	
 	private String datebuy;
-	
 	private String time;
-	
 	private String statuspayment;
-	
 	private String luckytime;
-
 	private String id;
-	
 	private String sequence;
+	private String reward;
+	
 	
 	
 
 	
+
+	public String getReward() {
+		return reward;
+	}
+
+	public void setReward(String reward) {
+		this.reward = reward;
+	}
 
 	public String getSequence() {
 		return sequence;

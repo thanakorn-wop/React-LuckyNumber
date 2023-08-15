@@ -39,8 +39,8 @@ function Lottary()
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
     const [dateLucky,setDateLucky] = useState("");
-    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
-    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:""}]);
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
@@ -258,40 +258,49 @@ function Lottary()
     }
     function HandlePayment(status_saving,DataPayment)
     {
-        console.log("check index3 = ",newItem)
+       // console.log("check index3 = ",newItem)
+       let statusPayment = DataPayment.status;
+       console.log("statusPayment = ",statusPayment)
         if(status_saving === 'save')
         {
-            let indexUpdate = 0;
-            let dataUpdate = {};
-             newItem.map((item,no)=>{
-                if(item.idlist === index ){
-                   
-                    item.statuspayment = DataPayment.status;
-                    dataUpdate  = item
-                }
-            })
-            try{
-                const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(res =>{
-                if(res.data.message === 'success' && res.data.statusCode ==='01')
-                {
-                    alert("ทำรายการสำเร็จ")
-                    setIsOpenPayMentModal(false)  
-                    // reload()    
-                }
-                else{
-                    alert("ทำรายการไม่สำเร็จ")
-                }
-                })
-
-            }catch(err)
+            if(statusPayment !== "" && statusPayment !== undefined && statusPayment != "empty")
             {
-                console.error("Error = ",err);
+                let dataUpdate = {};
+                newItem[index].statuspayment = statusPayment;
+                dataUpdate = newItem[index];
+             
+                // console.log("check data update = ",dataUpdate)
+                // console.log("check data update = ",newItem[index])
+                // console.log("check data index = ",index)
+                // console.log("check data new = ",newItem)
+    
+                try{
+                    const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(res =>{
+                    if(res.data.message === 'success' && res.data.statusCode ==='01')
+                    {
+                        alert("ทำรายการสำเร็จ")
+                        setIsOpenPayMentModal(false)  
+                        // reload()    
+                    }
+                    else{
+                        alert("ทำรายการไม่สำเร็จ")
+                    }
+                    })
+    
+                }catch(err)
+                {
+                    console.error("Error = ",err);
+                }
             }
+            else{
+                alert("กรุณาเลือกสถานะการจ่าย");
+            }
+          
         }
         else{
-            console.log("check index2 = ",newItem)
+          //  console.log("check index2 = ",newItem)
             setIsOpenPayMentModal(false)      
         }
         // console.log(newItem)
@@ -843,8 +852,9 @@ function Lottary()
                                 <td style={{"textAlign":"center"}}>การแทง</td>
                                 <td style={{"textAlign":"center"}}>สถานะ</td>
                                 <td style={{"textAlign":"center"}}>วันที่ซื้อ</td>
-                                <td style={{"textAlign":"center"}}>เวลา</td>
                                 <td style={{"textAlign":"center"}}>งวดประจำวันที่</td>
+                                <td style={{"textAlign":"center"}}>เวลา</td>
+                                <td style={{"textAlign":"center"}}>รางวัล</td>
                                 <td style={{"textAlign":"center"}}>ชุดที่</td>
                                 <td style={{"textAlign":"center"}}>การจ่าย</td>
                                 <td style={{"textAlign":"center"}}>การจัดการ</td>
@@ -869,14 +879,15 @@ function Lottary()
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.optinpurchase}</span></td>
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span className={resp.status ==="lucky" ? "lucky":"unLucky"}>{resp.status === 'lucky' ?'ถูกรางวัล':"ไม่ถูกรางวัล"}</span></td>
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.datebuy}</span></td>
-                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.luckytime}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.time}</span></td>
+                                <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.reward}</span></td>
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span>{resp.sequence}</span></td>
                                 <td  style={{"textAlign":"center","paddingTop":"12px"}}><span className={resp.statuspayment === 'Yes' ? 'paynow':'notpay'}>{resp.statuspayment}</span></td>
                                 <td style={{"textAlign":"center","paddingTop":"12px"}}>
                                     <div className="allbuttom">
                                         <div  className="btn-edit">
-                                        <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(resp.idlist)}>แก้ไข</button>
+                                        <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(index)}>แก้ไข</button>
                                         </div>
                                         
                                    

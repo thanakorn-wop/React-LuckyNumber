@@ -24,8 +24,8 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	List<List_number_Modal> findItem(String id );
 	
 	@Modifying
-	@Query(" UPDATE list_number set status_payment = ?1 Where id = ?2 and id_list = ?3 ")
-	void postUpdateStatusPaymentRepo(String statuspayment, String id , String idList);
+	@Query(" UPDATE list_number set status_payment = ?1, pay = ?2, notpay = ?3 Where id = ?4 and id_list = ?5 ")
+	void postUpdateStatusPaymentRepo(String statuspayment, String id ,String sum,String notPay, String idList);
 	
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N' and u.luckytime = ?2 ORDER BY id_list desc ")
 	List<List_number_Modal> findItembyDate(String id,String date);
@@ -33,8 +33,12 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.transfer = 'N'and status_validate = 'N' and u.luckytime = ?2 ORDER BY id_list desc ")
 	List<List_number_Modal> findItembyStatusTransfer(String id,String date);
 	
+//	@Query(" SELECT u from list_number u Where u.id_list = ?1 and u.transfer = 'N' and u.luckytime = ?2 ")
+//	List_number_Modal findEachItem(String idList,String date);
+	
 	@Query(" SELECT u from list_number u Where u.id = ?1 and u.luckytime = ?2  ORDER BY id_list desc ")
 	List<List_number_Modal> getlistitem(String id,String luckytime );
+	
 	@Modifying
 	@Query(" DELETE from list_number where id = ?1 and id_list = ?2 ")
 	void postDeleteDataRepo(String id,String idlist);
@@ -42,6 +46,10 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	@Modifying
 	@Query(" UPDATE list_number set transfer ='Y'  Where id = ?1 and luckytime = ?2 ")
 	void postSendLottaryRepo(String id , String luckytime);
+	
+	@Modifying
+	@Query(" UPDATE list_number set reward = ?1  Where id_list = ?2 and luckytime = ?3 ")
+	void updateReward(String reward,String idList , String luckytime);
 	
 	@Modifying
 	@Query(value = " update list_number set status = 'lucky' where id_list in (SELECT id_list FROM list_number   where id = ?1 and id_list in (?2) and luckytime = ?3) ",nativeQuery = true)
