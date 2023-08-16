@@ -1,11 +1,13 @@
 package BackendLuckyNumber.Backend.Service;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -63,6 +65,8 @@ public class LottaryService {
 
 	@Autowired
 	PriceLottaryRepo priceLottaryRepo;
+	
+	private NumberFormat numberFormatter = NumberFormat.getInstance(Locale.getDefault());
 
 	public List<List_number_Modal> getLottaryService(String idUser, String date) {
 //		List<List_numberRepo> dataItem = new ArrayList<>();
@@ -244,27 +248,56 @@ public class LottaryService {
 		List_number_Modal dataItem = null;
 		String id = listRequest.getId();
 		String statusPayment = listRequest.getStatuspayment();
-		String luckyDate = listRequest.getLuckytime();
 		InfoUserModal infoUser = null;
 		String luckyTime = listRequest.getLuckytime();
-		Integer sum = 0;
+		String replaceReward = listRequest.getReward().replace(",", "");
+		Integer pay = 0;
 		Integer reduceNotpay = 0;
-
+		String strPay  = "";
+		String strNotPay = "";
 		try {
 			infoUser = infouserRepo.findInfoUser(id, luckyTime);
+			String replaceNotPay = infoUser.getNotpay().replace(",", "");
+			String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
+			String replacePay = infoUser.getPay().replace(",", "");
 
 			if (statusPayment.equals(ConstantData.MESSAGE_YES)) {
-				sum = Integer.valueOf(listRequest.getReward()) + Integer.valueOf(infoUser.getPay());
-				reduceNotpay = reduceNotpay - Integer.valueOf(infoUser.getNotpay());
-			}
-			else {
-				sum = Integer.valueOf(infoUser.getPay()) -Integer.valueOf(listRequest.getReward());
-				reduceNotpay = reduceNotpay + Integer.valueOf(infoUser.getNotpay());
+				pay = Integer.valueOf(replaceReward) + Integer.valueOf(replacePay);
+				if(replaceNotPay.length() >0)
+				{
+					reduceNotpay = Integer.valueOf(replaceNotPay) - Integer.valueOf(replaceReward);
+				}
+				else {
+					reduceNotpay = Integer.valueOf(replaceTotalLost) - Integer.valueOf(replaceReward);
+				}
+			
+				strPay= numberFormatter.format(pay);
+				strNotPay = numberFormatter.format(reduceNotpay);
+				
+//				reduceNotpay = reduceNotpay - Integer.valueOf(infoUser.getNotpay());
+			} else {
+				pay = Integer.valueOf(replacePay) - Integer.valueOf(replaceReward);
+				if(replaceNotPay.length() >0)
+				{
+					reduceNotpay = Integer.valueOf(replaceNotPay) + Integer.valueOf(replaceReward);
+				}
+				else {
+					reduceNotpay = Integer.valueOf(replaceTotalLost);
+				}
+				strPay= numberFormatter.format(pay);
+				strNotPay = numberFormatter.format(reduceNotpay);
 			}
 
 //			dataItem = listNumberRepo.findEachItem(id, luckyDate);
-			listNumberRepo.postUpdateStatusPaymentRepo(statusPayment, id,sum.toString(),reduceNotpay.toString(), listRequest.getIdlist());
-			updateStatus = true;
+
+			int resultUpdatePayment = listNumberRepo.postUpdateStatusPaymentRepo(statusPayment, id,
+					listRequest.getIdlist(), luckyTime);
+			int resultUpdateInfoUser = infouserRepo.updateInfoUserPayNotPay(strPay, strNotPay, id,
+					luckyTime);
+			if (resultUpdatePayment > 0 && resultUpdateInfoUser > 0) {
+				updateStatus = true;
+			}
+
 		} catch (Exception e) {
 			throw e;
 		}
@@ -304,7 +337,6 @@ public class LottaryService {
 		ArrayList<String> idlottary = new ArrayList<>();
 		ArrayList<String> idValidateLottary = new ArrayList<>();
 		HashMap<String, String> rewardAndId = new HashMap<String, String>();
-
 		InfoUserModal user = new InfoUserModal();
 		int allTotalLost = 0;
 		String statusTransfer = null;
@@ -312,7 +344,6 @@ public class LottaryService {
 		// String noLuckySequence = "0";
 		SuccessAndFailModal process = new SuccessAndFailModal();
 		process.setStatusSuccess(false);
-
 		Set<String> setLucky = new LinkedHashSet<>();
 		Set<String> setNoLucky = new LinkedHashSet<>();
 		try {
@@ -406,7 +437,7 @@ public class LottaryService {
 							String peopleWinCon = numberFormatter.format(peopleWin);
 							String conAllTotalLost = numberFormatter.format(allTotalLost);
 							infouserRepo.updateInfoPeopleLostWinTotalLost(peopleLost, peopleWinCon, conAllTotalLost,
-									conAllTotalLost, conBalance, luckydate, id);
+									conAllTotalLost,conAllTotalLost, conBalance, luckydate, id);
 							listNumberRepo.changeStatusValidate(id, idValidateLottary, luckydate);
 							listNumberRepo.changeStatusLucky(id, idlottary, luckydate);
 							for (String idList : rewardAndId.keySet()) {

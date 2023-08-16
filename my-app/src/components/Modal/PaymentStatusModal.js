@@ -2,23 +2,25 @@ import React, { useState } from "react";
 import "../../CSS/ModalCss/PaymentStatusModal.css"
 function PaymentStatusModal (props)
 {
+    
+    const [payment,setPayment]= useState(props.payment)
+    console.log("payment = ",payment)
     const [Data, setData] = useState({
       
-        status:"" 
+        status:''
     });
+
 
     const handleChange = (e) => {
         const value = e.target.value;
         setData({...Data,[ e.target.name]: value});
+        setPayment(value)
+      
     }
 
     const saveData = (e)=>{
-        // console.log(e.target.name)
-        // props.Data(numberData)
-        // console.log("check data",numberData)
-        // props.status(e.target.name)
-        // props.onClose(false)
-        props.HandlePayment(e.target.name,Data)
+   
+        props.HandlePayment(Data)
        
 
         // console.log("check data = ",numberData)
@@ -32,9 +34,8 @@ function PaymentStatusModal (props)
                   
                     
                     <label>สถานะการจ่าย</label>
-                    <select className="select-status"  name = "status"   style={{"width":"15%","padding":"5px","marginLeft":"5px"}} onChange={(e)=>handleChange(e)}>
-                            <option value="empty
-                            ">เลือก</option>
+                    <select className="select-status" value = {payment}  name = "status"   style={{"width":"15%","padding":"5px","marginLeft":"5px"}} onChange={(e)=>handleChange(e)}>
+                            
                             <option value="Yes">จ่ายแล้ว</option>
                             <option value="No">ยังไม่จ่าย</option>
                             {/* <option value = "No">ยังไม่จ่าย</option> */}

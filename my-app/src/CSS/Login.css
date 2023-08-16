@@ -19,7 +19,9 @@
   
   
 } */
-
+input.textLogin {
+    border-radius: 20px;
+}
 .formLogin{
     display: flex;
     flex-direction: column;

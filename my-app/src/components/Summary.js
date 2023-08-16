@@ -158,7 +158,7 @@ function Report ()
                             <tr style={{"border":"solid"}}>
                                 <td>จำนวนเงินคนที่ถูก : </td>
                                 <td>{dataReport.totalLost} บาท</td>
-                                <td>ยอดคงเหลือ : </td>
+                                <td>กำไรสุทธิ : </td>
                                 <td>{dataReport.balance} บาท</td>
                             </tr>
                             <tr style={{"border":"solid"}}>

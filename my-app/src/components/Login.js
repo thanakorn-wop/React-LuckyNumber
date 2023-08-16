@@ -135,18 +135,13 @@ function Login({ setauth   })
                 </div>
                 <div className="formLogin">
                     <div className="textbox" >
-                        <label style={{"color":"white","fontSize":"20px"}}>ID</label>
-                        <div>
-                        <input className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none","padding":"10px"}} name = "username" onChange = {(e)=>handleChange(e)}type="text"/>
-                        </div>
-                      
+                        <label className="labLogin" style={{"color":"white","fontSize":"20px"}}>ID</label>
+                        <input className="textLogin" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none","padding":"10px"}} name = "username" onChange = {(e)=>handleChange(e)} type="text"/>
+
                     </div>
                     <div className="textbox">
-                        <label style={{"color":"white","fontSize":"20px"}}>Password</label>
-                        <div>
-                        <input  className="" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none","padding":"10px"}} name = "password" onChange = {(e)=>handleChange(e)} type="password"/>
-                        </div>
-                      
+                        <label className="labLogin" style={{"color":"white","fontSize":"20px"}}>Password</label>  
+                        <input  className="textLogin" style={{"paddingBottom":"10px","width":"100%","borderTop":"0px","borderRight":"0px","borderLeft":"0px","borderBottom":"2px solid white","outline":"none","padding":"10px"}} name = "password" onChange = {(e)=>handleChange(e)} type="password"/>
                     </div>
                     <div className="btnlogin" style={{"textAlign":"center","marginTop":"30px"}} > <button  style={{"width":"92%","fontSize":"20px"}}type="button" className="btn btn-primary" onClick={()=>submitLogin()}>Login</button></div>
                 </div>

@@ -22,6 +22,9 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	
 	@Query(value = " SELECT p FROM info_user p WHERE p.id = ?1 and p.date = ?2   ")
 	InfoUserModal findInfoUser(String id,String date);
+	
+
+	
 	@Query(value = " SELECT * FROM info_user  WHERE id = ?1  and nickname = ?2 ORDER by date DESC LIMIT 1",nativeQuery = true)
 	InfoUserModal findLastInfoUserReportPage(String id,String nickname);
 	
@@ -36,10 +39,14 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	void updateInfoUser(String total,String peoplelost, String nickname, String date,String id);
 	
 	@Modifying
-	@Query(value = " UPDATE  info_user set people_lost = ?1,people_win =?2,total_lost = ?3, notpay = ?4,balance = ?5 where  date = ?6 and id = ?7  ")
-	void updateInfoPeopleLostWinTotalLost(String peoplelost,String peopleWin,String totalLost,String notpay,String conBalance, String date,String id);
+	@Query(value = " UPDATE  info_user set people_lost = ?1,people_win =?2,total_lost = ?3,notpay = ?4, notpay = ?5,balance = ?6 where  date = ?7 and id = ?8  ")
+	void updateInfoPeopleLostWinTotalLost(String peoplelost,String peopleWin,String totalLost,String notPay,String notpay,String conBalance, String date,String id);
 	
 	@Modifying
 	@Query(value = " UPDATE  info_user set status_transfer = 'Y', balance = ?1, time_transfer = ?5 where id =?2  and nickname = ?3    and date = ?4  ")
 	void updateTotalPurchase(String sum,String iduser,String nickname, String date, String timeTransfer);
+	
+	@Modifying
+	@Query(value = " UPDATE info_user set pay = ?1 , notpay = ?2 where id = ?3 and date = ?4   ")
+	int updateInfoUserPayNotPay(String sum , String notpay,String id,String date);
 }

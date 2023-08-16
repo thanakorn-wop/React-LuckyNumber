@@ -134,7 +134,12 @@ public class LottaryController extends ValidateUntil {
 			if (updateStatus) {
 				header.setMessage(ConstantData.MESSAGE_SUCCESS);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-
+				header.setStatusProcess(updateStatus);
+			}
+			else {
+				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+				header.setStatusProcess(updateStatus);
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;

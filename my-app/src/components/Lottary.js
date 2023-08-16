@@ -29,7 +29,8 @@ function Lottary()
     const [add,setAdd] = useState(0);
     const [popup,setpopup] =  useState(false);
     const [blocked, setBlocked] = useState(false);
-    const [status,setStatus] = useState();
+    const [oldPayment,setOldPayment] = useState(null);
+    const [statusPaymet,setStatusPayment] = useState(null);
     const [luckyModal,setLuckyModal]  =useState(false);
     const [isOpenPaymentModal,setIsOpenPayMentModal] = useState(false);
     const [isOpenDeleteModal,setIsOpenDeleteModal] = useState(false);
@@ -256,14 +257,14 @@ function Lottary()
         }
        // console.log("show lucky number ",DataLuckyNumber)
     }
-    function HandlePayment(status_saving,DataPayment)
+    function HandlePayment(DataPayment)
     {
        // console.log("check index3 = ",newItem)
        let statusPayment = DataPayment.status;
        console.log("statusPayment = ",statusPayment)
-        if(status_saving === 'save')
+        if(statusPayment !== "" && statusPayment !== undefined)
         {
-            if(statusPayment !== "" && statusPayment !== undefined && statusPayment != "empty")
+            if(statusPayment !== oldPayment )
             {
                 let dataUpdate = {};
                 newItem[index].statuspayment = statusPayment;
@@ -301,8 +302,10 @@ function Lottary()
         }
         else{
           //  console.log("check index2 = ",newItem)
-            setIsOpenPayMentModal(false)      
+            // setIsOpenPayMentModal(false)      
+            alert("กรุณาเลือกสถานะการจ่าย");
         }
+        setOldPayment(null);
         // console.log(newItem)
         //console.log("check paymnet = ",status_saving,DataPayment)
     }
@@ -528,10 +531,12 @@ function Lottary()
             }]})
         }
     }
-    function SetPaymentMethod(index)
+    function SetPaymentMethod(index,payMent)
     {
         setIsOpenPayMentModal(true)
         setIndex(index)
+        setStatusPayment(payMent);
+        setOldPayment(payMent)
         //console.log("check index = "+index)
     }
     function SetDeleteModal(status,idlist,id)
@@ -887,7 +892,7 @@ function Lottary()
                                 <td style={{"textAlign":"center","paddingTop":"12px"}}>
                                     <div className="allbuttom">
                                         <div  className="btn-edit">
-                                        <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(index)}>แก้ไข</button>
+                                        <button type="button" className="btn btn-light"  onClick={()=>SetPaymentMethod(index,resp.statuspayment)}>แก้ไข</button>
                                         </div>
                                         
                                    
@@ -917,7 +922,7 @@ function Lottary()
             } */}
             {
                 // todo paymethod modal changing
-            isOpenPaymentModal &&   <PaymentStatusModal HandlePayment = {(status_saving,DataPayment)=>HandlePayment(status_saving,DataPayment)} />
+            isOpenPaymentModal &&   <PaymentStatusModal payment = {statusPaymet} HandlePayment = {(DataPayment)=>HandlePayment(DataPayment)} />
             }
             {
                 
