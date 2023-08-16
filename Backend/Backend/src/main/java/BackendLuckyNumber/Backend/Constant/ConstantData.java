@@ -37,13 +37,13 @@ public class ConstantData {
 	public static String ADMIN = "admin";
 	public static String MEMBER = "member";
 	public static String MESSAGE_LUCKYTIME_OVER = "ไม่สามารถซื้องวดย้อนหลังได้";
-	public static String MESSAGE_UNALNE_TO_INSERT_NUMBER = "ไม่สามารถเพิ่มข้อมูลได้";
+	public static String MESSAGE_UNALNE_TO_INSERT_NUMBER_TH = "ไม่สามารถเพิ่มข้อมูลได้";
 	public static String MESSAGE_NOT_SUCCESS_TH ="ทำรายการไม่สำเร็จ";
 	public static String MESSAGE_SUCCESS_TH ="ทำรายการสำเร็จ";
 	public static String MESSAGE_DUPLICATE_DATA_TH ="ทำรายการซ้ำกรุณาทำรายการใหม่";
 	public static String MESSAGE_NO_DATA_TH ="ไม่มีรายการให้ทำ";
 	public static String MESSAGE_NOT_TIME_TO_WORK_TH ="ยังไม่ถึงเวลาทำการ";
-	public static String MESSAGE_BEFORE_VALIDATE_TH ="กรุณาตรวจสอบก่อนทำรายการ";
+	public static String MESSAGE_BEFORE_VALIDATE_TH ="กรุณาตรวจหวยก่อนทำรายการ";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";

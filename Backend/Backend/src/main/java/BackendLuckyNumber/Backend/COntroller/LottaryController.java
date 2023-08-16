@@ -55,7 +55,7 @@ public class LottaryController extends ValidateUntil {
 		HttpStatus status = HttpStatus.OK;
 		List<List_number_Modal> data = new ArrayList<>();
 		System.out.println("date = " + date);
-		
+
 		try {
 			if (null != user) {
 				// set increase date for get list item
@@ -67,9 +67,8 @@ public class LottaryController extends ValidateUntil {
 //					 header.setDatalist(data);
 					dataitem.setDatalist(data);
 					dataitem.setHeader(header);
-				}
-				else {
-					
+				} else {
+
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setMessage(ConstantData.MESSAGE_EMPTY);
 					header.setStatusProcess(true);
@@ -86,8 +85,7 @@ public class LottaryController extends ValidateUntil {
 	}
 
 	@PostMapping("/insertnumber")
-	public ResponseEntity postInsertNumber(@RequestBody DataSetModal NumRequest, Authentication auth)
-			throws Exception {
+	public ResponseEntity postInsertNumber(@RequestBody DataSetModal NumRequest, Authentication auth) throws Exception {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
@@ -95,23 +93,27 @@ public class LottaryController extends ValidateUntil {
 		System.out.println("check user = " + user.getUsername());
 		try {
 			if (null != user) {
-			
+
 				if (validateAPI(NumRequest)) {
-					SuccessAndFailModal successAndFaiModal  = listLottaryService.postInsertNumberService(NumRequest, user);
+					SuccessAndFailModal successAndFaiModal = listLottaryService.postInsertNumberService(NumRequest,
+							user);
 					if (successAndFaiModal.getStatusSuccess()) {
 						header.setMessage(successAndFaiModal.getMessage());
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 						header.setStatusProcess(true);
 					} else {
 						header.setMessage(successAndFaiModal.getMessage());
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+						header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 						header.setStatusProcess(false);
 					}
 				} else {
 					status = status.BAD_REQUEST;
 					header.setMessage(ConstantData.MESSAGE_ERROR);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-					
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
+
 				}
 			}
 
@@ -135,8 +137,7 @@ public class LottaryController extends ValidateUntil {
 				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setStatusProcess(updateStatus);
-			}
-			else {
+			} else {
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				header.setStatusProcess(updateStatus);
@@ -159,12 +160,13 @@ public class LottaryController extends ValidateUntil {
 				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setStatusProcess(true);
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 
-			}
-			else {
+			} else {
 				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setStatusProcess(false);
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;
@@ -187,24 +189,19 @@ public class LottaryController extends ValidateUntil {
 					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
-				}
-				else if(null == mixTransfer.getLuckytime())
-				{
+				} else if (null == mixTransfer.getLuckytime()) {
 					header.setMessage(ConstantData.MESSAGE_NOT_TIME_TO_WORK_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
-				}
-				else if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
+				} else if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
 					header.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
-				}
-				else if (mixTransfer.getStatusValidate()) {
+				} else if (mixTransfer.getStatusValidate()) {
 					header.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
-				} 
-				else {
+				} else {
 					header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 					header.setStatusProcess(true);
@@ -225,20 +222,18 @@ public class LottaryController extends ValidateUntil {
 	}
 
 	@GetMapping("/getluckyitem")
-	public ResponseEntity getLuckyItem( Authentication auth) {
+	public ResponseEntity getLuckyItem(Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
 		Header header = new Header();
 		ResponseData dataitem = new ResponseData();
 		LottaryModal get_Item = listLottaryService.getLuckyItemService();
-		if(null != get_Item)
-		{
+		if (null != get_Item) {
 			header.setMessage(ConstantData.MESSAGE_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 			header.setStatusProcess(true);
 			dataitem.setHeader(header);
-			dataitem.setDatalist(get_Item);			
-		}
-		else {
+			dataitem.setDatalist(get_Item);
+		} else {
 			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 			header.setStatusProcess(true);
@@ -248,7 +243,7 @@ public class LottaryController extends ValidateUntil {
 
 		return new ResponseEntity(dataitem, status);
 	}
-	
+
 	@PostMapping("/postluckyitem")
 	public ResponseEntity postLuckyItem(@RequestBody LottaryModal datelottary, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
@@ -256,14 +251,12 @@ public class LottaryController extends ValidateUntil {
 		ResponseData dataitem = new ResponseData();
 		String luckyDate = datelottary.getDate();
 		LottaryModal get_Item = listLottaryService.postLuckyItemService(luckyDate);
-		if(null != get_Item)
-		{
+		if (null != get_Item) {
 			header.setMessage(ConstantData.MESSAGE_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 			dataitem.setHeader(header);
-			dataitem.setDatalist(get_Item);			
-		}
-		else {
+			dataitem.setDatalist(get_Item);
+		} else {
 			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 			dataitem.setHeader(header);
@@ -272,6 +265,7 @@ public class LottaryController extends ValidateUntil {
 
 		return new ResponseEntity(dataitem, status);
 	}
+
 	@PostMapping("/validateluckyitem")
 	public ResponseEntity postLuckyItem(@RequestBody ValidateLottaryRequestModal datelottary, Authentication auth) {
 		HttpStatus status = HttpStatus.OK;
@@ -280,43 +274,39 @@ public class LottaryController extends ValidateUntil {
 		String date = datelottary.getDate();
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		String id = user.getInfoUser().getId();
-		if(null != date)
-		{
-			SuccessAndFailModal process = listLottaryService.validateLuckyItemService(date,id);
-			if(process.getStatusSuccess())
-			{
+		if (null != date) {
+			SuccessAndFailModal process = listLottaryService.validateLuckyItemService(date, id);
+			if (process.getStatusSuccess()) {
 				header.setMessage(process.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setStatusProcess(process.getStatusSuccess());
-			}
-			else {
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
+			} else {
 				header.setMessage(process.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 				header.setStatusProcess(process.getStatusSuccess());
 			}
-			
-		}
-		else {
+
+		} else {
 			status = status.BAD_REQUEST;
 			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 			header.setStatusProcess(false);
 		}
-		
 
 		return new ResponseEntity(header, status);
 	}
-	
+
 	public Boolean validateAPI(DataSetModal NumRequest) {
 		Boolean validate = false;
 
 		try {
 
-			for(NumberRequestModel data : NumRequest.getDataSet())
-			{
+			for (NumberRequestModel data : NumRequest.getDataSet()) {
 				if (StringUtils.isNotBlank(data.getDate()) || StringUtils.isNotBlank(data.getOption())
-						|| StringUtils.isNotBlank(data.getNumber())
-						|| StringUtils.isNotBlank(data.getPrice())) {
+						|| StringUtils.isNotBlank(data.getNumber()) || StringUtils.isNotBlank(data.getPrice())) {
 					validate = true;
 				}
 			}

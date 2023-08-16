@@ -98,7 +98,7 @@ function Lottary()
     useEffect(()=>{
                   async function getListitem()
                   {
-                    console.log("test useEffect ")
+                    console.log("test useEffect  = ",process)
                     let date = null;
                  
                         date = "lastdata";
@@ -121,11 +121,11 @@ function Lottary()
                             {
                                 msgs.current.clear();
                                 addMessage(msgs,statusProcess,<b>{msgWarning}</b>)
-                                setProcess(false)
                                 setIsOpenMessage(false)
                                 setStatusProcess("")
                                 setMsgWaring("")
                             }
+                            setProcess(false)
                            // console.log("check response data = ",response );
                         }catch(error)
                         {
@@ -464,14 +464,18 @@ function Lottary()
                           
                             setpopup(false);
                             setRank(0)
+
                             blockRef.current.block()
                             setTimeout(() => {
                             msgs.current.clear();
                         // setMsgWaring("ทำรายการสำเร็จ");
                             blockRef.current.unBlock()
-                            setIsOpenLotteryModal(false)
+                            setIsOpenLotteryModal(false) 
+                            console.log("Process = ",process)
+                           
                             addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
                             }, 500);
+                            setProcess(true)
                             setUserData({dataSet:[{
                                 id: add,
                                 date: new Date(),
@@ -486,31 +490,6 @@ function Lottary()
                         
                             }]})
                         }
-                        else{
-            
-
-                            setpopup(false);
-                            setMsgWaring("ทำรายการสำเร็จ")
-                            setProcess(true);
-                            setStatusProcess(true);
-                            setIsOpenMessage(true)
-                            setRank(0)
-                            setUserData({dataSet:[{
-                                id: add,
-                                date: new Date(),
-                                option:"",
-                                number:"",
-                                price:"",
-                                allPrice:"",
-                                idLine:"",
-                                phoneNumber:"",
-                                luckytime:new Date(),
-                                set:""
-                        
-                            }]})
-                            //  addMessage(msgs,200,res.data.message)
-                                    // window.location.reload(false)
-                            }
                         })
                     }catch(error)
                         {
@@ -624,6 +603,7 @@ function Lottary()
                     blockRef.current.unBlock()
                     addMessage(msgs,response.data.statusMessage,<b>{response.data.message}</b>)
                 }, 500);
+                setProcess(true);
             }
                
                
