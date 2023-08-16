@@ -67,7 +67,7 @@ public class DashboardController extends ValidateUntil {
 			} else {
 				status = status.OK;
 				header.setStatusCode(ConstantData.STATUS_CODE_401);
-				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_ERROR);
 				return new ResponseEntity(header, status);
 			}
  

@@ -109,7 +109,7 @@ public class LottaryController extends ValidateUntil {
 					}
 				} else {
 					status = status.BAD_REQUEST;
-					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+					header.setMessage(ConstantData.MESSAGE_ERROR);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 					
 				}
@@ -132,7 +132,7 @@ public class LottaryController extends ValidateUntil {
 				&& listRequest.getIdlist() != null & listRequest.getStatuspayment() != null) {
 			Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, userModal);
 			if (updateStatus) {
-				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 				header.setStatusProcess(updateStatus);
 			}
@@ -143,7 +143,7 @@ public class LottaryController extends ValidateUntil {
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_400);
 		}
 		return new ResponseEntity(header, status);
@@ -168,7 +168,7 @@ public class LottaryController extends ValidateUntil {
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_400);
 		}
 		return new ResponseEntity(header, status);
@@ -184,35 +184,41 @@ public class LottaryController extends ValidateUntil {
 				MixTransferListNumberModal mixTransfer = listLottaryService.postSendLottaryService(listRequest,
 						user.getInfoUser().getNickname(), user.getUsername(), user.getInfoUser().getId());
 				if (mixTransfer.getDuplicateTransfer()) {
-					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA);
+					header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 				}
 				else if(null == mixTransfer.getLuckytime())
 				{
-					header.setMessage(ConstantData.MESSAGE_NOT_TIME_TO_WORK);
+					header.setMessage(ConstantData.MESSAGE_NOT_TIME_TO_WORK_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 				}
 				else if (mixTransfer.getListNumberModal().size() <= 0 || mixTransfer.getListNumberModal() == null) {
-					header.setMessage(ConstantData.MESSAGE_EMPTY);
+					header.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 				}
 				else if (mixTransfer.getStatusValidate()) {
-					header.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE);
+					header.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
 				} 
 				else {
-					header.setMessage(ConstantData.MESSAGE_SUCCESS);
+					header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+					header.setStatusProcess(true);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 				}
 			} else {
 				status = HttpStatus.BAD_REQUEST;
-				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_ERROR);
 				header.setStatusCode(ConstantData.STATUS_CODE_400);
 			}
 
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_401);
 		}
 		return new ResponseEntity(header, status);

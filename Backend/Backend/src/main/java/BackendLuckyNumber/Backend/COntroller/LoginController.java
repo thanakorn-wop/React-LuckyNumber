@@ -100,13 +100,13 @@ public class LoginController extends ValidateUntil {
 		try {
 			List<UserModal> user = loginService.validateLoginService(userLogin);
 			if (null == user.get(0)) {
-				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_ERROR);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				resp.setHeader(header);
 				status = status.OK;
 			} else {
 				if (user.get(0).getPassword().equals("invalid")) {
-					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+					header.setMessage(ConstantData.MESSAGE_ERROR);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 					resp.setStatus(user.get(0).getStatus());
 					resp.setIduser(userLogin.getUsername());

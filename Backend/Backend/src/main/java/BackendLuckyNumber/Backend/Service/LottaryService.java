@@ -482,7 +482,7 @@ public class LottaryService {
 		MonthModal monthModal = new MonthModal();
 		MonthModal monthMoal2 = new MonthModal();
 		LottaryModal luckytime = new LottaryModal();
-		List<InfoUserModal> dataTransfer = new ArrayList<>();
+//		List<InfoUserModal> dataTransfer = new ArrayList<>();
 		TransferLottaryModal itemTransfer = new TransferLottaryModal();
 		List<List_number_Modal> listItem = new ArrayList<>();
 		InfoUserModal infoUser = new InfoUserModal();
@@ -491,8 +491,9 @@ public class LottaryService {
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		String formattedDate = myDateObj.format(myFormatObj);
 		try {
-			dataTransfer = infouserRepo.finInfoUserTransfer(id, listRequest.getLuckytime(), nickname);
-			if (null != dataTransfer && dataTransfer.size() > 1) {
+//			dataTransfer = infouserRepo.finInfoUserTransfer(id, listRequest.getLuckytime(), nickname);
+			infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
+			if (null != infoUser   && infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_Y)) {
 				duplicateTransfer = true;
 			} else {
 				luckytime = lottaryRepo.findByDate(listRequest.getLuckytime());
@@ -508,9 +509,11 @@ public class LottaryService {
 						}
 						if (!statusValidate) {
 
-							infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
-							Integer convert_Total_Purchase = Integer.valueOf(infoUser.getTotalPurchase());
-							Integer convert_Total_lost = Integer.valueOf(infoUser.getTotalLost());
+							//infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
+							String replacePurchases = infoUser.getTotalPurchase().replace(",", "");
+							String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
+							Integer convert_Total_Purchase = Integer.valueOf(replacePurchases);
+							Integer convert_Total_lost = Integer.valueOf(replaceTotalLost);
 							sum = convert_Total_Purchase - convert_Total_lost;
 							date = infoUser.getDate();
 							String[] split_date = date.split("-");

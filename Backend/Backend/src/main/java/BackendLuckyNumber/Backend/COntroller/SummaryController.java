@@ -49,7 +49,7 @@ public class SummaryController {
 			}
 		}else {
 			status = status.UNAUTHORIZED;
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_401);
 		}
 		return new ResponseEntity(response, status);

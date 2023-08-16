@@ -34,3 +34,6 @@ li a{
 .setmenu{
     margin-top: 10px;
 }
+label.textLogo {
+    color: white;
+}

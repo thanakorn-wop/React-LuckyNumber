@@ -21,7 +21,10 @@ public class ConstantData {
 	
 	//message constant 
 	public static String MESSAGE_SUCCESS ="success";
-	public static String MESSAGE_NOT_SUCCESS ="not_success";
+	public static String MESSAGE_ERROR ="error";
+	public static String ALERT_MESSAGE_SUCCESS ="success";
+	public static String ALERT_MESSAGE_ERROR ="error";
+	public static String ALERT_MESSAGE_WARNING = "warning";
 	public static String MESSAGE_USER_LOCK = "USER_LOCK";
 	public static String MESSAGE_TOP = "Top";
 	public static String MESSAGE_BELOW = "Below";
@@ -39,6 +42,8 @@ public class ConstantData {
 	public static String MESSAGE_SUCCESS_TH ="ทำรายการสำเร็จ";
 	public static String MESSAGE_DUPLICATE_DATA_TH ="ทำรายการซ้ำกรุณาทำรายการใหม่";
 	public static String MESSAGE_NO_DATA_TH ="ไม่มีรายการให้ทำ";
+	public static String MESSAGE_NOT_TIME_TO_WORK_TH ="ยังไม่ถึงเวลาทำการ";
+	public static String MESSAGE_BEFORE_VALIDATE_TH ="กรุณาตรวจสอบก่อนทำรายการ";
 
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";

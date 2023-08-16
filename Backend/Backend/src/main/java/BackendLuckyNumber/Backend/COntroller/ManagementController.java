@@ -53,7 +53,7 @@ public class ManagementController extends ValidateUntil {
 			
 		}
 		else {
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 			respon.setHeader(header);
 		
@@ -86,21 +86,21 @@ public class ManagementController extends ValidateUntil {
 				}
 				else {
 					status = status.INTERNAL_SERVER_ERROR;
-					header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+					header.setMessage(ConstantData.MESSAGE_ERROR);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 					respon.setHeader(header);
 				}
 			}
 			else {
 				status = status.BAD_REQUEST;
-				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_ERROR);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				respon.setHeader(header);
 			}
 			
 		}
 		else {
-			header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS);
+			header.setMessage(ConstantData.MESSAGE_ERROR);
 			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 			respon.setHeader(header);
 		

@@ -1,10 +1,11 @@
 
 export const  useMessage = () => {
 
-    const addMessages = (msgs, respStatusProcess, respMessage) => {
+    const addMessages = (msgs, statusMessage, respMessage) => {
 
         msgs.current.show(
-            respStatusProcess === true? { severity: 'success', summary: respMessage, sticky: true, closable: true } :
+            statusMessage === 'success'? { severity: 'success', summary: respMessage, sticky: true, closable: true } :
+            statusMessage === 'warning'?  { severity: 'warn', summary: respMessage, sticky: true, closable: true }:
             { severity: 'error', summary: respMessage, sticky: true, closable: true }
         );
 

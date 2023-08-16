@@ -109,9 +109,9 @@ function Lottary()
                             })
                             // console.log("check response.data  = ",response );
                             // console.log("check response.data  = ",response.data );
-                            if(response.data != undefined && response.data.datalist != null)
+                            if(response.data != undefined && response.status === 200)
                             {
-                                console.log("response get data = ",response.data)
+                               
                                 setDataSet(response.data.datalist)
                                // console.log("data = ",response.data.datalist)
                                 // setDateLucky(response.data.datalist.luckytime)
@@ -279,10 +279,19 @@ function Lottary()
                     const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
                         headers: { 'Content-Type': 'application/json' }
                     }).then(res =>{
-                    if(res.data.message === 'success' && res.data.statusCode ==='01')
+                        console.log("payment res = ",res.data)
+                    if(res.status === 200)
                     {
-                        alert("ทำรายการสำเร็จ")
-                        setIsOpenPayMentModal(false)  
+                        console.log("payment res = ",res.data)
+                        blockRef.current.block()
+                            setTimeout(() => {
+                            msgs.current.clear();
+                        // setMsgWaring("ทำรายการสำเร็จ");
+                            blockRef.current.unBlock()
+                            setIsOpenPayMentModal(false)  
+                            addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
+                            }, 500);
+                        // setIsOpenPayMentModal(false)  
                         // reload()    
                     }
                     else{
@@ -450,7 +459,7 @@ function Lottary()
                             headers: { 'Content-Type': 'application/json' }
                         }).then(res =>{
                                 // console.log("check response num = ",res.data)
-                        if(res.data.statusProcess === false && res.data.statusCode === '01')
+                        if(res.status === 200)
                         {
                           
                             setpopup(false);
@@ -461,7 +470,7 @@ function Lottary()
                         // setMsgWaring("ทำรายการสำเร็จ");
                             blockRef.current.unBlock()
                             setIsOpenLotteryModal(false)
-                            addMessage(msgs,res.data.statusProcess,<b>{res.data.message}</b>)
+                            addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
                             }, 500);
                             setUserData({dataSet:[{
                                 id: add,
@@ -563,7 +572,7 @@ function Lottary()
                 if(postItem !== null && postItem !== undefined)
                 {
                     console.log("check postItem = ",postItem.data)
-                    if(postItem.data.statusCode == '01' && postItem.data.statusProcess === true)
+                    if(postItem.status === 200)
                     {
                         // alert("ทำรายการสำเร็จ")
                         blockRef.current.block()
@@ -575,7 +584,7 @@ function Lottary()
                       //  addMessage(msgs,postItem.data.statusProcess,<b>{postItem.data.message}</b>)
                         setProcess(true)
                         setMsgWaring(postItem.data.message)
-                        setStatusProcess(postItem.data.statusProcess)
+                        setStatusProcess(postItem.data.statusMessage)
                         setIsOpenMessage(true)
                 }, 500);
                         // reload()
@@ -600,38 +609,25 @@ function Lottary()
                 headers: { 'Content-Type': 'application/json' }
             })
            // console.log("check response sendding  ",response);
-            if(response.data.message ==="empty")
-            {
-                alert("ไม่มีข้อมูลให้ทำรายการ")
-            }
-            else if(response.data.message ==="duplicate_data")
-            {
-                // alert("ไม่สามารถทำรายการซ้ำได้");
-                setMsgWaring("ไม่สามารถทำรายการซ้ำได้");
-                setProcess(true)
-            }else if(response.data.message === "not_time_to_work")
-            {
-                alert("กรุณารอหวยออก");
-            }
-            else if(response.data.message ==="validate")
-            {
-                alert("กรุณาตรวจหวยก่อนทำรายการ")
-            }
-            else
-            {
+           
+            
                 // alert("ทำรายการสำเร็จ");
                 // console.log("process = ",process)
+            if(response.status === 200)
+            {
+                  
                 setIsOpenSendLottaryModal(false);
                 blockRef.current.block()
                 setTimeout(() => {
                     msgs.current.clear();
                     // setMsgWaring("ทำรายการสำเร็จ");
                     blockRef.current.unBlock()
-                    addMessage(msgs,response.status,<b>ทำรายการสำเร็จ</b>)
+                    addMessage(msgs,response.data.statusMessage,<b>{response.data.message}</b>)
                 }, 500);
-               
-               
             }
+               
+               
+            
         }
         else{
             setIsOpenSendLottaryModal(false);

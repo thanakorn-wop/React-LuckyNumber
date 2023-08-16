@@ -3,14 +3,22 @@ package BackendLuckyNumber.Backend;
 public class Header {
 	private String statusCode;
 	private String message;
+	private String statusMessage;
 	private Boolean statusProcess;
 	
 	
-
-	
-	
 	
 
+	
+	
+	
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
 	public Boolean getStatusProcess() {
 		return statusProcess;
 	}
