@@ -310,12 +310,12 @@ function Report()
                             </tbody>
                         </table>
                     </div>
-        <div className="tableManagement" style={{"marginTop":"20px"}} >
-            <DataTable value={allUser} paginator rows={5}  showGridlines  rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ width: '80%',"margin":"0 auto"}}>
+        <div className="tableReport" style={{"marginTop":"20px"}} >
+            <DataTable value={allUser} paginator rows={5}  showGridlines  rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ width: '80%',margin:"0 auto"}}>
                 <Column field="nickname" header="ชื่อ" style={{ width: '10%' }} alignHeader={"center"}  align={"center"}></Column>
                 <Column field="totalPurchase" header="ยอดขายทั้งหมด" style={{ width: '10%' }} alignHeader={"center"} align={"center"} ></Column>
                 <Column field="totalLost" header="ยอดคนถูก" style={{ width: '10%' }} alignHeader={"center"}align={"center"}  ></Column>
-                <Column field="balance" header="ยอดคงเหลือ" style={{ width: '10%' }} alignHeader={"center"}align={"center"} ></Column>
+                <Column field="balance" header="กำไรสุทธิ" style={{ width: '10%' }} alignHeader={"center"}align={"center"} ></Column>
                 <Column field="date" header="งวดวันที่" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column field="timeTransfer" header="วันที่ส่งยอด" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column body={imgBody} header="สถานะการส่งงวด" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>

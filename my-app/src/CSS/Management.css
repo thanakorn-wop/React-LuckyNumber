@@ -1,20 +1,13 @@
 .boxManagement{
     background-color: rgb(26, 45, 54);
-    /* width: 90%;
-    position: absolute;
-    left: 5%; */
+
     z-index: -1;
-    /* position: absolute; */
-    /* top: 20%;
-    left: 30%;
-    margin-top: -100px;
-    margin-left: -250px; */
-    /* margin-top: 30px; */
+
     width: 100%;
     background-size: cover;
 
     border: solid white 2px;
-    height: 1000px;
+   min-height: 100vh;
     color: white;
    
     /* height: 700px; */
@@ -112,4 +105,16 @@
 .paginatManage .paginate{
     position: relative;
     left: 40%;
+}
+.tableManagement{
+   /* background-color: red; */
+   width: 70%;
+   margin: 0 auto;
+   position: relative;
+
+   
+   
+}
+.headerManagement.h3{
+    position: relative;
 }

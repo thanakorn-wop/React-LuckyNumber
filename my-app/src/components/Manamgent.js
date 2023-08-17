@@ -116,7 +116,7 @@ function Management()
                     <h3>การจัดการผู้ใช้งาน</h3>
                 </div>
             <div className="tableManagement" style={{"marginTop":"20px"}}>
-               <table className="table table-bordered table-striped" style={{"textAlign":"center","width":"100%","color":"white"}}>
+               <table className="" style={{"textAlign":"center","width":"100%","color":"white"}}>
                 <thead >
                     <tr style={{"border":"none"}} >
                         <td style={{"width":"50%","border":"none"}}>ชื่อเล่น</td>
@@ -132,7 +132,7 @@ function Management()
                                 <td  style={{"border":"none"}}> 
                                 <span className="switch">
                                 <input type="checkbox" id={data.nickname+" "+index} className={data.nickname+" "+index} checked={data.status==="A"?true:false} name={data.nickname+" "+index} onChange={getValueCheckBox}   />
-                                 <label for = {data.nickname+" "+index} ></label>
+                                 <label htmlFor = {data.nickname+" "+index} ></label>
                                 </span>
                                 </td>
                              

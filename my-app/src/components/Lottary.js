@@ -95,6 +95,7 @@ function Lottary()
     {
       window.location.assign("/login")
     }
+    
     useEffect(()=>{
                   async function getListitem()
                   {
@@ -298,6 +299,7 @@ function Lottary()
                                 setIsOpenPayMentModal(false)  
                                 addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
                                 }, 500);
+                                setProcess(true)
                             // setIsOpenPayMentModal(false)  
                             // reload()    
                         }

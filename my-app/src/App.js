@@ -13,14 +13,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Management from "../src/components/Manamgent"
 import Report from "../src/components/Report"
 import InternalServer from './components/Error/InternalServer';
-// function setAuth(data)
-// {
- 
-//   sessionStorage.setItem("token", data.token);
- 
-//   console.log("check auth = ",data.token)
-//   console.log("check auth = ",data)
-// }
+
 
 function getAuth()
 {
@@ -30,15 +23,13 @@ function getAuth()
 function App() {
   const auth = getAuth()
   const [userRole,setUserRole] = useState("");
-  
-    console.log("auth app = ")
   const location = useLocation();
   const showMenu = location.pathname !== '/login';
   function setAuth(data)
   {
     sessionStorage.setItem("token", data.token);
     localStorage.setItem("userRole",data.role)
-    console.log("setauth = ",data.header)
+   // console.log("setauth = ",data.header)
   }
   // if(!auth)
   // {

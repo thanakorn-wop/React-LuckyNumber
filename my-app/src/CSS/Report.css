@@ -11,8 +11,8 @@
     margin-left: -250px; */
     /* margin-top: 30px; */
   
-    border: solid white 2px;
-    height: 1000px;
+    /* border: solid white 2px; */
+    min-height: 100vh;
 }
 .headerReport{
    text-align: center;
@@ -23,6 +23,8 @@ button.p-paginator-page.p-paginator-element.p-link {
 }
 .p-paginator.p-component.p-paginator-bottom {
     background-color: rgb(26, 45, 54);
+    border: none;
+    margin-top: 20px;
 }
 .textCenterTable{
     padding: 15px 0px;
