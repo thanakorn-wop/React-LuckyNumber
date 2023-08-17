@@ -129,7 +129,6 @@ public class LottaryService {
 		Integer all_price = 0;
 		Boolean statusTransfer = false;
 		try {
-
 			for (NumberRequestModel data : NumRequest.getDataSet()) {
 				luckyLottary = lottaryRepo.findByDate(data.getLuckytime());
 				if (null != luckyLottary) {
@@ -243,9 +242,9 @@ public class LottaryService {
 
 	}
 
-	public Boolean postUpdateStatusPaymentService(listNumberRquestModal listRequest, UserModal userModal) {
+	public SuccessAndFailModal postUpdateStatusPaymentService(listNumberRquestModal listRequest, UserModal userModal) {
 		Boolean updateStatus = false;
-		List_number_Modal dataItem = null;
+		SuccessAndFailModal process = new SuccessAndFailModal();
 		String id = listRequest.getId();
 		String statusPayment = listRequest.getStatuspayment();
 		InfoUserModal infoUser = null;
@@ -255,53 +254,66 @@ public class LottaryService {
 		Integer reduceNotpay = 0;
 		String strPay  = "";
 		String strNotPay = "";
+		String isValidate = listRequest.getStatusValidate();
 		try {
-			infoUser = infouserRepo.findInfoUser(id, luckyTime);
-			String replaceNotPay = infoUser.getNotpay().replace(",", "");
-			String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
-			String replacePay = infoUser.getPay().replace(",", "");
+			if(!isValidate.equals(ConstantData.MESSAGE_N))
+			{
+				infoUser = infouserRepo.findInfoUser(id, luckyTime);
+				String replaceNotPay = infoUser.getNotpay().replace(",", "");
+				String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
+				String replacePay = infoUser.getPay().replace(",", "");
 
-			if (statusPayment.equals(ConstantData.MESSAGE_YES)) {
-				pay = Integer.valueOf(replaceReward) + Integer.valueOf(replacePay);
-				if(replaceNotPay.length() >0)
-				{
-					reduceNotpay = Integer.valueOf(replaceNotPay) - Integer.valueOf(replaceReward);
-				}
-				else {
-					reduceNotpay = Integer.valueOf(replaceTotalLost) - Integer.valueOf(replaceReward);
-				}
-			
-				strPay= numberFormatter.format(pay);
-				strNotPay = numberFormatter.format(reduceNotpay);
+				if (statusPayment.equals(ConstantData.MESSAGE_YES)) {
+					pay = Integer.valueOf(replaceReward) + Integer.valueOf(replacePay);
+					if(replaceNotPay.length() >0)
+					{
+						reduceNotpay = Integer.valueOf(replaceNotPay) - Integer.valueOf(replaceReward);
+					}
+					else {
+						reduceNotpay = Integer.valueOf(replaceTotalLost) - Integer.valueOf(replaceReward);
+					}
 				
-//				reduceNotpay = reduceNotpay - Integer.valueOf(infoUser.getNotpay());
-			} else {
-				pay = Integer.valueOf(replacePay) - Integer.valueOf(replaceReward);
-				if(replaceNotPay.length() >0)
-				{
-					reduceNotpay = Integer.valueOf(replaceNotPay) + Integer.valueOf(replaceReward);
+					strPay= numberFormatter.format(pay);
+					strNotPay = numberFormatter.format(reduceNotpay);
+					
+//					reduceNotpay = reduceNotpay - Integer.valueOf(infoUser.getNotpay());
+				} else {
+					pay = Integer.valueOf(replacePay) - Integer.valueOf(replaceReward);
+					if(replaceNotPay.length() >0)
+					{
+						reduceNotpay = Integer.valueOf(replaceNotPay) + Integer.valueOf(replaceReward);
+					}
+					else {
+						reduceNotpay = Integer.valueOf(replaceTotalLost);
+					}
+					strPay= numberFormatter.format(pay);
+					strNotPay = numberFormatter.format(reduceNotpay);
 				}
-				else {
-					reduceNotpay = Integer.valueOf(replaceTotalLost);
+
+//				dataItem = listNumberRepo.findEachItem(id, luckyDate);
+
+				int resultUpdatePayment = listNumberRepo.postUpdateStatusPaymentRepo(statusPayment, id,
+						listRequest.getIdlist(), luckyTime);
+				int resultUpdateInfoUser = infouserRepo.updateInfoUserPayNotPay(strPay, strNotPay, id,
+						luckyTime);
+				if (resultUpdatePayment > 0 && resultUpdateInfoUser > 0) {
+					updateStatus = true;
+					process.setStatusSuccess(updateStatus);
+					process.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
+					process.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 				}
-				strPay= numberFormatter.format(pay);
-				strNotPay = numberFormatter.format(reduceNotpay);
 			}
-
-//			dataItem = listNumberRepo.findEachItem(id, luckyDate);
-
-			int resultUpdatePayment = listNumberRepo.postUpdateStatusPaymentRepo(statusPayment, id,
-					listRequest.getIdlist(), luckyTime);
-			int resultUpdateInfoUser = infouserRepo.updateInfoUserPayNotPay(strPay, strNotPay, id,
-					luckyTime);
-			if (resultUpdatePayment > 0 && resultUpdateInfoUser > 0) {
-				updateStatus = true;
+			else {
+				process.setStatusSuccess(updateStatus);
+				process.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE_TH);
+				process.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 			}
+		
 
 		} catch (Exception e) {
 			throw e;
 		}
-		return updateStatus;
+		return process;
 	}
 
 	public LottaryModal getLuckyItemService() {

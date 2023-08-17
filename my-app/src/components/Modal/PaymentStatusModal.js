@@ -20,7 +20,7 @@ function PaymentStatusModal (props)
 
     const saveData = (e)=>{
    
-        props.HandlePayment(Data)
+        props.HandlePayment(Data,e)
        
 
         // console.log("check data = ",numberData)
@@ -47,8 +47,8 @@ function PaymentStatusModal (props)
                 </div>
                 <div className="modal-footer" style={{"marginTop":"20px","marginBottom":"10px","borderTop":"solid gray"}}>
                     <div className="footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"  name = "notsave" onClick={(e)=>saveData(e)}>Close</button>
-                        <button type="button" className="btn btn-primary"  style={{"marginLeft":"10px"}} name = "save" onClick={(e)=>saveData(e)}>Save changes</button>
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"  name = "No" onClick={(e)=>saveData(e.target.name)}>Close</button>
+                        <button type="button" className="btn btn-primary"  style={{"marginLeft":"10px"}} name = "Yes" onClick={(e)=>saveData(e.target.name)}>Save changes</button>
                     </div>
                 </div>
         </div>

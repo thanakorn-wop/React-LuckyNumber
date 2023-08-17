@@ -15,7 +15,8 @@
     background-size: cover;
 
     border: solid white 2px;
-    height: 1200px;
+   
+    min-height: 100vh;
     /* height: 700px; */
 }
 

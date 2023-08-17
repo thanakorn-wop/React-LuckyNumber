@@ -14,11 +14,21 @@ public class listNumberRquestModal {
 	private String id;
 	private String sequence;
 	private String reward;
+	private String statusValidate;
+	
 	
 	
 	
 
 	
+
+	public String getStatusValidate() {
+		return statusValidate;
+	}
+
+	public void setStatusValidate(String statusValidate) {
+		this.statusValidate = statusValidate;
+	}
 
 	public String getReward() {
 		return reward;

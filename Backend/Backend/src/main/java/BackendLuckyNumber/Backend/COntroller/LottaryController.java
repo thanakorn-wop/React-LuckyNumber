@@ -132,15 +132,17 @@ public class LottaryController extends ValidateUntil {
 		Header header = new Header();
 		if (null != listRequest && listRequest.getId() != null
 				&& listRequest.getIdlist() != null & listRequest.getStatuspayment() != null) {
-			Boolean updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, userModal);
-			if (updateStatus) {
-				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
+			SuccessAndFailModal updateStatus = listLottaryService.postUpdateStatusPaymentService(listRequest, userModal);
+			Boolean isUpdate = updateStatus.getStatusSuccess();
+			if (isUpdate) {
+				header.setMessage(updateStatus.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-				header.setStatusProcess(updateStatus);
+				header.setStatusMessage(updateStatus.getStatusMessage());
 			} else {
-				header.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+				header.setMessage(updateStatus.getMessage());
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-				header.setStatusProcess(updateStatus);
+				header.setStatusMessage(updateStatus.getStatusMessage());
+				
 			}
 		} else {
 			status = HttpStatus.BAD_REQUEST;

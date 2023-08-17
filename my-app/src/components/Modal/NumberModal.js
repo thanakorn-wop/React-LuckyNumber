@@ -42,7 +42,7 @@ function NumberModal(props)
                  // console.log("check useEffect")
         // defaulData.push(object)
         // console.log("check data again = ",defaulData)
-         console.log("check price = ",userData.dataSet[rank].number);
+       //  console.log("check price = ",userData.dataSet[rank].number);
          let number = userData.dataSet[rank].number;
          let price = userData.dataSet[rank].price;
          //console.log("number check = ",number);
@@ -112,13 +112,22 @@ function NumberModal(props)
     }
     function handleDate(...data)
     {
+        // console.log("check data insert = ",data);
         userData.dataSet[data[1]].date = data[0].target.value
     }
     function handleLuckyTime(...data)
     {   
         //console.log("check qq = ",data[1])
-
-        userData.dataSet[data[1]].luckytime = data[0].target.value
+        console.log("check data insert = ",data);
+        let selectedDate = data[0].target.value
+        if(selectedDate>  userData.dataSet[data[1]].luckytime )
+        {
+            userData.dataSet[data[1]].luckytime = data[0].target.value
+        }
+        else{
+            alert("กรุณาเลือกวันที่มากกว่าวันปัจจุบัน")
+        }
+       
 
     }
     function UpdateData(name,value,index)
@@ -138,7 +147,7 @@ function NumberModal(props)
     }
     const Handlesaving = (isSave)=>{
        console.log("NUMBER modal = ",userData)
-        props.handleSavingNum(isSave,userData,setUserData,mark,setRank,setTotalPrice)
+        props.handleSavingNum(isSave,userData,setUserData,mark,setmark,setRank,setTotalPrice)
      }
  
     function addRow()

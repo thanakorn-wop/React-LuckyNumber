@@ -40,8 +40,8 @@ function Lottary()
     const [DateSelect,setDataSelect] = useState(new Date());
     const [IsSelect,setIsSelect] = useState(false);
     const [dateLucky,setDateLucky] = useState("");
-    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:""}]);
-    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:""}]);
+    const [dataSet,setDataSet] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:"",statusValidate:""}]);
+    const [newItem,setNewItem] = useState([{idlist:"",number:"",price:"",allPrice:"",optionpurchase:"",status:"",datebuy:"",time:"",statuspayment:"",luckytime:"",id:"",sequence:"",reward:"",statusValidate:""}]);
     const [sessionUser,setSession] = useState(sessionStorage.getItem("token"));
     const [DataLuckyNumber,setDataLuckyNumber] = useState();
     const [index,setIndex] = useState();
@@ -257,68 +257,79 @@ function Lottary()
         }
        // console.log("show lucky number ",DataLuckyNumber)
     }
-    function HandlePayment(DataPayment)
+    function HandlePayment(DataPayment,isSave)
     {
        // console.log("check index3 = ",newItem)
        let statusPayment = DataPayment.status;
-       console.log("statusPayment = ",statusPayment)
-        if(statusPayment !== "" && statusPayment !== undefined)
+    //    console.log("newItem check = ",newItem)
+    //    console.log("newItem check = ",...newItem)
+    //    console.log("statusPayment = ",statusPayment)
+        if(isSave === "Yes")
         {
-            if(statusPayment !== oldPayment )
+            if(statusPayment !== "" && statusPayment !== undefined)
             {
-                let dataUpdate = {};
-                newItem[index].statuspayment = statusPayment;
-                dataUpdate = newItem[index];
-             
-                // console.log("check data update = ",dataUpdate)
-                // console.log("check data update = ",newItem[index])
-                // console.log("check data index = ",index)
-                // console.log("check data new = ",newItem)
-    
-                try{
-                    const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
-                        headers: { 'Content-Type': 'application/json' }
-                    }).then(res =>{
-                        console.log("payment res = ",res.data)
-                    if(res.status === 200)
-                    {
-                        console.log("payment res = ",res.data)
-                        blockRef.current.block()
-                            setTimeout(() => {
-                            msgs.current.clear();
-                        // setMsgWaring("ทำรายการสำเร็จ");
-                            blockRef.current.unBlock()
-                            setIsOpenPayMentModal(false)  
-                            addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
-                            }, 500);
-                        // setIsOpenPayMentModal(false)  
-                        // reload()    
-                    }
-                    else{
-                        alert("ทำรายการไม่สำเร็จ")
-                    }
-                    })
-    
-                }catch(err)
+                if(statusPayment !== oldPayment )
                 {
-                    console.error("Error = ",err);
+                    let dataUpdate = {};
+                   // console.log("newItem check = ",...newItem)
+                   dataUpdate = newItem[index];
+                   dataUpdate.statuspayment = statusPayment;
+                    // newItem[index].statuspayment = statusPayment;
+                    // dataUpdate = newItem[index];
+                 
+                    // console.log("check data update = ",dataUpdate)
+                    // console.log("check data update = ",newItem[index])
+                    // console.log("check data index = ",index)
+                    // console.log("check data new = ",newItem)
+        
+                    try{
+                        const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
+                            headers: { 'Content-Type': 'application/json' }
+                        }).then(res =>{
+                            console.log("payment res = ",res.data)
+                        if(res.status === 200)
+                        {
+                            console.log("payment res = ",res.data)
+                            blockRef.current.block()
+                                setTimeout(() => {
+                                msgs.current.clear();
+                            // setMsgWaring("ทำรายการสำเร็จ");
+                                blockRef.current.unBlock()
+                                setIsOpenPayMentModal(false)  
+                                addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
+                                }, 500);
+                            // setIsOpenPayMentModal(false)  
+                            // reload()    
+                        }
+                        else{
+                            alert("ทำรายการไม่สำเร็จ")
+                        }
+                        })
+        
+                    }catch(err)
+                    {
+                        console.error("Error = ",err);
+                    }
                 }
+                else{
+                    alert("กรุณาเลือกสถานะการจ่าย");
+                }
+              
             }
             else{
+              //  console.log("check index2 = ",newItem)
+                // setIsOpenPayMentModal(false)      
                 alert("กรุณาเลือกสถานะการจ่าย");
             }
-          
         }
         else{
-          //  console.log("check index2 = ",newItem)
-            // setIsOpenPayMentModal(false)      
-            alert("กรุณาเลือกสถานะการจ่าย");
+            setIsOpenPayMentModal(false)  
         }
         setOldPayment(null);
         // console.log(newItem)
         //console.log("check paymnet = ",status_saving,DataPayment)
     }
-    async function HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)
+    async function HandleNumberModal(isSave,dataNum,setUserData,mark,setmark,setRank,setTotalPrice)
     {
       //  console.log("Datanum lottay = ",dataNum)
         let statusValidate = true;
@@ -476,6 +487,7 @@ function Lottary()
                             addMessage(msgs,res.data.statusMessage,<b>{res.data.message}</b>)
                             }, 500);
                             setProcess(true)
+                            
                             setUserData({dataSet:[{
                                 id: add,
                                 date: new Date(),
@@ -536,7 +548,7 @@ function Lottary()
     async function HandleValidateLottaryModal(date,status,empty,setEmpty)
     {
         // let obj = {date:date}
-        console.log("date = ",setEmpty);
+     //   console.log("date = ",setEmpty);
         if(status)
         {
             if(empty)
@@ -890,7 +902,7 @@ function Lottary()
                 </div>
             </div>
             {/* // list insert purachse number  modal */}
-            <NumberModal  handleSavingNum={(isSave,dataNum,setUserData,mark,setRank,setTotalPrice) => HandleNumberModal(isSave,dataNum,setUserData,mark,setRank,setTotalPrice)}  show={popup}   />
+            <NumberModal  handleSavingNum={(isSave,dataNum,setUserData,mark,setmark,setRank,setTotalPrice) => HandleNumberModal(isSave,dataNum,setUserData,mark,setmark,setRank,setTotalPrice)}  show={popup}   />
 
             {/* {
             // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 
@@ -898,7 +910,7 @@ function Lottary()
             } */}
             {
                 // todo paymethod modal changing
-            isOpenPaymentModal &&   <PaymentStatusModal payment = {statusPaymet} HandlePayment = {(DataPayment)=>HandlePayment(DataPayment)} />
+            isOpenPaymentModal &&   <PaymentStatusModal payment = {statusPaymet} HandlePayment = {(DataPayment,isSave)=>HandlePayment(DataPayment,isSave)} />
             }
             {
                 
