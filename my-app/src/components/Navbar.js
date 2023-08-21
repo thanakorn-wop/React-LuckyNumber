@@ -9,7 +9,7 @@ function Navbar()
 {   const auth = "admin"
     // const {user} = useContext(Authen);
     const role = localStorage.getItem("userRole");
-    console.log(" user role = ",role)
+    // console.log(" user role = ",role)
     // console.log("check nav auth1 = ",user.role)
     function logout(){
         let session =  sessionStorage.getItem("token");

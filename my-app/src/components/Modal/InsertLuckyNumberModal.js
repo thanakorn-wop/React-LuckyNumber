@@ -17,7 +17,7 @@ function InsertLuckyNumberModal (props)
         biglucky:"",
       
     });
-    console.log("check ",luckyNumber);
+    //console.log("check ",luckyNumber);
     const monthjsx = 
     (
         month.map(data =>{
@@ -25,20 +25,23 @@ function InsertLuckyNumberModal (props)
          })
     )
     const updateDate = (event)=>{
-        console.log("event = ",event.target.value)
-        let date = event.target.value;
-        date = DateMonth.getFullYear()+"-"+(1+Number(DateMonth.getMonth()))+"-"+DateMonth.getDate();
-        setDateMonth(event.target.value)
+        console.log("event = ",event.value)
+        let date = event.value;
+        if(date !== null)
+        {
+        setDateMonth(date)
+        date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
         setLuckyNumber({...luckyNumber,date:date})
 
+        }
+        console.log("date = ",date)
+      
     }
     const handleChange = (e) => {
         const value = e.target.value;
         setLuckyNumber({...luckyNumber,[ e.target.name]: value});
     }
     const handleSaving = (e)=>{
-
-
         props.handleSaving(e.target.name,luckyNumber,setLuckyNumber)
     }
    
@@ -48,7 +51,7 @@ function InsertLuckyNumberModal (props)
         <div className="boxbody">
             <div style={{"marginLeft":"10px","marginRight":"20px"}}>
             <div className="text">  <label>วันที่</label></div>
-            <div className="formCalendar">    <Calendar className="" name = "date" selected={DateMonth} style={{"width":"50%"}}  onChange={updateDate} /></div>
+            <div className="formCalendar">    <Calendar className="" name = "date" value={DateMonth} style={{"width":"50%"}}  onChange={(e)=>updateDate(e)} /></div>
             <div className="text">  <label>รางวัลที่ 1</label></div>
             <div className="formtext">  <input type="textbox" className="form-control "   style={{"width":"50%"}} name = "biglucky"  onChange={(e)=>handleChange(e)}/></div>
             <div className="text">  <label> 3 ตัวบน</label></div>

@@ -53,7 +53,7 @@ function Login({ setauth   })
         setUser({...user,[e.target.name]:e.target.value})
          console.log(user);
     }
-    function submitLogin()
+   async  function submitLogin()
     {
         if(user.username === undefined || user.username ==="")
         {
@@ -65,7 +65,7 @@ function Login({ setauth   })
         }
         else{
             try{
-               axios.post(urlConstant.LOGIN_USER,user,{
+                await axios.post(urlConstant.LOGIN_USER,user,{
                     headers: { 'Content-Type': 'application/json' }
                 }).then(res =>{
                     console.log(res.data)

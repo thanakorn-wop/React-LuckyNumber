@@ -22,9 +22,9 @@ function PaginatedItems(props)
                 setPageNumber([...pageNumber,i])
             }
         let currentPosts = item.slice(currentPage,indexOfLastPost);
-        console.log("check post item = ",item)
-        console.log("check post currentPage indexOfLastPost = ",currentPage,indexOfLastPost)
-        console.log("check post data = ",currentPosts)
+        // console.log("check post item = ",item)
+        // console.log("check post currentPage indexOfLastPost = ",currentPage,indexOfLastPost)
+        // console.log("check post data = ",currentPosts)
         const paginate = pageNumber =>setCurrentPage(pageNumber)
         // const endOffset = itemOffset +itemPerPage;
         // setCurrentItem(item.slice(itemOffset,endOffset));

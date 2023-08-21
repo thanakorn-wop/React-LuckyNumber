@@ -84,24 +84,30 @@ public class ReportController {
 							header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 							header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 							header.setStatusProcess(true);
+							header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
+							
 						}
 					else {
 						status = HttpStatus.OK;
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
 						header.setMessage(ConstantData.MESSAGE_DUPLICATE_DATA_TH);
 						header.setStatusProcess(false);
+						header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 						
 					}
 				} else {
 					status = HttpStatus.BAD_REQUEST;
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 					header.setMessage(ConstantData.BAD_REQUEST);
+					header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
+					
 				}
 			}
 			else {
 				status = HttpStatus.UNAUTHORIZED;
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				header.setMessage(ConstantData.ERROR_MESSAGE_UNAUTHORIZED);
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 			}
 
 		} catch (Exception e) {

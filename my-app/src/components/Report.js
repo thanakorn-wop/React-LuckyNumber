@@ -5,6 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from "primereact/inputtext";
 import "primereact/resources/primereact.min.css";     
+import 'primeicons/primeicons.css';
 import axios, { all } from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
 import imgAccept from "../Icons/accept.png"
@@ -14,9 +15,14 @@ import Loading from "./Constant/Loading";
 import { Messages } from 'primereact/messages'; 
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
 function Report()
 {
+    const toast = useRef(null);
+
     const msgs = useRef(null);
     const blockRef = useRef(null)
     const addMessage = useMessage();
@@ -96,8 +102,8 @@ function Report()
     const SearchData = ()=>{
         let date = new Date();
         date = dataSearch.date;
-        console.log("data = ",dataSearch)
-        if(date != '')
+        console.log("data = ",date)
+        if(date !== '' && date !== undefined && date !== null)
         {
             date =(date.getFullYear()+"-"+String(1+Number(date.getMonth())).padStart(2, '0')+"-"+String(date.getDate()).padStart(2, '0'));
         }
@@ -148,8 +154,8 @@ function Report()
        
         // console.log("dataLuck1y = ",dataLucky)
         // console.log("dataLucky.threetop.length = ",dataLucky.threetop.length)
-        let threeDownSplit = dataLucky.threedown.trim().split(" ")
-         console.log("checkthreeDown = ",threeDownSplit.length !==4 )
+        let threeDownSplit = dataLucky.threedown.trim().replaceAll(","," ").split(" ");
+         console.log("dataLucky = ",dataLucky)
         if(statusSaving === "Yes")
         {  // todo validate field  of Insert LuckyNumber Model
             if(dataLucky.threetop === null || dataLucky.threetop === undefined || dataLucky.threetop === "" )
@@ -169,7 +175,7 @@ function Report()
                 alert("กรุณาใส่เลข เลขท้าย 2 ตัว");
             }
             else{
-                console.log("dataLucky.threetop.length >3 || dataLucky.threetop.length <2 = ", dataLucky.threetop.length <2)
+               // console.log("dataLucky.threetop.length >3 || dataLucky.threetop.length <2 = ", dataLucky.threetop.length <2)
                 if(Number(dataLucky.threetop.length) !==3  )
                 {
                  
@@ -194,16 +200,17 @@ function Report()
                 }
                 else{
                     try{
-                        console.log("dataLucky = ",dataLucky)
+                     //   console.log("dataLucky = ",dataLucky)
                         const respon = await axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,dataLucky,{
                             headers: { 'Content-Type': 'application/json' }
                         })
-                        console.log("respon = ",respon)
+                      //  console.log("respon = ",respon)
                         let message = respon.data.message;
                         let process =respon.data.statusProcess;
+                        let statusMessage = respon.data.statusMessage;
 
                         // todo validate status insert from back end 
-                        if(process)
+                        if(respon.status === 200)
                         {
                             blockRef.current.block()
                             setTimeout(() => {
@@ -211,7 +218,7 @@ function Report()
                         // setMsgWaring("ทำรายการสำเร็จ");
                             blockRef.current.unBlock()
                             // setIsOpenLotteryModal(false)
-                            addMessage(msgs,process,<b>{message}</b>)
+                            addMessage(msgs,statusMessage,<b>{message}</b>)
                             }, 500);
                         }
                         else{
@@ -221,7 +228,7 @@ function Report()
                         // setMsgWaring("ทำรายการสำเร็จ");
                             blockRef.current.unBlock()
                             // setIsOpenLotteryModal(false)
-                            addMessage(msgs,process,<b>{message}</b>)
+                            addMessage(msgs,statusMessage,<b>{message}</b>)
                             }, 500);
                         }
                         setIsOpenLuckyNumberModal(false)
@@ -243,7 +250,6 @@ function Report()
             setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
         }
         //* close InsertLucky Number Model  and set default value*/
-       
     }
     const optionTransfer = [
         {
@@ -253,6 +259,61 @@ function Report()
             status:"N"
         }
     ]
+
+    
+    const reject = () => {
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    };
+    
+    // const accept = async (e) => {
+    //     // toast.current.show({ severity: 'success', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    //     console.log(e)
+      
+    // {
+    //     console.error("Error = ",e);
+
+    // }
+    // };
+
+    const confirm1 = (e) => {
+        console.log("E = ",e)
+        //let msg = (<span>คุณต้องการเคลียบิลราการนี้ใช่หรือไม่<br/><b>ขื่อ : {e.nickname}</b></span>)
+        const msgDialog = (<span>คุณต้องการเคลียบิลราการนี้ใช่หรือไม่?<br/><b>ขื่อ : {e.nickname} </b><br/><b>งวดประจำวันที่: {e.date} </b></span>)
+
+        confirmDialog({
+            message: msgDialog,
+            header: 'ยืนยันทำรายการ',
+            icon: 'pi pi-exclamation-triangle',
+            className:'custom-dialog',
+            acceptLabel:'ยืนยัน',
+            rejectLabel:"ยกเลิก",
+          
+            accept: ()=>{
+                try{
+
+                }catch(e)
+                {
+                    console.error("Error is ",e)
+                }
+
+            }
+            
+          
+            
+        });
+    };
+    const btnConfirm = (e)=>{
+        return(
+            <>
+            <Toast ref={toast} />
+            <ConfirmDialog />
+            <div className="card flex flex-wrap gap-2 justify-content-center" style={{"margin":"0 auto","width":"50%"}}>
+                <Button onClick={()=>confirm1(e)} icon="pi pi-check" label="ยืนยัน" className="mr-2"></Button>
+           
+            </div>
+        </>
+        )
+    }
     return(
         <div className="containerReport">
         <div className="boxReport">
@@ -319,6 +380,7 @@ function Report()
                 <Column field="date" header="งวดวันที่" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column field="timeTransfer" header="วันที่ส่งยอด" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column body={imgBody} header="สถานะการส่งงวด" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
+                <Column body={btnConfirm} header="การจัดการ" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
                
              
             </DataTable>
