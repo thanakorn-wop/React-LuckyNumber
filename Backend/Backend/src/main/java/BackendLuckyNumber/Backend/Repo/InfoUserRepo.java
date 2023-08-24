@@ -17,8 +17,11 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 
 	
 	
-	@Query(value = " SELECT * FROM info_user  ",nativeQuery = true)
+	@Query(value = " SELECT * FROM info_user where done = 'N'  ",nativeQuery = true)
 	List<InfoUserModal> getAllUser();
+	
+	@Query(value = " SELECT * FROM info_user where id=?1 and date=?2 and nickname =?3  ",nativeQuery = true)
+	InfoUserModal getOnlyUser(String id,String date, String nickname);
 	
 	@Query(value = " SELECT p FROM info_user p WHERE p.id = ?1 and p.date = ?2   ")
 	InfoUserModal findInfoUser(String id,String date);
@@ -49,4 +52,8 @@ public interface InfoUserRepo extends JpaRepository<InfoUserModal,String>   {
 	@Modifying
 	@Query(value = " UPDATE info_user set pay = ?1 , notpay = ?2 where id = ?3 and date = ?4   ")
 	int updateInfoUserPayNotPay(String sum , String notpay,String id,String date);
+	
+	@Modifying
+	@Query(value = " UPDATE info_user set done = ?1  where id = ?2 and date = ?3 and nickname = ?4   ")
+	int updateDoneInfoUser(String status , String id,String date,String nickName);
 }

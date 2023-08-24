@@ -215,6 +215,7 @@ public class LottaryService {
 						saveinfoUser.setBalance("0");
 						saveinfoUser.setPay("0");
 						saveinfoUser.setNotpay("0");
+						saveinfoUser.setDone(ConstantData.MESSAGE_N);
 						infouserRepo.save(saveinfoUser);
 						successAndFaiModal.setStatusSuccess(true);
 						successAndFaiModal.setMessage(ConstantData.MESSAGE_SUCCESS_TH);

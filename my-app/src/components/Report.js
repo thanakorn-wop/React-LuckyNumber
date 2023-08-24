@@ -73,28 +73,23 @@ function Report()
           window.location.assign("/login")
         }
       })
+      console.log("msgs.current = ",msgs.current)
     useEffect(()=>{
-            async function getTransferUser()
-            {
-              try{
-                const response = await axios.get(urlConstant.GET_TRANSFER_USER,{
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                console.log("response 1= ",response.data.datalist)
-                if(response.status === 200 && response.data !== null )
-                {
-                    console.log("response = ",response.data.datalist)
-                    setAllUser(response.data.datalist)
-                }
-              }
-              catch(Error)
-              {
-                    console.error("check Error ",Error);
-              }
-            }
-             getTransferUser()
+        getTransferUser();
     },[])
 
+    const getTransferUser = async () => {
+        try {
+          const response = await axios.get(urlConstant.GET_TRANSFER_USER, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (response.status === 200 && response.data !== null) {
+            setAllUser(response.data.datalist);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
     const imgBody = (data)=>{
        // console.log("datatable data = ",data)
         return <img src ={data.statusTransfer ==="Y"?imgAccept:imgDelete} alt={data.statusTransfer ==="Y"?"accept":"noAccept"} style={{"width":"25%"}}/>
@@ -102,13 +97,13 @@ function Report()
     const SearchData = ()=>{
         let date = new Date();
         date = dataSearch.date;
-        console.log("data = ",date)
+      //  console.log("data = ",date)
         if(date !== '' && date !== undefined && date !== null)
         {
             date =(date.getFullYear()+"-"+String(1+Number(date.getMonth())).padStart(2, '0')+"-"+String(date.getDate()).padStart(2, '0'));
         }
      
-        console.log("check = ", dataSearch.name === '')
+        //onsole.log("check = ", dataSearch.name === '')
         // console.log("search data ",dataSearch)
         if(dataSearch.statusTransfer !== "" && dataSearch.date !== '' && dataSearch.name === '')
         {
@@ -200,11 +195,17 @@ function Report()
                 }
                 else{
                     try{
+                        let date = dataLucky.date;
+                        let newData = {};
+                        date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
+                        newData = dataLucky;
+                        newData.date = date;
+                        // console.log("newData = ",newData);
                      //   console.log("dataLucky = ",dataLucky)
-                        const respon = await axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,dataLucky,{
+                        const respon = await axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,newData,{
                             headers: { 'Content-Type': 'application/json' }
                         })
-                      //  console.log("respon = ",respon)
+                        console.log("respon = ",respon)
                         let message = respon.data.message;
                         let process =respon.data.statusProcess;
                         let statusMessage = respon.data.statusMessage;
@@ -220,6 +221,7 @@ function Report()
                             // setIsOpenLotteryModal(false)
                             addMessage(msgs,statusMessage,<b>{message}</b>)
                             }, 500);
+                           // console.log("msgs.current1 = ",msgs.current)
                         }
                         else{
                             blockRef.current.block()
@@ -230,6 +232,7 @@ function Report()
                             // setIsOpenLotteryModal(false)
                             addMessage(msgs,statusMessage,<b>{message}</b>)
                             }, 500);
+                           
                         }
                         setIsOpenLuckyNumberModal(false)
                         setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:""})
@@ -261,9 +264,9 @@ function Report()
     ]
 
     
-    const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    };
+    // const reject = () => {
+    //     toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    // };
     
     // const accept = async (e) => {
     //     // toast.current.show({ severity: 'success', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
@@ -274,7 +277,19 @@ function Report()
 
     // }
     // };
-
+    // const reject = () => {
+    //     toast.current.show({
+    //       severity: 'warn',
+    //       summary: 'Rejected',
+    //       detail: 'You have rejected',
+    //       life: 3000,
+    //     });
+    //   };
+    async function reload()
+    {
+        let timeout;
+        timeout = await setTimeout(()=>{window.location.reload(false)}, 1000);
+    }
     const confirm1 = (e) => {
         console.log("E = ",e)
         //let msg = (<span>คุณต้องการเคลียบิลราการนี้ใช่หรือไม่<br/><b>ขื่อ : {e.nickname}</b></span>)
@@ -287,31 +302,47 @@ function Report()
             className:'custom-dialog',
             acceptLabel:'ยืนยัน',
             rejectLabel:"ยกเลิก",
-          
-            accept: ()=>{
+            accept:async()=>{
                 try{
+                    let response = await axios.post(urlConstant.POST_CONFIRM_DONE,e,{
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+                    if(response.status === 200)
+                    {
+                        let statusMessage = response.data.statusMessage;
+                        let message = response.data.message;
+                        console.log(response)
+                     
+                        blockRef.current.block()
+                        setTimeout(() => { 
+                        msgs.current.clear();
+                        blockRef.current.unBlock()
+                        addMessage(msgs,statusMessage,<b>{message}</b>)
+                        }, 500);
+                        getTransferUser();
+                    }
 
-                }catch(e)
-                {
-                    console.error("Error is ",e)
                 }
-
+                catch(e)
+                {
+                    console.error("Error is ",e);
+                }
             }
             
-          
+           
             
         });
     };
     const btnConfirm = (e)=>{
         return(
             <>
-            <Toast ref={toast} />
-            <ConfirmDialog />
+            {/* <Toast ref={toast} /> */}
+            {/* <ConfirmDialog /> */}
             <div className="card flex flex-wrap gap-2 justify-content-center" style={{"margin":"0 auto","width":"50%"}}>
                 <Button onClick={()=>confirm1(e)} icon="pi pi-check" label="ยืนยัน" className="mr-2"></Button>
            
             </div>
-        </>
+            </>
         )
     }
     return(
@@ -372,6 +403,8 @@ function Report()
                         </table>
                     </div>
         <div className="tableReport" style={{"marginTop":"20px"}} >
+                {/* <Toast ref={toast} /> */}
+                <ConfirmDialog />
             <DataTable value={allUser} paginator rows={5}  showGridlines  rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ width: '80%',margin:"0 auto"}}>
                 <Column field="nickname" header="ชื่อ" style={{ width: '10%' }} alignHeader={"center"}  align={"center"}></Column>
                 <Column field="totalPurchase" header="ยอดขายทั้งหมด" style={{ width: '10%' }} alignHeader={"center"} align={"center"} ></Column>
@@ -380,7 +413,7 @@ function Report()
                 <Column field="date" header="งวดวันที่" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column field="timeTransfer" header="วันที่ส่งยอด" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column body={imgBody} header="สถานะการส่งงวด" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
-                <Column body={btnConfirm} header="การจัดการ" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
+                <Column body={(rowData)=>btnConfirm(rowData)} header="การจัดการ" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
                
              
             </DataTable>

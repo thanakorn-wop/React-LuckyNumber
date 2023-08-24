@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import BackendLuckyNumber.Backend.Header;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
+import BackendLuckyNumber.Backend.Modal.SuccessAndFailModal;
 import BackendLuckyNumber.Backend.Modal.TransferLottaryModal;
+import BackendLuckyNumber.Backend.RequestModel.InfoUserReqModal;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
 import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 import BackendLuckyNumber.Backend.ResponseModel.LuckyNumberResponModal;
@@ -60,7 +62,41 @@ public class ReportController {
 	}
 
 	
-	
+	@PostMapping("/confirmdone")
+	public ResponseEntity postConfirm(Authentication auth,@RequestBody InfoUserReqModal req) {
+		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
+		Header header = new Header();
+		ResponseData res = new ResponseData();
+		List<InfoUserModal> allUser = new ArrayList<>();
+		HttpStatus status = HttpStatus.OK;
+		if (user.getInfoUser().getIduser() != null && user.getInfoUser().getRole().equals(ConstantData.ADMIN)) {
+			SuccessAndFailModal update =  reportService.postConfirmService(req);
+			if(update.getStatusSuccess())
+			{
+				header.setMessage(update.getMessage());
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				header.setStatusMessage(update.getStatusMessage());
+			}
+			else {
+				header.setMessage(update.getMessage());
+				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+				header.setStatusMessage(update.getStatusMessage());
+			}
+			
+			
+//			res.setDatalist(allUser);
+		
+			
+		}
+		else {
+			status = status.UNAUTHORIZED;
+			header.setMessage(ConstantData.ERROR_MESSAGE_UNAUTHORIZED);
+			header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
+			
+		}
+		return new ResponseEntity(header,status);
+	}
+
 	
 	@PostMapping("/insertluckynumber")
 	public ResponseEntity postLuckyNumber(@RequestBody LuckyNumberReq luckyNumberReq, Authentication auth)

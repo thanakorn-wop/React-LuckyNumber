@@ -13,7 +13,7 @@ function InsertLuckyNumberModal (props)
         threedown: "",
         twotop: "",
         twodown:"",
-        date:"",
+        date:new Date(),
         biglucky:"",
       
     });
@@ -30,7 +30,6 @@ function InsertLuckyNumberModal (props)
         if(date !== null)
         {
         setDateMonth(date)
-        date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
         setLuckyNumber({...luckyNumber,date:date})
 
         }

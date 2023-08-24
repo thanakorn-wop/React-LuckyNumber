@@ -41,11 +41,26 @@ public class InfoUserModal {
 	private String statusTransfer;
 	@Column(name = "time_transfer")
 	private String timeTransfer;
+	@Column(name = "done")
+	private String done;
+	
+	
 	
 	
 	
 
 	
+	
+
+
+	public String getDone() {
+		return done;
+	}
+
+
+	public void setDone(String done) {
+		this.done = done;
+	}
 
 
 	public String getTimeTransfer() {
