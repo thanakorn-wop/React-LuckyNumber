@@ -17,7 +17,16 @@ public class InfoUserReqModal {
 	private String nickname;
 	private String statusTransfer;
 	private String timeTransfer;
+	private String head;
 	private String done;
+	
+	
+	public String getHead() {
+		return head;
+	}
+	public void setHead(String head) {
+		this.head = head;
+	}
 	public String getIdSeller() {
 		return idSeller;
 	}

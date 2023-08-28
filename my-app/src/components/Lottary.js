@@ -54,7 +54,7 @@ function Lottary()
         id: "",
         date: "", 
     });
-    const [DataDelete,setDataDelete] = useState({id:"",idlist:""})
+    const [DataDelete,setDataDelete] = useState({})
     // let navigate = useNavigate()
    //console.log("check data = ",dataSet)
     let session =  sessionStorage.getItem("token");
@@ -70,7 +70,7 @@ function Lottary()
         const {status,data,config} = error.response;
         if(status === 404)
         {
-          window.location.assign("pagenotfound")
+          window.location.assign("/pagenotfound")
         }
         if(status === 400)
         {
@@ -189,7 +189,7 @@ function Lottary()
                         setProcess(true)
                         setIsOpenDeleteModal(false)
                         setMsgWaring(resp.data.message)
-                        setStatusProcess(resp.data.statusProcess)
+                        setStatusProcess(resp.data.statusMessage)
                         setIsOpenMessage(true)
                     }
                 })
@@ -541,11 +541,11 @@ function Lottary()
         setOldPayment(payMent)
         //console.log("check index = "+index)
     }
-    function SetDeleteModal(status,idlist,id)
+    function SetDeleteModal(status,data)
     {
         setIsOpenDeleteModal(status);
-         console.log("check id list = ",idlist,id)
-        setDataDelete({...DataDelete,idlist:idlist,id:id})
+       //  console.log("check id list = ",idlist,id)
+        setDataDelete({...DataDelete,idlist:data.idlist,id:data.id,luckytime:data.luckytime,allPrice:data.allPrice})
     }
     async function HandleValidateLottaryModal(date,status,empty,setEmpty)
     {
@@ -886,7 +886,7 @@ function Lottary()
                                         </div>
                                         
                                    
-                                        <div className="buttom2"> <button type="button" className="btn btn-danger"  onClick={()=>SetDeleteModal(true,resp.idlist,resp.id)}>ลบ</button></div>
+                                        <div className="buttom2"> <button type="button" className="btn btn-danger"  onClick={()=>SetDeleteModal(true,resp)}>ลบ</button></div>
                                     </div>                    
                                 </td>
                             </tr>

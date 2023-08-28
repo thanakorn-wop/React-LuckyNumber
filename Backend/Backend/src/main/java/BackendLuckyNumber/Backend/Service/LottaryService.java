@@ -65,7 +65,7 @@ public class LottaryService {
 
 	@Autowired
 	PriceLottaryRepo priceLottaryRepo;
-	
+
 	private NumberFormat numberFormatter = NumberFormat.getInstance(Locale.getDefault());
 
 	public List<List_number_Modal> getLottaryService(String idUser, String date) {
@@ -160,8 +160,8 @@ public class LottaryService {
 					String joinNumber = String.join(",", Str_Number);
 					infoUser = infouserRepo.findInfoUser(id, data.getLuckytime());
 					list_number_modal.setNumber(joinNumber);
-					list_number_modal.setPrice(data.getPrice());
-					list_number_modal.setAllPrice(String.valueOf(all_price));
+					list_number_modal.setPrice(numberFormatter.format(Integer.valueOf(data.getPrice())));
+					list_number_modal.setAllPrice(numberFormatter.format(all_price));
 					list_number_modal.setOptinpurchase(data.getOption());
 					list_number_modal.setDatebuy(data.getDate());
 					list_number_modal.setTime(formattedDate);
@@ -185,12 +185,13 @@ public class LottaryService {
 						if (null != dataItem && dataItem.size() > 0) {
 							Integer index = 0;
 							for (List_number_Modal item : dataItem) {
-								total_purchase += Integer.valueOf(item.getAllPrice());
+								total_purchase += Integer.valueOf(item.getAllPrice().replace(",", ""));
 								arrSequence[index] = item.getSequence();
 								set.add(item.getSequence());
 								index += 1;
 							}
-							String peopleLost = String.valueOf(set.size());
+
+							String peopleLost = numberFormatter.format(set.size());
 							String totalPurchase = numberFormatter.format(total_purchase);
 							// Object[] result = Arrays.stream(arrSequence).distinct().toArray();
 							infouserRepo.updateInfoUser(totalPurchase, peopleLost, user.getInfoUser().getNickname(),
@@ -204,7 +205,7 @@ public class LottaryService {
 					} else {
 
 						InfoUserModal saveinfoUser = new InfoUserModal();
-						saveinfoUser.setTotalPurchase(data.getAllPrice());
+						saveinfoUser.setTotalPurchase(numberFormatter.format(Integer.valueOf(data.getAllPrice())));
 						saveinfoUser.setNickname(user.getInfoUser().getNickname());
 						saveinfoUser.setPeoplelost("1");
 						saveinfoUser.setStatusTransfer(ConstantData.MESSAGE_N);
@@ -253,12 +254,11 @@ public class LottaryService {
 		String replaceReward = listRequest.getReward().replace(",", "");
 		Integer pay = 0;
 		Integer reduceNotpay = 0;
-		String strPay  = "";
+		String strPay = "";
 		String strNotPay = "";
 		String isValidate = listRequest.getStatusValidate();
 		try {
-			if(!isValidate.equals(ConstantData.MESSAGE_N))
-			{
+			if (!isValidate.equals(ConstantData.MESSAGE_N)) {
 				infoUser = infouserRepo.findInfoUser(id, luckyTime);
 				String replaceNotPay = infoUser.getNotpay().replace(",", "");
 				String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
@@ -266,28 +266,24 @@ public class LottaryService {
 
 				if (statusPayment.equals(ConstantData.MESSAGE_YES)) {
 					pay = Integer.valueOf(replaceReward) + Integer.valueOf(replacePay);
-					if(replaceNotPay.length() >0)
-					{
+					if (replaceNotPay.length() > 0) {
 						reduceNotpay = Integer.valueOf(replaceNotPay) - Integer.valueOf(replaceReward);
-					}
-					else {
+					} else {
 						reduceNotpay = Integer.valueOf(replaceTotalLost) - Integer.valueOf(replaceReward);
 					}
-				
-					strPay= numberFormatter.format(pay);
+
+					strPay = numberFormatter.format(pay);
 					strNotPay = numberFormatter.format(reduceNotpay);
-					
+
 //					reduceNotpay = reduceNotpay - Integer.valueOf(infoUser.getNotpay());
 				} else {
 					pay = Integer.valueOf(replacePay) - Integer.valueOf(replaceReward);
-					if(replaceNotPay.length() >0)
-					{
+					if (replaceNotPay.length() > 0) {
 						reduceNotpay = Integer.valueOf(replaceNotPay) + Integer.valueOf(replaceReward);
-					}
-					else {
+					} else {
 						reduceNotpay = Integer.valueOf(replaceTotalLost);
 					}
-					strPay= numberFormatter.format(pay);
+					strPay = numberFormatter.format(pay);
 					strNotPay = numberFormatter.format(reduceNotpay);
 				}
 
@@ -295,21 +291,18 @@ public class LottaryService {
 
 				int resultUpdatePayment = listNumberRepo.postUpdateStatusPaymentRepo(statusPayment, id,
 						listRequest.getIdlist(), luckyTime);
-				int resultUpdateInfoUser = infouserRepo.updateInfoUserPayNotPay(strPay, strNotPay, id,
-						luckyTime);
+				int resultUpdateInfoUser = infouserRepo.updateInfoUserPayNotPay(strPay, strNotPay, id, luckyTime);
 				if (resultUpdatePayment > 0 && resultUpdateInfoUser > 0) {
 					updateStatus = true;
 					process.setStatusSuccess(updateStatus);
 					process.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 					process.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 				}
-			}
-			else {
+			} else {
 				process.setStatusSuccess(updateStatus);
 				process.setMessage(ConstantData.MESSAGE_BEFORE_VALIDATE_TH);
 				process.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 			}
-		
 
 		} catch (Exception e) {
 			throw e;
@@ -361,8 +354,7 @@ public class LottaryService {
 		Set<String> setNoLucky = new LinkedHashSet<>();
 		try {
 			user = infouserRepo.findInfoUser(id, luckydate);
-			if(null != user)
-			{
+			if (null != user) {
 				statusTransfer = user.getStatusTransfer();
 				if (statusTransfer.equals(ConstantData.MESSAGE_N)) {
 					luckyDate = lottaryRepo.findDate(luckydate);
@@ -438,7 +430,8 @@ public class LottaryService {
 
 							}
 
-							if (null != idlottary && idlottary.size() > 0 || null != setNoLucky && setNoLucky.size()>0) {
+							if (null != idlottary && idlottary.size() > 0
+									|| null != setNoLucky && setNoLucky.size() > 0) {
 								status = true;
 
 							}
@@ -452,7 +445,7 @@ public class LottaryService {
 								String peopleWinCon = numberFormatter.format(peopleWin);
 								String conAllTotalLost = numberFormatter.format(allTotalLost);
 								infouserRepo.updateInfoPeopleLostWinTotalLost(peopleLost, peopleWinCon, conAllTotalLost,
-										conAllTotalLost,conAllTotalLost, conBalance, luckydate, id);
+										conAllTotalLost, conAllTotalLost, conBalance, luckydate, id);
 								listNumberRepo.changeStatusValidate(id, idValidateLottary, luckydate);
 								listNumberRepo.changeStatusLucky(id, idlottary, luckydate);
 								for (String idList : rewardAndId.keySet()) {
@@ -466,19 +459,17 @@ public class LottaryService {
 
 						}
 					}
-				}
-				else {
+				} else {
 					process.setStatusSuccess(false);
 					process.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
-					
+
 				}
-			}
-			else {
+			} else {
 				process.setStatusSuccess(false);
 				process.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			throw e;
 		}
@@ -486,15 +477,55 @@ public class LottaryService {
 	}
 
 	public Boolean postDeleteDataService(listNumberRquestModal listRequest, Authentication auth) {
-		Boolean DeleteStatus = false;
+		Boolean statusUpdate = false;
+		List_number_Modal item = new List_number_Modal();
+		InfoUserModal user = new InfoUserModal();
+		List<List_number_Modal> dataItem = null;
+		Integer result =0;
 		try {
 
-			listNumberRepo.postDeleteDataRepo(listRequest.getId(), listRequest.getIdlist());
-			DeleteStatus = true;
+			item = listNumberRepo.getitem(listRequest.getId(), listRequest.getIdlist());
+			Integer allPrice = Integer.valueOf(item.getAllPrice().replace(",", ""));
+		
+			if(null != item)
+			{
+				user = infouserRepo.findInfoUser(listRequest.getId(), listRequest.getLuckytime());
+				Integer allPriceUser = Integer.valueOf(user.getTotalPurchase().replace(",", "")) - allPrice;
+//				Integer reducePeopleLost = Integer.valueOf(user.getPeoplelost().replace(",", "")) - 1;
+				if(null != user)
+				{
+					
+					result = listNumberRepo.postDeleteDataRepo(listRequest.getId(), listRequest.getIdlist());
+					if(result> 0)
+					{
+						statusUpdate = true;
+						dataItem = listNumberRepo.findItembyDate(user.getId(), listRequest.getLuckytime());
+						String[] arrSequence = new String[dataItem.size()];
+						Set<String> set = new LinkedHashSet<>();
+						if (null != dataItem && dataItem.size() > 0) {
+							Integer index = 0;
+							for (List_number_Modal data : dataItem) {
+								arrSequence[index] = item.getSequence();
+								set.add(data.getSequence());
+							}
+						
+						}
+						String peopleLost = numberFormatter.format(set.size());
+						result = infouserRepo.updateTotalPurchaseDelete(numberFormatter.format(allPriceUser),peopleLost, listRequest.getId(), listRequest.getLuckytime());
+						if(result <0)
+						{
+							statusUpdate = false;
+						}
+					}
+				}
+				
+			}
+			
+			
 		} catch (Exception e) {
 			throw e;
 		}
-		return DeleteStatus;
+		return statusUpdate;
 	}
 
 	public MixTransferListNumberModal postSendLottaryService(listNumberRquestModal listRequest, String nickname,
@@ -521,13 +552,12 @@ public class LottaryService {
 //			dataTransfer = infouserRepo.finInfoUserTransfer(id, listRequest.getLuckytime(), nickname);
 			infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
 			listItem = listNumberRepo.getItemListNumber(id, listRequest.getLuckytime());
-			if (null != infoUser   && infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_Y)) {
+			if (null != infoUser && infoUser.getStatusTransfer().equals(ConstantData.MESSAGE_Y)) {
 				duplicateTransfer = true;
 			} else {
 				luckytime = lottaryRepo.findByDate(listRequest.getLuckytime());
 				if (null != luckytime) {
 
-				
 					if (listItem.size() > 0 && listItem != null) {
 						for (List_number_Modal data : listItem) {
 							if (data.getStatusValidate().equals(ConstantData.MESSAGE_N)) {
@@ -537,7 +567,7 @@ public class LottaryService {
 						}
 						if (!statusValidate) {
 
-							//infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
+							// infoUser = infouserRepo.findInfoUser(id, listRequest.getLuckytime());
 							String replacePurchases = infoUser.getTotalPurchase().replace(",", "");
 							String replaceTotalLost = infoUser.getTotalLost().replace(",", "");
 							Integer convert_Total_Purchase = Integer.valueOf(replacePurchases);

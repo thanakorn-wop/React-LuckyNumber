@@ -33,6 +33,24 @@ public class InfoAdminModal {
 	private String date;
 	@Column(name = "balance")
 	private String balance;
+	@Column(name = "iduser")
+	private String idUser;
+	@Column(name = "nickname")
+	private String nickName;
+	
+	
+	public String getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(String idUser) {
+		this.idUser = idUser;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	public String getIdAdmin() {
 		return idAdmin;
 	}

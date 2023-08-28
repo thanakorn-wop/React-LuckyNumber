@@ -65,7 +65,7 @@ public class ReportService {
 		SuccessAndFailModal process = new SuccessAndFailModal();
 		process.setStatusSuccess(false);
 		try {
-			dataTransfer = infouserRepo.getOnlyUser(id, date, nickName);
+			dataTransfer = infouserRepo.getOnlyUser(id, date, nickName,req.getHead());
 			if (null != dataTransfer) {
 				if( !dataTransfer.getStatusTransfer().equals(ConstantData.MESSAGE_N))
 				{
@@ -93,7 +93,10 @@ public class ReportService {
 							Integer sumBalance = convertBalance+Integer.valueOf(req.getBalance().replace(",", ""));
 							Integer sumPay = convertPay+Integer.valueOf(req.getPay().replace(",", ""));
 							Integer sumNotPay = convertNotPay+Integer.valueOf(req.getNotpay().replace(",", ""));
-							int resultUpdate = infoAdminRepo.updateInfoAdmin(sumBalance.toString(),sumTotalPurchase.toString(),sumTotalLost.toString(),sumPeopleWin.toString(),sumTotalLost.toString(),sumPay.toString(),sumNotPay.toString(),req.getDate(),userLogin.getId());
+							int resultUpdate = infoAdminRepo.updateInfoAdmin(numberFormatter.format(sumBalance),numberFormatter.format(sumTotalPurchase),numberFormatter.format(sumTotalLost)
+									, numberFormatter.format(sumPeopleWin), numberFormatter.format(sumPeopleLost),
+									numberFormatter.format(sumPay),numberFormatter.format(sumNotPay),
+									req.getDate(),userLogin.getIduser(),userLogin.getNickname());
 							if(resultUpdate <0)
 							{
 								update = false;
@@ -103,7 +106,9 @@ public class ReportService {
 							}
 						}else {
 //							(total_purchase,total_lost,people_win,people_lost,pay,notpay,date)
-							 result = infoAdminRepo.insertAdmin(numberFormatter.format(req.getBalance()),numberFormatter.format(req.getTotalPurchase()),numberFormatter.format(req.getTotalLost()),numberFormatter.format(req.getPeoplewin()),numberFormatter.format(req.getPeoplelost()),numberFormatter.format(req.getPay()),numberFormatter.format(req.getNotpay()),req.getDate());
+							 result = infoAdminRepo.insertAdmin(req.getBalance(),req.getTotalPurchase(),req.getTotalLost(),
+									 req.getPeoplewin(),req.getPeoplelost(),
+									 req.getPay(),req.getNotpay(),req.getDate(),idUser,userLogin.getNickname());
 							if(result <0)
 							{
 								update = false;

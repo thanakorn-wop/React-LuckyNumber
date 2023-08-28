@@ -5,6 +5,7 @@ public class listNumberRquestModal {
 	private String idlist;
 	private String number;
 	private String price;
+	private String allPrice;
 	private String optinpurchase;
 	private String status;
 	private String datebuy;
@@ -19,8 +20,18 @@ public class listNumberRquestModal {
 	
 	
 	
+	
+	
 
 	
+
+	public String getAllPrice() {
+		return allPrice;
+	}
+
+	public void setAllPrice(String allPrice) {
+		this.allPrice = allPrice;
+	}
 
 	public String getStatusValidate() {
 		return statusValidate;

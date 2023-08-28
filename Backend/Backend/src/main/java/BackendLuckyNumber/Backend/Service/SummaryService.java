@@ -27,7 +27,7 @@ public class SummaryService {
 	InfoUserRepo infouserRepo;
 	@Autowired
 	InfoAdminRepo infoAdminRepo;
-	public Object getReportService(String id,String nickname,String searchDate,String role)
+	public Object getReportService(String id,String idUser,String nickname,String searchDate,String role)
 	{
 		Object result = null;
 		
@@ -36,10 +36,10 @@ public class SummaryService {
 			{
 				if(!"last".equals(searchDate))
 				{
-//					infoUser = infoAdminRepo.getInfoOnlyOneAdmin(id,searchDate,nickname);
+					result = infoAdminRepo.findInfoAdmin(idUser,searchDate,nickname);
 				}
 				else {
-					result = infoAdminRepo.findLastDateInfoAdmin(id,nickname);
+					result = infoAdminRepo.findLastDateInfoAdmin(idUser,nickname);
 				}
 			}
 			else {

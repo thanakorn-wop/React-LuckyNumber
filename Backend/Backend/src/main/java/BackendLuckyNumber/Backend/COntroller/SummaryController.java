@@ -38,7 +38,7 @@ public class SummaryController {
 	
 		if(user != null)
 		{
-			Object result = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getNickname(),date, user.getInfoUser().getRole());
+			Object result = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getIduser(),user.getInfoUser().getNickname(),date, user.getInfoUser().getRole());
 			if(null !=result)
 			{
 				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);

@@ -41,8 +41,11 @@ public interface List_numberRepo extends JpaRepository<List_number_Modal,String>
 	
 	@Modifying
 	@Query(" DELETE from list_number where id = ?1 and id_list = ?2 ")
-	void postDeleteDataRepo(String id,String idlist);
+	int postDeleteDataRepo(String id,String idlist);
 	
+	@Query(value =" SELECT * from list_number  Where id = ?1 and id_list = ?2 ",nativeQuery = true)
+	List_number_Modal getitem(String id,String idList );
+//	
 	@Modifying
 	@Query(" UPDATE list_number set transfer ='Y'  Where id = ?1 and luckytime = ?2 ")
 	void postSendLottaryRepo(String id , String luckytime);

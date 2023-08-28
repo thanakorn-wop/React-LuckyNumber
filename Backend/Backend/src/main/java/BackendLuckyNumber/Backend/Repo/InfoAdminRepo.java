@@ -12,7 +12,7 @@ import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 @Transactional
 public interface InfoAdminRepo extends JpaRepository<InfoAdminModal,String>  {
 
-	@Query(value = " SELECT * FROM info_admin  WHERE iduser = ?1  and date = ?2 and nickname = ?3 ORDER by date DESC LIMIT 1",nativeQuery = true)
+	@Query(value = " SELECT * FROM info_admin  WHERE iduser = ?1  and date = ?2 and nickname = ?3 ",nativeQuery = true)
 	InfoAdminModal findInfoAdmin(String iduser,String date,String nickname);
 	
 	
@@ -20,10 +20,10 @@ public interface InfoAdminRepo extends JpaRepository<InfoAdminModal,String>  {
 	InfoAdminModal findLastDateInfoAdmin(String iduser,String nickname);
 	
 	@Modifying
-	@Query(value ="INSERT INTO info_user (balance,total_purchase,total_lost,people_win,people_lost,pay,notpay,date) VALUES(?,?,?,?,?,?,?)",nativeQuery = true)
-	int insertAdmin(String balance,String totalPurchase,String totalLost,String peopleWin, String peopleLost,String pay,String notpay,String date);
+	@Query(value ="INSERT INTO info_admin (balance,total_purchase,total_lost,people_win,people_lost,pay,notpay,date,iduser,nickname) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)",nativeQuery = true)
+	int insertAdmin(String balance,String totalPurchase,String totalLost,String peopleWin, String peopleLost,String pay,String notpay,String date,String idUser,String nickName);
 
 	@Modifying
-	@Query(value ="UPDATE info_user set balance = ?1,total_purchase = ?2,total_lost = ?3,people_win = ?4,people_lost = ?5,pay = ?6,notpay = ?7) where date = ?8 and id =?9",nativeQuery = true)
-	int updateInfoAdmin(String balance,String totalPurchase,String totalLost,String peopleWin, String peopleLost,String pay,String notpay,String date,String id);
+	@Query(value ="UPDATE info_admin set balance = ?1,total_purchase = ?2,total_lost = ?3,people_win = ?4,people_lost = ?5,pay = ?6,notpay = ?7 where date = ?8 and iduser =?9 and nickname=?10",nativeQuery = true)
+	int updateInfoAdmin(String balance,String totalPurchase,String totalLost,String peopleWin, String peopleLost,String pay,String notpay,String date,String id,String nickName);
 }

@@ -41,6 +41,8 @@ public class InfoUserModal {
 	private String statusTransfer;
 	@Column(name = "time_transfer")
 	private String timeTransfer;
+	@Column(name = "head")
+	private String head;
 	@Column(name = "done")
 	private String done;
 	
@@ -51,6 +53,16 @@ public class InfoUserModal {
 
 	
 	
+
+
+	public String getHead() {
+		return head;
+	}
+
+
+	public void setHead(String head) {
+		this.head = head;
+	}
 
 
 	public String getDone() {
