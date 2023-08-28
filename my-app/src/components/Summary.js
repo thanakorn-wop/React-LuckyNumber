@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import "../CSS/Summary.css"
 import EditinfoModal from "./Modal/EditinfoModal";
 import "../CSS/ModalCss/EditinfoModal.css"
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import * as urlConstant from "./Constant/UrlConstant"
+import { Messages } from 'primereact/messages';
+import {useMessage} from './Constant/useMessage'
+import Loading from "./Constant/Loading";
 function Report ()
 {
+    const msgs = useRef(null);
+    const blockRef = useRef(null)
+    const addMessage = useMessage();
     const [isOpen ,setIsOpen] = useState(false);
     const [cost,setCost] = useState(0);
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
@@ -72,15 +78,22 @@ function Report ()
                 }
                 )
                 console.log("check response = ",response)
-                if(response !==null && response.data.datalist !==null)
-                {
-                    console.log("check response = ",response)
+                if(response.status === 200 && response.data.datalist !==null && response.data.datalist !== undefined)
+                {  
+                    msgs.current.clear();
+           
                     setDataReport(response.data.datalist)
                     setReportDate(new Date((response.data.datalist.date)));
                  
                 }
                 else{
-                    console.log("data Report = ",dataReport)
+                    blockRef.current.block()
+                    setTimeout(() => {
+                    msgs.current.clear();
+                    // setMsgWaring("ทำรายการสำเร็จ");
+                    blockRef.current.unBlock()
+                    addMessage(msgs,response.data.statusMessage,<b>{response.data.message}</b>)
+                }, 500);
                     setDataReport({balance:0,cost:0,date:0,id:0,idSeller:0,nickname:0,notpay:0,pay:0,peoplelost:0,peoplewin:0,statusTransfer:'',totalLost:0,totalPurchase:0})
 
                 }
@@ -108,12 +121,16 @@ function Report ()
  
     
     return(
+        
         <div className="pathreport">
             <div className="boxreport">
                 <div className="title">
                     <h3>Summary</h3>
                 </div>
+                {/* <Messages ref={msgs} /> */}
+                <Loading ref={blockRef}/>
                 <div className="table-search-report">  
+                <Messages ref={msgs} />
                 <table className="table table-bordered table-striped"  >
                             <thead className="table-secondary">
                                 <tr className="table-listitem">
@@ -123,7 +140,7 @@ function Report ()
                             <tbody>
                                 <tr className="table-listitem" >
                                     <td style={{"width":"20%","color":"white"}}><span>งวดประจำวันที่</span></td>
-                                    <td> <div className="date-report"><DatePicker className="form-control" style={{}} dateFormat= "dd-MM-yyyy"   selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
+                                    <td> <div className="date-report"><DatePicker className="form-control"  dateFormat= "dd-MM-yyyy"   selected={reportDate}  onChange={(date) => setReportDate(date)} /></div></td>
                           
                                 </tr>
                            

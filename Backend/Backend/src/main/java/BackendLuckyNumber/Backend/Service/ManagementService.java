@@ -33,6 +33,8 @@ public class ManagementService {
 				resp.setNickname(data.getNickname());
 				resp.setRole(data.getRole());
 				resp.setStatus(data.getStatus());
+				resp.setId(data.getId());
+				resp.setPercent(data.getPercent());
 				respModal.add(resp);
 				
 			}

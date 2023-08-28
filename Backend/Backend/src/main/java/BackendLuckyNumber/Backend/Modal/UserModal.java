@@ -33,9 +33,22 @@ public class UserModal  {
 	private String role;
 	@Column(name = "nickname")
 	private String nickname;
+	@Column(name = "percent")
+	private String percent;
+	
+	
+	
 
 
 	
+
+	public String getPercent() {
+		return percent;
+	}
+
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
 
 	public String getNickname() {
 		return nickname;

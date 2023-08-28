@@ -35,17 +35,24 @@ public class SummaryController {
 		Boolean statusInsert;
 		Header header = new Header();
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
-		InfoUserModal infoUser = new InfoUserModal();
+	
 		if(user != null)
 		{
-			infoUser = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getNickname(),date);
-			if(null !=infoUser)
+			Object result = reportService.getReportService(user.getInfoUser().getId(),user.getInfoUser().getNickname(),date, user.getInfoUser().getRole());
+			if(null !=result)
 			{
-				header.setMessage(ConstantData.MESSAGE_SUCCESS);
+				header.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
 				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+//				header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 				response.setHeader(header);
-				response.setDatalist(infoUser);
+				response.setDatalist(result);
 				
+			}
+			else {
+				header.setMessage(ConstantData.MESSAGE_NO_DATA_TH);
+				header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+				header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
+				return new ResponseEntity(header, status);
 			}
 		}else {
 			status = status.UNAUTHORIZED;

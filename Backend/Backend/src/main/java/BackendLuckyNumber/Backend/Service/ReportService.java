@@ -1,21 +1,28 @@
 package BackendLuckyNumber.Backend.Service;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import BackendLuckyNumber.Backend.Constant.ConstantData;
+import BackendLuckyNumber.Backend.Modal.InfoAdminModal;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.LottaryModal;
 import BackendLuckyNumber.Backend.Modal.SuccessAndFailModal;
 import BackendLuckyNumber.Backend.Modal.TransferLottaryModal;
+import BackendLuckyNumber.Backend.Modal.UserModal;
+import BackendLuckyNumber.Backend.Repo.InfoAdminRepo;
 import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.LottaryRepo;
 import BackendLuckyNumber.Backend.Repo.TransferLottaryRepo;
 import BackendLuckyNumber.Backend.RequestModel.InfoUserReqModal;
 import BackendLuckyNumber.Backend.RequestModel.LuckyNumberReq;
+import BackendLuckyNumber.Backend.RequestModel.UserdetailsIml;
 
 @Service
 public class ReportService {
@@ -27,7 +34,11 @@ public class ReportService {
 
 	@Autowired
 	InfoUserRepo infouserRepo;
+	
+	@Autowired
+	InfoAdminRepo infoAdminRepo;
 
+	private NumberFormat numberFormatter = NumberFormat.getInstance(Locale.getDefault()); 
 	public List<InfoUserModal> getAllUserService() {
 		List<InfoUserModal> dataTransfer = null;
 
@@ -40,25 +51,69 @@ public class ReportService {
 		return dataTransfer;
 	}
 
-	public SuccessAndFailModal postConfirmService(InfoUserReqModal req) {
+	public SuccessAndFailModal postConfirmService(InfoUserReqModal req,	UserdetailsIml user) {
 		String id = req.getId();
 		String nickName = req.getNickname();
 		String date = req.getDate();
+		UserModal userLogin = user.getInfoUser();
+		String idUser = userLogin.getIduser();
 		Boolean update = false;
 		InfoUserModal dataTransfer = null;
 		int result = 0;
+		int sum = 0;
+		InfoAdminModal admin = new InfoAdminModal();
 		SuccessAndFailModal process = new SuccessAndFailModal();
 		process.setStatusSuccess(false);
 		try {
 			dataTransfer = infouserRepo.getOnlyUser(id, date, nickName);
 			if (null != dataTransfer) {
-				if( dataTransfer.getDone().equals(ConstantData.MESSAGE_N))
+				if( !dataTransfer.getStatusTransfer().equals(ConstantData.MESSAGE_N))
 				{
 					result = infouserRepo.updateDoneInfoUser(ConstantData.MESSAGE_Y, id, date, nickName);
 					if (result > 0) {
 						update = true;
-						process.setStatusSuccess(true);
+						process.setStatusSuccess(update);
 						process.setMessage(ConstantData.MESSAGE_SUCCESS_TH);
+						process.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
+						admin = infoAdminRepo.findInfoAdmin(idUser, date, userLogin.getNickname());
+						if(null != admin)
+						{
+							
+							Integer convertTotalPurchase = Integer.valueOf(admin.getTotalPurchase().replace(",", ""));
+							Integer convertTotalLost= Integer.valueOf(admin.getTotalLost().replace(",", ""));
+							Integer convertPeopleWin = Integer.valueOf(admin.getPeoplewin().replace(",", ""));
+							Integer convertPeopleLost = Integer.valueOf(admin.getPeoplelost().replace(",", ""));
+							Integer convertBalance = Integer.valueOf(admin.getBalance().replace(",", ""));
+							Integer convertPay= Integer.valueOf(admin.getPay().replace(",", ""));
+							Integer convertNotPay = Integer.valueOf(admin.getNotpay().replace(",", ""));
+							Integer sumTotalPurchase = convertTotalPurchase+Integer.valueOf(req.getTotalPurchase().replace(",", ""));
+							Integer sumTotalLost = convertTotalLost+Integer.valueOf(req.getTotalLost().replace(",", ""));
+							Integer sumPeopleWin = convertPeopleWin+Integer.valueOf(req.getPeoplewin().replace(",", ""));
+							Integer sumPeopleLost = convertPeopleLost+Integer.valueOf(req.getPeoplelost().replace(",", ""));
+							Integer sumBalance = convertBalance+Integer.valueOf(req.getBalance().replace(",", ""));
+							Integer sumPay = convertPay+Integer.valueOf(req.getPay().replace(",", ""));
+							Integer sumNotPay = convertNotPay+Integer.valueOf(req.getNotpay().replace(",", ""));
+							int resultUpdate = infoAdminRepo.updateInfoAdmin(sumBalance.toString(),sumTotalPurchase.toString(),sumTotalLost.toString(),sumPeopleWin.toString(),sumTotalLost.toString(),sumPay.toString(),sumNotPay.toString(),req.getDate(),userLogin.getId());
+							if(resultUpdate <0)
+							{
+								update = false;
+								process.setStatusSuccess(update);
+								process.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+								process.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
+							}
+						}else {
+//							(total_purchase,total_lost,people_win,people_lost,pay,notpay,date)
+							 result = infoAdminRepo.insertAdmin(numberFormatter.format(req.getBalance()),numberFormatter.format(req.getTotalPurchase()),numberFormatter.format(req.getTotalLost()),numberFormatter.format(req.getPeoplewin()),numberFormatter.format(req.getPeoplelost()),numberFormatter.format(req.getPay()),numberFormatter.format(req.getNotpay()),req.getDate());
+							if(result <0)
+							{
+								update = false;
+								process.setStatusSuccess(update);
+								process.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+								process.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
+							}
+						}
+						
+						
 						
 					}
 					else {
@@ -67,7 +122,7 @@ public class ReportService {
 					}
 				}
 				else {
-					process.setMessage(ConstantData.MESSAGE_NOT_SUCCESS_TH);
+					process.setMessage(ConstantData.MESSAGE_BEFORE_TRANSFER_TH);
 					process.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
 				}
 				

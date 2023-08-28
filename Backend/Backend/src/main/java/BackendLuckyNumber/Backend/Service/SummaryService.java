@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
 
+import BackendLuckyNumber.Backend.Constant.ConstantData;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.List_number_Modal;
+import BackendLuckyNumber.Backend.Repo.InfoAdminRepo;
 import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.List_numberRepo;
 import BackendLuckyNumber.Backend.Repo.LottaryRepo;
@@ -23,41 +25,38 @@ public class SummaryService {
 	
 	@Autowired
 	InfoUserRepo infouserRepo;
-	public InfoUserModal getReportService(String id,String nickname,String searchDate)
+	@Autowired
+	InfoAdminRepo infoAdminRepo;
+	public Object getReportService(String id,String nickname,String searchDate,String role)
 	{
-	
-		Boolean Status = false;
-		String people_win ="";
-		String people_lost = "";
-		Integer total_purchase = 0;
-		Integer balance = 0;
-		Integer payNow = 0;
-		Integer notPay  = 0;
-		Integer money_win = 0;	
-		List<List_number_Modal> listItem = new ArrayList<>();
-		InfoUserModal infoUser = new InfoUserModal();
+		Object result = null;
+		
 		try {
-			if(!"last".equals(searchDate))
+			if(role.equals(ConstantData.ADMIN))
 			{
-				infoUser = infouserRepo.finInfoUserReportPage(id,searchDate,nickname);
+				if(!"last".equals(searchDate))
+				{
+//					infoUser = infoAdminRepo.getInfoOnlyOneAdmin(id,searchDate,nickname);
+				}
+				else {
+					result = infoAdminRepo.findLastDateInfoAdmin(id,nickname);
+				}
 			}
 			else {
-				infoUser = infouserRepo.findLastInfoUserReportPage(id,nickname);
+				if(!"last".equals(searchDate))
+				{
+					result = infouserRepo.finInfoUserReportPage(id,searchDate,nickname);
+				}
+				else {
+					result = infouserRepo.findLastInfoUserReportPage(id,nickname);
+				}
 			}
 		
-//			LottaryModal dateLottary = lottaryRepo.findDate();
-//			if(null != dateLottary)
-//			{
-//				listItem = listnumberRepo.getlistitem(id, dateLottary.getDate());
-//				if(null != listItem && listItem.size()>0)
-//				{
-//					
-//				}
-//			}
+
 		}catch(Exception e)
 		{
 			throw e;
 		}
-		return infoUser;
+		return result;
 	}
 }

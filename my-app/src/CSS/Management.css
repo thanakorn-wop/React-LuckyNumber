@@ -81,7 +81,7 @@
 }
 .switch input:not(:checked)
 {
-    background: #ff9800;
+    background: #5220c2;
 
     transition: backgroud 0.4s;
     border-radius: 20px;

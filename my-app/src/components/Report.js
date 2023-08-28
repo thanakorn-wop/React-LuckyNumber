@@ -85,6 +85,7 @@ function Report()
           });
           if (response.status === 200 && response.data !== null) {
             setAllUser(response.data.datalist);
+            console.log("response.data.datalist = ",response.data.datalist)
           }
         } catch (error) {
           console.error('Error:', error);
@@ -263,28 +264,6 @@ function Report()
         }
     ]
 
-    
-    // const reject = () => {
-    //     toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    // };
-    
-    // const accept = async (e) => {
-    //     // toast.current.show({ severity: 'success', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
-    //     console.log(e)
-      
-    // {
-    //     console.error("Error = ",e);
-
-    // }
-    // };
-    // const reject = () => {
-    //     toast.current.show({
-    //       severity: 'warn',
-    //       summary: 'Rejected',
-    //       detail: 'You have rejected',
-    //       life: 3000,
-    //     });
-    //   };
     async function reload()
     {
         let timeout;
@@ -409,6 +388,7 @@ function Report()
                 <Column field="nickname" header="ชื่อ" style={{ width: '10%' }} alignHeader={"center"}  align={"center"}></Column>
                 <Column field="totalPurchase" header="ยอดขายทั้งหมด" style={{ width: '10%' }} alignHeader={"center"} align={"center"} ></Column>
                 <Column field="totalLost" header="ยอดคนถูก" style={{ width: '10%' }} alignHeader={"center"}align={"center"}  ></Column>
+                <Column field="pay" header="จ่ายไปแล้ว" style={{ width: '10%' }} alignHeader={"center"}align={"center"}  ></Column>
                 <Column field="balance" header="กำไรสุทธิ" style={{ width: '10%' }} alignHeader={"center"}align={"center"} ></Column>
                 <Column field="date" header="งวดวันที่" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
                 <Column field="timeTransfer" header="วันที่ส่งยอด" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>

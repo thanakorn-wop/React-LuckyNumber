@@ -1,10 +1,28 @@
 package BackendLuckyNumber.Backend.ResponseModel;
 
 public class UserResModal {
+	private String id;
 	private String iduser;
 	private String role;
 	private String status;
 	private String nickname;
+	private String percent;
+	
+	
+	
+	
+	public String getPercent() {
+		return percent;
+	}
+	public void setPercent(String percent) {
+		this.percent = percent;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getIduser() {
 		return iduser;
 	}

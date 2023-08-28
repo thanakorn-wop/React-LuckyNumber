@@ -4,6 +4,8 @@ import { Await } from "react-router-dom";
 import axios from "axios";
 import * as urlConstanst from "../components/Constant/UrlConstant"
 import PaginatedItems from "../components/PaginatedItems"
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 function Management()
 {
     const [user,setUser] = useState([]);
@@ -54,7 +56,7 @@ function Management()
             })
             if(respon.data !== null && respon.data !== "" && respon.data !== undefined)
             {
-                console.log("respon.data = ",respon.data)
+                //console.log("respon.data = ",respon.data)
                 setUser(respon.data.datalist)
             }
             setIsCheck("")
@@ -109,6 +111,21 @@ function Management()
             console.log("check error ",error)
         }
     }
+    const btnUser = (e)=>{
+        console.log("E = ",e)
+        return(
+            <>
+            <span className="switch">
+                <input type="checkbox" id={e.nickname+" "+e.id} className={e.nickname+" "+e.id} checked={e.status==="A"?true:false} name={e.nickname+" "+e.id} onChange={getValueCheckBox}   />
+                <label htmlFor = {e.nickname+" "+e.d} ></label>
+            </span>
+            </>
+        )
+    }
+    const percent = (e)=>
+    {
+        return `${e.percent} %`
+    }
     return(
         <div className="containerManagement">
             <div className="boxManagement">
@@ -116,7 +133,26 @@ function Management()
                     <h3>การจัดการผู้ใช้งาน</h3>
                 </div>
             <div className="tableManagement" style={{"marginTop":"20px"}}>
-               <table className="" style={{"textAlign":"center","width":"100%","color":"white"}}>
+
+          
+                {/* <Toast ref={toast} /> */}
+                {/* <ConfirmDialog /> */}
+            <DataTable value={user} paginator rows={5}  showGridlines  rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ width: '80%',margin:"0 auto"}}>
+                <Column field="nickname" header="ชื่อ"  alignHeader={"center"}  align={"center"}></Column>
+                <Column  body = {percent} header="% ที่ได้รับ"  alignHeader={"center"} align={"center"} ></Column>
+                <Column body={btnUser} header="การจัดการผู้ใช้"  alignHeader={"center"}align={"center"}  ></Column>
+                {/* <Column field="pay" header="จ่ายไปแล้ว" style={{ width: '10%' }} alignHeader={"center"}align={"center"}  ></Column>
+                <Column field="balance" header="กำไรสุทธิ" style={{ width: '10%' }} alignHeader={"center"}align={"center"} ></Column>
+                <Column field="date" header="งวดวันที่" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
+                <Column field="timeTransfer" header="วันที่ส่งยอด" style={{ width: '10%' }} alignHeader={"center"}   align={"center"}></Column>
+                <Column body={imgBody} header="สถานะการส่งงวด" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column>
+                <Column body={(rowData)=>btnConfirm(rowData)} header="การจัดการ" style={{ width: '15%' }} alignHeader={"center"}align={"center"} ></Column> */}
+               
+             
+            </DataTable>
+              
+    
+               {/* <table className="" style={{"textAlign":"center","width":"100%","color":"white"}}>
                 <thead >
                     <tr style={{"border":"none"}} >
                         <td style={{"width":"50%","border":"none"}}>ชื่อเล่น</td>
@@ -145,7 +181,7 @@ function Management()
            
                       <div className="paginatManage">
                       <PaginatedItems items = {user} callBackItem ={(items)=>setNewItem(items) } />
-                      </div>
+                      </div> */}
                   
             </div>
                   

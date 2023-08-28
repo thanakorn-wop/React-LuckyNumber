@@ -70,7 +70,7 @@ public class ReportController {
 		List<InfoUserModal> allUser = new ArrayList<>();
 		HttpStatus status = HttpStatus.OK;
 		if (user.getInfoUser().getIduser() != null && user.getInfoUser().getRole().equals(ConstantData.ADMIN)) {
-			SuccessAndFailModal update =  reportService.postConfirmService(req);
+			SuccessAndFailModal update =  reportService.postConfirmService(req,user);
 			if(update.getStatusSuccess())
 			{
 				header.setMessage(update.getMessage());
