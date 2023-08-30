@@ -45,7 +45,9 @@ public class ConstantData {
 	public static String MESSAGE_NOT_TIME_TO_WORK_TH ="ยังไม่ถึงเวลาทำการ";
 	public static String MESSAGE_BEFORE_VALIDATE_TH ="กรุณาตรวจหวยก่อนทำรายการ";
 	public static String MESSAGE_BEFORE_TRANSFER_TH ="กรุณารอการส่งงวด";
-
+	public static String MESSAGE_NOT_LUCKY_TH ="รายการนี้ไม่ถูกรางวัล";
+	public static String LUCKY = "lucky";
+	public static String UNLUCKY = "unlucky";
 	public static String USER_DETAILS ="userDetails";
 	public static String KEY_WEB_TOKEN = "webToken";
 	
