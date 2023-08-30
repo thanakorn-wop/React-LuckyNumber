@@ -35,12 +35,22 @@ public class UserModal  {
 	private String nickname;
 	@Column(name = "percent")
 	private String percent;
+	@Column(name = "head")
+	private String head;
 	
 	
 	
 
 
 	
+
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
 
 	public String getPercent() {
 		return percent;
