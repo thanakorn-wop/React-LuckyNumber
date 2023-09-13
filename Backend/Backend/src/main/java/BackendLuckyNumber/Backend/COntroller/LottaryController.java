@@ -256,11 +256,14 @@ public class LottaryController extends ValidateUntil {
 		if (null != get_Item) {
 			header.setMessage(ConstantData.MESSAGE_SUCCESS);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			header.setStatusMessage(ConstantData.ALERT_MESSAGE_SUCCESS);
 			dataitem.setHeader(header);
 			dataitem.setDatalist(get_Item);
 		} else {
 			header.setMessage(ConstantData.MESSAGE_NULL_POINTER);
 			header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+			header.setStatusMessage(ConstantData.ALERT_MESSAGE_ERROR);
+		
 			dataitem.setHeader(header);
 			dataitem.setDatalist(get_Item);
 		}

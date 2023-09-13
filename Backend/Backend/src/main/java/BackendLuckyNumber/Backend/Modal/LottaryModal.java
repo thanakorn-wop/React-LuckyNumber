@@ -35,22 +35,17 @@ public class LottaryModal {
 	private String statusLottary;
 	@Column(name = "user_update")
 	private String userUpdate;
+	@Column(name = "time")
+	private String time;
 	
 	
 
-	
-	
-//	@OneToMany(mappedBy = "lucktime")
-//	private List<List_number_Modal> listnumber;
-//	
-	
-//	public List<List_number_Modal> getListnumber() {
-//		return listnumber;
-//	}
-//	public void setListnumber(List<List_number_Modal> listnumber) {
-//		this.listnumber = listnumber;
-//	}
-
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
 	public String getUserUpdate() {
 		return userUpdate;
 	}

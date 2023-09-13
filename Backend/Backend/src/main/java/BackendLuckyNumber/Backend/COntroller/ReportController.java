@@ -70,6 +70,7 @@ public class ReportController {
 		List<InfoUserModal> allUser = new ArrayList<>();
 		HttpStatus status = HttpStatus.OK;
 		if (user.getInfoUser().getIduser() != null && user.getInfoUser().getRole().equals(ConstantData.ADMIN)) {
+			
 			SuccessAndFailModal update =  reportService.postConfirmService(req,user);
 			if(update.getStatusSuccess())
 			{
@@ -155,9 +156,7 @@ public class ReportController {
 	
 	public  Boolean validateRequestInsetNumberLucky(LuckyNumberReq req)
 	{
-		Boolean statusValidate = StringUtils.isNotBlank(req.getThreetop()) && StringUtils.isNotBlank(req.getThreedown())
-							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())
-							&& StringUtils.isNotBlank(req.getDate()) && StringUtils.isNotBlank(req.getBiglucky())? true:false;
+		Boolean statusValidate = StringUtils.isNotBlank(req.getDate())? true:false;
 		return statusValidate;
 	}
 }

@@ -8,9 +8,18 @@ public class LuckyNumberReq {
 	private String twotop;
 	private String twodown;
 	private String biglucky;
+	private String time;
+	
+	
 	
 	
 
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
 	public String getBiglucky() {
 		return biglucky;
 	}

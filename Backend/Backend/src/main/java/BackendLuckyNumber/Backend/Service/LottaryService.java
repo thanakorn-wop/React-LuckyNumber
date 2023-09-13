@@ -125,6 +125,7 @@ public class LottaryService {
 //		Formatter formatter = new Formatter();
 //		formatter = new Formatter();
 //		formatter.format("%.8s", timenow);
+		  LocalTime timeNow = LocalTime.now();
 
 		Integer all_price = 0;
 		Boolean statusTransfer = false;

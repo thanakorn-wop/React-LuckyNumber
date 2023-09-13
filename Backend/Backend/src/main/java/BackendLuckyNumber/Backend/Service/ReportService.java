@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -148,24 +149,67 @@ public class ReportService {
 			throws Exception {
 		Boolean status = false;
 		String regex = "[,' ']";
-		String CovnertThreeDown = luckyNumberReq.getThreedown().trim().replaceAll(regex, ",");
+	
 		LottaryModal lottary = new LottaryModal();
-		lottary.setDate(luckyNumberReq.getDate());
-		lottary.setThreedow(CovnertThreeDown);
-		lottary.setThreeTop(luckyNumberReq.getThreetop());
-		lottary.setTwodown(luckyNumberReq.getTwodown());
-		lottary.setTwotop(luckyNumberReq.getTwotop());
-		lottary.setBiglucky(luckyNumberReq.getBiglucky());
-		lottary.setStatusLottary("Y");
-		lottary.setUserUpdate(userUpdate);
 		try {
 			LottaryModal dataLottary = lottaryRepo.findByDate(luckyNumberReq.getDate());
 			if (null != dataLottary) {
 				System.out.println("Duplicate date ");
-				status = false;
+				if(StringUtils.isNotBlank(dataLottary.getBiglucky()) && StringUtils.isNotBlank(dataLottary.getThreeTop())
+					&& StringUtils.isNotBlank(dataLottary.getThreedow()) && StringUtils.isNotBlank(dataLottary.getTwotop())
+					&& StringUtils.isNotBlank(dataLottary.getTwodown()))
+				{
+					status = false;
+				}
+				else {
+					String time = luckyNumberReq.getTime();
+					String threeTop = luckyNumberReq.getThreetop();
+					String threeDown = luckyNumberReq.getThreedown();
+					String twoTop = luckyNumberReq.getTwotop();
+					String twoDown = luckyNumberReq.getTwodown();
+					String date = luckyNumberReq.getDate();
+					String bigLucky = luckyNumberReq.getBiglucky();
+					Integer result = lottaryRepo.updateLottary(time, threeTop, threeDown, twoDown, twoTop, bigLucky, date);
+					if(result >0)
+					{
+						status = true;
+					}
+				}
+				
+				
 			} else {
-				lottaryRepo.save(lottary);
-				status = true;
+				if(StringUtils.isNotBlank(luckyNumberReq.getBiglucky()) && StringUtils.isNotBlank(luckyNumberReq.getThreetop())
+						&& StringUtils.isNotBlank(luckyNumberReq.getThreedown()) && StringUtils.isNotBlank(luckyNumberReq.getTwotop())
+						&& StringUtils.isNotBlank(luckyNumberReq.getTwodown()))
+					{
+					String CovnertThreeDown = luckyNumberReq.getThreedown().trim().replaceAll(regex, ",");
+					lottary.setDate(luckyNumberReq.getDate());
+					lottary.setThreedow(CovnertThreeDown);
+					lottary.setThreeTop(luckyNumberReq.getThreetop());
+					lottary.setTwodown(luckyNumberReq.getTwodown());
+					lottary.setTwotop(luckyNumberReq.getTwotop());
+					lottary.setBiglucky(luckyNumberReq.getBiglucky());
+					lottary.setStatusLottary("N");
+					lottary.setUserUpdate(userUpdate);
+					lottary.setTime(luckyNumberReq.getTime());
+					lottaryRepo.save(lottary);
+					status = true;
+					}
+				else {
+					lottary.setDate(luckyNumberReq.getDate());
+					lottary.setTime(luckyNumberReq.getTime());
+					lottary.setThreedow("000,000,000,000");
+					lottary.setThreeTop("000");
+					lottary.setTwodown("00");
+					lottary.setTwotop("00");
+					lottary.setBiglucky("000000");
+					lottary.setUserUpdate(userUpdate);
+					lottary.setStatusLottary("N");
+					lottaryRepo.save(lottary);
+					status = true;
+				}
+			
+				
 			}
 
 		} catch (Exception e) {
