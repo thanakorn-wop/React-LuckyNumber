@@ -85,10 +85,10 @@ function Report()
           });
           if (response.status === 200 && response.data !== null) {
             setAllUser(response.data.datalist);
-            console.log("response.data.datalist = ",response.data.datalist)
+          //  console.log("response.data.datalist = ",response.data.datalist)
           }
         } catch (error) {
-          console.error('Error:', error);
+         // console.error('Error:', error);
         }
       };
     const imgBody = (data)=>{
@@ -154,49 +154,50 @@ function Report()
          console.log("dataLucky = ",dataLucky)
         if(statusSaving === "Yes")
         {  // todo validate field  of Insert LuckyNumber Model
-            if(dataLucky.threetop === null || dataLucky.threetop === undefined || dataLucky.threetop === "" )
-            {
-                alert("กรุณาใส่เลข เลขหน้า 3 ตัว");  
-            }
-            else if(dataLucky.threedown === null || dataLucky.threedown === undefined || dataLucky.threedown === "" )
-            {
-                alert("กรุณาใส่เลข เลขหท้าย 3 ตัว");
-            }
-            else if(dataLucky.twotop === null || dataLucky.twotop === undefined || dataLucky.twotop === "" )
-            {
-                alert("กรุณาใส่เลขเลขท้าย 2 ตัว");
-            }
-            else if(dataLucky.twodown=== null || dataLucky.twodown === undefined || dataLucky.twodown === "" )
-            {
-                alert("กรุณาใส่เลข เลขท้าย 2 ตัว");
-            }
-            else{
+            // if(dataLucky.threetop === null || dataLucky.threetop === undefined || dataLucky.threetop === "" )
+            // {
+            //     alert("กรุณาใส่เลข เลขหน้า 3 ตัว");  
+            // }
+            // else if(dataLucky.threedown === null || dataLucky.threedown === undefined || dataLucky.threedown === "" )
+            // {
+            //     alert("กรุณาใส่เลข เลขหท้าย 3 ตัว");
+            // }
+            // else if(dataLucky.twotop === null || dataLucky.twotop === undefined || dataLucky.twotop === "" )
+            // {
+            //     alert("กรุณาใส่เลขเลขท้าย 2 ตัว");
+            // }
+            // else if(dataLucky.twodown=== null || dataLucky.twodown === undefined || dataLucky.twodown === "" )
+            // {
+            //     alert("กรุณาใส่เลข เลขท้าย 2 ตัว");
+            // }
+            // else{
                // console.log("dataLucky.threetop.length >3 || dataLucky.threetop.length <2 = ", dataLucky.threetop.length <2)
-                if(Number(dataLucky.threetop.length) !==3  )
-                {
+                // if(Number(dataLucky.threetop.length) !==3  )
+                // {
                  
-                    alert("กรุณาใส่เลขให้ครบ3หลักของสามตัวบน")
+                //     alert("กรุณาใส่เลขให้ครบ3หลักของสามตัวบน")
                     
                     
-                }
-                else if(threeDownSplit.length !==4  )
-                {
-                    alert("กรุณาใส่เลขให้ครบ4หลักของสามตัวล่าง")
+                // }
+                // else if(threeDownSplit.length !==4  )
+                // {
+                //     alert("กรุณาใส่เลขให้ครบ4หลักของสามตัวล่าง")
                     
-                }
-                else if(Number(dataLucky.twotop.length) !==2 )
-                {
-                    alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวบน")
+                // }
+                // else if(Number(dataLucky.twotop.length) !==2 )
+                // {
+                //     alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวบน")
                    
-                }
-                else if(Number(dataLucky.twodown.length) !==2)
-                {
-                    alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวล่าง")
+                // }
+                // else if(Number(dataLucky.twodown.length) !==2)
+                // {
+                //     alert("กรุณาใส่เลขให้ครบ2หลักของสองตัวล่าง")
                     
-                }
-                else{
+                // }
+                // else{
                     try{
                         let date = dataLucky.date;
+                        console.log("check data Lucky ",date)
                         let newData = {};
                         date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
                         newData = dataLucky;
@@ -236,7 +237,7 @@ function Report()
                            
                         }
                         setIsOpenLuckyNumberModal(false)
-                        setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:""})
+                        setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:""})
                         setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
                     
                     }catch(error)
@@ -244,13 +245,13 @@ function Report()
                         alert("ERROR is "+error.message)
                     }
                    
-                }
-            }
+                // }
+            // }
             
         }
         else{
             setIsOpenLuckyNumberModal(false)
-            setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:""})
+            setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:""})
             setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
         }
         //* close InsertLucky Number Model  and set default value*/

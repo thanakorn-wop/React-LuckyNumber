@@ -56,7 +56,7 @@ function LotteryModal(props)
             })
             if(get_luckyitem !== null && get_luckyitem !== undefined && get_luckyitem.data.datalist !== null)
             {
-                console.log("check response data = ",get_luckyitem.data);   
+                // console.log("check response data = ",get_luckyitem.data);   
               
                 setDateTIme({...dateTime,date:get_luckyitem.data.datalist.date});
                 setLuckyItem(get_luckyitem.data.datalist)       

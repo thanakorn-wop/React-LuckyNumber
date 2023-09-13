@@ -118,7 +118,7 @@ function NumberModal(props)
     function handleLuckyTime(...data)
     {   
         //console.log("check qq = ",data[1])
-        console.log("check data insert = ",data);
+       // console.log("check data insert = ",data);
         let selectedDate = data[0].target.value
         if(selectedDate>  userData.dataSet[data[1]].luckytime )
         {
