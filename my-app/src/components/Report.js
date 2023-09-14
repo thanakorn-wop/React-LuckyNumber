@@ -8,6 +8,7 @@ import "primereact/resources/primereact.min.css";
 import 'primeicons/primeicons.css';
 import axios, { all } from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
+import { Checkbox } from "primereact/checkbox";
 import imgAccept from "../Icons/accept.png"
 import imgDelete from "../Icons/delete.png"
 import {useMessage} from './Constant/useMessage'
@@ -26,6 +27,7 @@ function Report()
     const msgs = useRef(null);
     const blockRef = useRef(null)
     const addMessage = useMessage();
+
     const [allUser,setAllUser] = useState([]);
     const [dataSearch,setDataSearch] = useState({name:"",statusTransfer:"",date:"",timeTransfer:""});
     const [isOpenLuckNumberModal,setIsOpenLuckyNumberModal] = useState(false);

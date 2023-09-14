@@ -25,3 +25,8 @@
 .input.p-inputtext.p-component {
     text-align: center;
 }
+.checkbox{
+    position: relative;
+    left: 25%;
+    margin-top: 10px;
+}

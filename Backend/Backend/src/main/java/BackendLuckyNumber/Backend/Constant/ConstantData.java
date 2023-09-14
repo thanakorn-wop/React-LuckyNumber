@@ -37,7 +37,9 @@ public class ConstantData {
 	public static String ADMIN = "admin";
 	public static String MEMBER = "member";
 	public static String MESSAGE_LUCKYTIME_OVER = "ไม่สามารถซื้องวดย้อนหลังได้";
+	public static String MESSAGE_TIME_OVER = "หมดเวลาการซื้อ";
 	public static String MESSAGE_UNALNE_TO_INSERT_NUMBER_TH = "ไม่สามารถเพิ่มข้อมูลได้";
+	public static String MESSAGE_TRANSFER_ALREADY_NOT_INSERT_DATA_TH = "ไม่สามารถเพิ่มข้อมูลได้ เนื่องจากทำการส่งยอดของงวดนี้แล้ว";
 	public static String MESSAGE_NOT_SUCCESS_TH ="ทำรายการไม่สำเร็จ";
 	public static String MESSAGE_SUCCESS_TH ="ทำรายการสำเร็จ";
 	public static String MESSAGE_DUPLICATE_DATA_TH ="ทำรายการซ้ำกรุณาทำรายการใหม่";

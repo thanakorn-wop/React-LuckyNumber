@@ -105,7 +105,7 @@ public class LottaryController extends ValidateUntil {
 					} else {
 						header.setMessage(successAndFaiModal.getMessage());
 						header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-						header.setStatusMessage(ConstantData.ALERT_MESSAGE_WARNING);
+						header.setStatusMessage(successAndFaiModal.getStatusMessage());
 						header.setStatusProcess(false);
 					}
 				} else {

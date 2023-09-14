@@ -3,6 +3,7 @@ import "../../CSS/ModalCss/InsertNumberModal.css"
 import DatePicker from "react-datepicker";
 import { Calendar } from 'primereact/calendar';
 import axios from "axios";
+import { Checkbox } from "primereact/checkbox";
 import * as urlConstant from "../Constant/UrlConstant"
 function InsertLuckyNumberModal (props)
 {
@@ -11,7 +12,7 @@ function InsertLuckyNumberModal (props)
     const [month,setMonth] = useState([1,2,3,4,5,6,7,8,9,10,11,12])
     const [DateMonth, setDateMonth] = useState(new Date());
     const now = new Date(); // Create a new Date object representing the current date and time
-
+    const [checked, setChecked] = useState(false);
     const hours = now.getHours(); // Get the current hour (0-23)
     const minutes = now.getMinutes(); // Get the current minute (0-59)
     
@@ -141,6 +142,10 @@ function InsertLuckyNumberModal (props)
             <div className="formtext">  <input type="textbox" className="form-control " value = {defultNumber.twotop}  style={{"width":"50%"}} name = "twotop"  onChange={(e)=>handleChange(e)}/></div>
             <div className="text">  <label> 2 ตัวล่าง</label></div>
             <div className="formtext">  <input type="textbox" className="form-control " value = {defultNumber.twodown} style={{"width":"50%"}}  name = "twodown"  onChange={(e)=>handleChange(e)}/></div>
+            <div className="checkbox">
+                <label>สถานะหวยออก</label>
+                <Checkbox onChange={e => setChecked(e.checked)}  style = {{"marginLeft":"15px"}} checked={checked}></Checkbox>
+            </div>
         
             </div>
         </div>
