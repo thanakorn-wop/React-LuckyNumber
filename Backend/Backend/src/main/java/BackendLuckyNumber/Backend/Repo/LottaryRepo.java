@@ -39,8 +39,8 @@ public interface LottaryRepo extends JpaRepository<LottaryModal,String>  {
 	void updateStatusLuckyOneonOne(String date1,String ThreeTop, String TwoDown, String TwoTop);
 	
 	@Modifying
-	@Query(value =  "UPDATE lottary SET time = ?1, three_top = ?2, three_down = ?3, two_down = ?4, two_top = ?5, biglucky = ?6, status_lottary = 'Y' WHERE date = ?7 ")
-	int updateLottary(String time,String threeTop, String threeDown, String twoDown,String twoTop,String bigLucky, String date);
+	@Query(value =  "UPDATE lottary SET time = ?1, three_top = ?2, three_dow = ?3, two_down = ?4, two_top = ?5, biglucky = ?6, status_lottary = ?7 WHERE date = ?8 ")
+	int updateLottary(String time,String threeTop, String threeDown, String twoDown,String twoTop,String bigLucky,String statusLottary, String date);
 	
 	
 }

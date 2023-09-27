@@ -5,62 +5,64 @@ import axios from "axios";
 import * as urlConstant from "../components/Constant/UrlConstant"
 import { useNavigate } from "react-router-dom";
 // import { AuthContext } from "./Authen";
-
+import  AuthContext from "../components/Authen/AuthenProvider"
+import {useAxiosProvider} from "./Axios/useAxios";
 function Dashbord()
 {
   let session =  sessionStorage.getItem("token");
   const [dataSet, setDataSet] = useState([]);
   const [balanceEachMonth,setBalanaceEachMonth] = useState([]);
-  const qq = [];
-
+  const {auth} = useContext(AuthContext);
+  // const useAxios = useAxiosProvider()
+  // console.log("dashboard = ",auth)
   //console.log("check array = ",balanceEachMonth);
-  if(session === null || session === undefined || session ==="")
-  {
-    window.location.assign("/login")
-  }
+  // if(auth === null && auth === undefined && auth ==="")
+  // {
+  //   window.location.assign("/login")
+  // }
   //  const {auth,setauth} = useContext(AuthContext);
   // console.log("auth = ",auth);
   // console.log(auth.accessToken)
   let navaigate = useNavigate();
-    axios.interceptors.request.use(
-      config =>{
-        config.headers.Authorization = `Bearer ${session}`;
-        return config;
-      }
-    )
-    axios.interceptors.response.use(undefined,(error) =>{
-      const {status,data,config} = error.response;
-      if(status === 404)
-      {
-        window.location.assign("pagenotfound")
-      }
-      if(status === 400)
-      {
-        console.log("bad request")
-      }
-      if(status ===500)
-      {
-        console.log("error server");
-      }
-      if(status === 401)
-      {
-           window.location.assign("/login")
-      }
-      if(status ===403)
-      {
-        window.location.assign("/login")
-      }
-    })
+    // axios.interceptors.request.use(
+    //   config =>{
+    //     config.headers.Authorization = `Bearer ${auth}`;
+    //     return config;
+    //   }
+    // )
+    // axios.interceptors.response.use(undefined,(error) =>{
+    //   const {status,data,config} = error.response;
+    //   if(status === 404)
+    //   {
+    //     window.location.assign("pagenotfound")
+    //   }
+    //   if(status === 400)
+    //   {
+    //     console.log("bad request")
+    //   }
+    //   if(status ===500)
+    //   {
+    //     console.log("error server");
+    //   }
+    //   if(status === 401)
+    //   {
+    //        window.location.assign("/login")
+    //   }
+    //   if(status ===403)
+    //   {
+    //     window.location.assign("/login")
+    //   }
+    // })
   useEffect(()=>{
     async function getIncomeUser()
     {
       try{
-        const response = await axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }})
-        console.log("response = ",response.data)
-        if(response.data !== null)
-        {
+        // const response = await axios.get(urlConstant.GET_DASH_BOARD,null,{headers:{'Content-Type':'application/json' }})
+        // console.log("response = ",response.data)
+        // if(response.data !== null)
+        // {
           
-        }
+        // }
       }
       catch(error)
       {
@@ -83,25 +85,25 @@ Object.keys(dataSet).map((key,index)=>{
    }
 })
 console.log("check arr = ",arr);
-if(dataSet !== [] || dataSet !== null || dataSet !== undefined)
-{
-  //console.log("check data list = ",dataSet)
-  // for(let i = 1 ; i <=12; i++)
-  // {
-  //   dataSet.map((data,index)=>{
-  //      strmonth = data.time.split("-");
-  //      if(i == strmonth[1])
-  //      {
-  //       sum = sum+Number(data.balance);
-  //      }
-  //   })
-  //   arr.push(sum);
-  //   sum = 0;
-  // }
-  // dataSet.map((data,index)=>{
-  //   console.log("check month = ",data);
-  // })
-}
+// if(dataSet !== [] || dataSet !== null || dataSet !== undefined)
+// {
+//   //console.log("check data list = ",dataSet)
+//   // for(let i = 1 ; i <=12; i++)
+//   // {
+//   //   dataSet.map((data,index)=>{
+//   //      strmonth = data.time.split("-");
+//   //      if(i == strmonth[1])
+//   //      {
+//   //       sum = sum+Number(data.balance);
+//   //      }
+//   //   })
+//   //   arr.push(sum);
+//   //   sum = 0;
+//   // }
+//   // dataSet.map((data,index)=>{
+//   //   console.log("check month = ",data);
+//   // })
+// }
 //console.log("check arr after loop = ",arr);
 const labels = ["January", "February", "March", "April", "May", "June","July","August","September","October","November","December"];
 const data = {

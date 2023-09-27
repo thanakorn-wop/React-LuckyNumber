@@ -21,7 +21,6 @@ function InsertLuckyNumberModal (props)
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     
     const currentTime = `${formattedHours}:${formattedMinutes}`;
-    
     // Use currentTime to set the state
     const [time, setTime] = useState(currentTime);
     const [defultNumber, setDefultNumber] = useState({
@@ -31,7 +30,8 @@ function InsertLuckyNumberModal (props)
         twodown:"00",
         date:new Date(),
         biglucky:"000000",
-        time:currentTime
+        time:currentTime,
+        statusLottary:checked
       
     });
     // const [luckyNumber, setLuckyNumber] = useState({
@@ -57,14 +57,14 @@ function InsertLuckyNumberModal (props)
                 const reponse =await axios.post(urlConstant.POST_LUCKYITEM,newDate,{
                     headers: { 'Content-Type': 'application/json' }
                 })
-                console.log("reponse ",reponse)
+                // console.log("reponse ",reponse)
                 if(reponse.status === 200)
                 {
                     let data = reponse.data.datalist;
                     if(data !== null && data !== undefined && data !== "" )
                     {
                         console.log("check response = ",data)
-                         setDefultNumber({...defultNumber,threetop:data.threeTop,threedown:data.threedow,twotop:data.twotop,twodown:data.twodown,time:data.time,biglucky:data.biglucky})
+                         setDefultNumber({...defultNumber,threetop:data.threeTop,threedown:data.threedow,twotop:data.twotop,twodown:data.twodown,time:data.time,biglucky:data.biglucky,statusLottary:data.statusLottary ==="Y"?true:false})
                     }
                     else{
 
@@ -75,7 +75,8 @@ function InsertLuckyNumberModal (props)
                             twodown:"00",
                             date:DateMonth,
                             biglucky:"000000",
-                            time:time
+                            time:time,
+                            statusLottary:checked
                           
                         })
                     }
@@ -93,7 +94,7 @@ function InsertLuckyNumberModal (props)
             return <option key={data}>{data}</option>
          })
     )
-    console.log("defultNumber =",defultNumber)
+    // console.log("defultNumber =",defultNumber)
     const updateDate = (event)=>{
         // console.log("event = ",event.value)
         let date = event.value;
@@ -122,7 +123,13 @@ function InsertLuckyNumberModal (props)
         setDefultNumber({...defultNumber,[ e.target.name]: value})
         setTime(value)
    }
-   console.log(" defultNumber = 1", defultNumber)
+   const isCheck = (e)=>{
+    const value = e
+    setDefultNumber({...defultNumber,statusLottary: value})
+   
+    
+}
+//    console.log(" defultNumber = 1", defultNumber)
     return(
         <div className="luckynumber" >
         <div className="modal-header" style={{"textAlign":"center"}} ><h4 style={{"padding":"20px"}}>รางวัลที่ออก</h4></div>
@@ -144,7 +151,7 @@ function InsertLuckyNumberModal (props)
             <div className="formtext">  <input type="textbox" className="form-control " value = {defultNumber.twodown} style={{"width":"50%"}}  name = "twodown"  onChange={(e)=>handleChange(e)}/></div>
             <div className="checkbox">
                 <label>สถานะหวยออก</label>
-                <Checkbox onChange={e => setChecked(e.checked)}  style = {{"marginLeft":"15px"}} checked={checked}></Checkbox>
+                <Checkbox onChange={e => isCheck(e.checked)}  style = {{"marginLeft":"15px"}} checked={defultNumber.statusLottary}></Checkbox>
             </div>
         
             </div>

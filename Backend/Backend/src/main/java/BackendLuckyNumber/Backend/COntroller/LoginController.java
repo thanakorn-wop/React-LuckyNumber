@@ -33,6 +33,7 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 //import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
+import BackendLuckyNumber.Backend.Modal.TokenModal;
 //import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 
@@ -41,6 +42,7 @@ import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.JwtResponseModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
+import BackendLuckyNumber.Backend.ResponseModel.UserLoginResModal;
 import BackendLuckyNumber.Backend.Service.JwtUserDetailsService;
 import BackendLuckyNumber.Backend.Service.LoginService;
 import BackendLuckyNumber.Backend.Until.ValidateUntil;
@@ -97,45 +99,47 @@ public class LoginController extends ValidateUntil {
  		Header header = new Header();
 		HttpStatus status = HttpStatus.OK;
 		LoginResModal resp = new LoginResModal();
+		UserLoginResModal user = new UserLoginResModal();
+		
 		try {
-			List<UserModal> user = loginService.validateLoginService(userLogin);
-			if (null == user.get(0)) {
+			 user = loginService.validateLoginService(userLogin);
+			if (null == user) {
 				header.setMessage(ConstantData.MESSAGE_ERROR);
 				header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
 				resp.setHeader(header);
 				status = status.OK;
-			} else {
-				if (user.get(0).getPassword().equals("invalid")) {
+			} 
+			else {
+				if (user.getStatus().equals("invalid")) {
 					header.setMessage(ConstantData.MESSAGE_ERROR);
 					header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-					resp.setStatus(user.get(0).getStatus());
+					resp.setStatus(user.getStatus());
 					resp.setIduser(userLogin.getUsername());
 					resp.setHeader(header);
 					System.out.println("ok");
 					status = status.OK;
 
 				} else {
-					if(user.get(0).getStatus().equals("L"))
+					if(user.getStatus().equals("L"))
 					{
 						header.setMessage(ConstantData.MESSAGE_USER_LOCK);
 						header.setStatusCode(ConstantData.STATUS_CODE_NOT_SUCCESS_00);
-						resp.setStatus(user.get(0).getStatus());
+						resp.setStatus(user.getStatus());
 						resp.setIduser(userLogin.getUsername());
 						resp.setHeader(header);
 					}
-					header.setMessage(ConstantData.MESSAGE_SUCCESS);
-					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
-					resp.setHeader(header);
-					resp.setIduser(user.get(0).getIduser());
-					resp.setStatus(user.get(0).getStatus());
-					resp.setTimelogin(user.get(0).getTimelogin());
-					resp.setTimelogout(user.get(0).getTimelogout());
-					resp.setToken(user.get(0).getToken());
-					resp.setRole(user.get(0).getRole());
-					//final UserDetails userDetails = userDetailsService.loadUserByUsername(userLogin.getUsername());
-//				    req.getSession().setAttribute("iduser", userDetails.getUsername());
-//				    final String jwtToken = jwt.generateJwtToken(userDetails);
-//				    resp.setToken(jwtToken);
+//					header.setMessage(ConstantData.MESSAGE_SUCCESS);
+//					header.setStatusCode(ConstantData.STATUS_CODE_SUCCESS_01);
+//					resp.setHeader(header);
+//					resp.setIduser(user.getUsername());
+//					resp.setStatus(user.getStatus());
+//					resp.setTimelogin(user.getTimelogin());
+//					resp.setTimelogout(user.getTimelogout());
+//					resp.setToken(user.getToken());
+//					resp.setRole(user.getRole());
+					
+				
+
 		
 				}
 
@@ -152,7 +156,7 @@ public class LoginController extends ValidateUntil {
 		}
 		
 		
-		return new ResponseEntity(resp, status);
+		return new ResponseEntity(user, status);
 	}
 
 	@PostMapping("/logout")

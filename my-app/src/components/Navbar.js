@@ -4,17 +4,19 @@ import { Link, NavLink } from 'react-router-dom';
 import * as urlConstant from "../components/Constant/UrlConstant"
 import {Authen} from "../components/Authen/Authen"
 import home from "../Icons/home.png"
-
+import  AuthContext from "../components/Authen/AuthenProvider"
 function Navbar()
-{   const auth = "admin"
+{ 
     // const {user} = useContext(Authen);
-    const role = localStorage.getItem("userRole");
-    // console.log(" user role = ",role)
-    // console.log("check nav auth1 = ",user.role)
+    // const role = localStorage.getItem("userRole");
+    const {auth,setAuth} = useContext(AuthContext);
+    const role = auth.role;
+    console.log("role  = ",role)
     function logout(){
-        let session =  sessionStorage.getItem("token");
-        sessionStorage.removeItem("token");
-        localStorage.removeItem("userRole")
+        // let session =  sessionStorage.getItem("token");
+        // sessionStorage.removeItem("token");
+        setAuth({})
+        // localStorage.removeItem("userRole")
 {/* <label style={{"fontSize":"24px","marginLeft":"15px"}}>BAN HUAI</label> */}
     }
     return(

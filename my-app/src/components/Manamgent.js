@@ -6,52 +6,67 @@ import * as urlConstanst from "../components/Constant/UrlConstant"
 import PaginatedItems from "../components/PaginatedItems"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { useContext } from "react";
+import {AuthContext} from "../components/Authen/AuthenProvider"
+import {useAxiosProvider} from "./Axios/useAxios";
 function Management()
 {
+    const auth = useContext(AuthContext);
     const [user,setUser] = useState([]);
     const [checkBox,setCheckBox] = useState(false);
     const [userInfo,setUserinfo] = useState("");
     const [isCheck,setIsCheck] = useState(null);
     const [newItem,setNewItem] = useState([]);
-
+    const useAxios = useAxiosProvider()
     let session =  sessionStorage.getItem("token");
-    axios.interceptors.request.use(
-        config =>{
-          config.headers.Authorization = `Bearer ${session}`;
-          return config;
-        }
-      )
+    console.log("session ",auth)
 
-      axios.interceptors.response.use(undefined,(error) =>{
-        const {status,data,config} = error.response;
-        if(status === 404)
-        {
-          window.location.assign("pagenotfound")
-        }
-        if(status === 400)
-        {
-            alert("BAD Request 400")
-        }
-        if(status ===500)
-        {
-          console.log("error server");
+    // axios.interceptors.request.use(
+    //     config =>{
+    //       config.headers.Authorization = `Bearer ${auth}`;
+    //       return config;
+    //     }
+    //   )
+
+    //   axios.interceptors.response.use(undefined,(error) =>{
+    //     const {status,data,config} = error.response;
+    //     if(status === 404)
+    //     {
+    //       window.location.assign("pagenotfound")
+    //     }
+    //     if(status === 400)
+    //     {
+    //         alert("BAD Request 400")
+    //     }
+    //     if(status ===500)
+    //     {
+    //       console.log("error server");
            
-           window.location.assign("/internalserver")
-        }
-        if(status === 401)
-        {
-             window.location.assign("/login")
-        }
-        if(status ===403)
-        {
-          window.location.assign("/login")
-        }
-      })
+    //        window.location.assign("/internalserver")
+    //     }
+    //     if(status === 401)
+    //     {
+    //          window.location.assign("/login")
+    //     }
+    //     if(status ===403)
+    //     {
+    //       window.location.assign("/login")
+    //     }
+    //   })
+    //   if(auth === null || auth === undefined || auth ==="")
+    //   {
+    //     window.location.assign("/login")
+    //   }
     useEffect(()=>{
-        async function getAllUser()
-        {
+      
+        getAllUser()
+
+    },[isCheck])
+    async function getAllUser()
+    {
+        try{
             console.log("useEffect checkbox")
-            const respon = await axios.get(urlConstanst.GET_USER,{
+            const respon = await useAxios.get(urlConstanst.GET_USER,{
                 headers: { 'Content-Type': 'application/json' }
             })
             if(respon.data !== null && respon.data !== "" && respon.data !== undefined)
@@ -61,10 +76,11 @@ function Management()
             }
             setIsCheck("")
         }
-        getAllUser()
-
-    },[isCheck])
-
+        catch(e)
+        {
+            console.error("Error is ",e);
+        }
+    }
     async function getValueCheckBox(event)
     {
         console.log("check event = ",event.target.checked)
@@ -73,17 +89,17 @@ function Management()
         const lock = "L";
         const unLock = "A"
         index = index.split(" ")
-        console.log("isCheck = ",isCheck)
+        
         if(checked)
         {
             await  postLockUser(index[1],unLock)
             setIsCheck(true)
-            console.log("after function")
+          
         }
         else{
             await postLockUser(index[1],lock)
             setIsCheck(false)
-            console.log("after function lock")
+           
         }
         
        

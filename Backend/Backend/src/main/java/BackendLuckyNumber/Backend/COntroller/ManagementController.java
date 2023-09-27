@@ -41,7 +41,7 @@ public class ManagementController extends ValidateUntil {
 		List<UserResModal> respModal = new  ArrayList<>();
 		ResponseData respon = new ResponseData();
 		Header header = new Header();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status = HttpStatus.OK;
 		if(role.equals(ConstantData.ADMIN))
 		{
 			respModal = managementService.getAllUserService();

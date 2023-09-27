@@ -9,11 +9,19 @@ public class LuckyNumberReq {
 	private String twodown;
 	private String biglucky;
 	private String time;
+	private Boolean statusLottary;
+	
 	
 	
 	
 	
 
+	public Boolean getStatusLottary() {
+		return statusLottary;
+	}
+	public void setStatusLottary(Boolean statusLottary) {
+		this.statusLottary = statusLottary;
+	}
 	public String getTime() {
 		return time;
 	}

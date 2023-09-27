@@ -16,26 +16,21 @@ import Report from "../src/components/Report"
 import InternalServer from './components/Error/InternalServer';
 
 
-function getAuth()
-{
-  const token = sessionStorage.getItem('token');
-  return token
-}
+
 function App() {
-  const auth = getAuth()
-  const [userRole,setUserRole] = useState("");
+
   const location = useLocation();
   const showMenu = location.pathname !== '/login';
   function setAuth(data)
   {
-    sessionStorage.setItem("token", data.token);
-    localStorage.setItem("userRole",data.role)
+    
    // console.log("setauth = ",data.header)
   }
   // if(!auth)
   // {
   //   return <Login setauth = {setAuth}/>
   // }
+
   return (
     <> 
   
@@ -43,7 +38,7 @@ function App() {
           <Routes>  
           <Route path='pagenotfound' element={< PangeNotFound />}/>
           <Route path='internalserver' element={< InternalServer />}/>
-          <Route path='login' element={< Login   setauth = {setAuth} />}></Route>
+          <Route path='login' element={< Login  />}></Route>
               {/* <Route path='/' element={< Outlet />}> */}
               {/* <PrivateRoute path="/dashboard" element={<Dashbord />} /> */}
              <Route path='dashboard' element={<PrivateRoute>  <Dashbord /> </PrivateRoute>}  />

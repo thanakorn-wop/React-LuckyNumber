@@ -20,10 +20,12 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import InsertLuckyNumberModal from "./Modal/InsertLuckyNumberModal";
+import { useContext } from "react";
+import {AuthContext} from "../components/Authen/AuthenProvider"
 function Report()
 {
     const toast = useRef(null);
-
+    const {auth,setAuth} = useContext(AuthContext);
     const msgs = useRef(null);
     const blockRef = useRef(null)
     const addMessage = useMessage();
@@ -43,9 +45,10 @@ function Report()
     });
    // console.log("dataSearch = ",dataSearch)
     let session =  sessionStorage.getItem("token");
+    console.log("check qq = ",session)
     axios.interceptors.request.use(
         config =>{
-          config.headers.Authorization = `Bearer ${session}`;
+          config.headers.Authorization = `Bearer ${auth}`;
           return config;
         }
       )
@@ -75,7 +78,6 @@ function Report()
           window.location.assign("/login")
         }
       })
-      console.log("msgs.current = ",msgs.current)
     useEffect(()=>{
         getTransferUser();
     },[])
@@ -121,7 +123,7 @@ function Report()
        
         else if(dataSearch.statusTransfer !== "" && dataSearch.date === '' && dataSearch.name !== '')
         {
-            console.log("check4")
+            // console.log("check4")
             setAllUser(allUser.filter(data => data.statusTransfer === dataSearch.statusTransfer.status && data.nickname === dataSearch.name ))
         }
 
@@ -133,12 +135,12 @@ function Report()
        
         else if(dataSearch.statusTransfer !== "" && dataSearch.date === '' && dataSearch.name === '')
         {
-            console.log("check4")
+            // console.log("check4")
             setAllUser(allUser.filter(data => data.statusTransfer === dataSearch.statusTransfer.status ))
         }
         else if(dataSearch.statusTransfer === "" && dataSearch.date !== '' && dataSearch.name === '')
         {
-            console.log("check4")
+            // console.log("check4")
             setAllUser(allUser.filter(data => data.date === date ))
         }
         else{
@@ -153,7 +155,7 @@ function Report()
         // console.log("dataLuck1y = ",dataLucky)
         // console.log("dataLucky.threetop.length = ",dataLucky.threetop.length)
         let threeDownSplit = dataLucky.threedown.trim().replaceAll(","," ").split(" ");
-         console.log("dataLucky = ",dataLucky)
+        //  console.log("dataLucky = ",dataLucky)
         if(statusSaving === "Yes")
         {  // todo validate field  of Insert LuckyNumber Model
             // if(dataLucky.threetop === null || dataLucky.threetop === undefined || dataLucky.threetop === "" )
@@ -199,7 +201,7 @@ function Report()
                 // else{
                     try{
                         let date = dataLucky.date;
-                        console.log("check data Lucky ",date)
+                        // console.log("check data Lucky ",date)
                         let newData = {};
                         date = date.getFullYear()+"-"+(1+Number(date.getMonth()))+"-"+date.getDate();
                         newData = dataLucky;
@@ -209,7 +211,7 @@ function Report()
                         const respon = await axios.post(urlConstant.POST_INSERT_LUCKY_NUMBER,newData,{
                             headers: { 'Content-Type': 'application/json' }
                         })
-                        console.log("respon = ",respon)
+                        // console.log("respon = ",respon)
                         let message = respon.data.message;
                         let process =respon.data.statusProcess;
                         let statusMessage = respon.data.statusMessage;
@@ -239,7 +241,7 @@ function Report()
                            
                         }
                         setIsOpenLuckyNumberModal(false)
-                        setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:""})
+                        setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:"",statusLottary:""})
                         setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
                     
                     }catch(error)
@@ -253,7 +255,7 @@ function Report()
         }
         else{
             setIsOpenLuckyNumberModal(false)
-            setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:""})
+            setLuckyNumber({...dataLucky,threetop:"",threedown:"",twotop:"",twodown:"",lucktime:"",biglucky:"",time:"",statusLottary:""})
             setDataSearch({...dataSearch,name:"",date:"",statusTransfer:""})
         }
         //* close InsertLucky Number Model  and set default value*/

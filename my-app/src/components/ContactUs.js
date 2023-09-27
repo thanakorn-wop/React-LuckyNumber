@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../CSS/ContactUs.css"
 import line from "../Icons/line.png"
 import phone from "../Icons/telephone-call.png"
+import  AuthContext from "../components/Authen/AuthenProvider"
+
 function ContactUs()
 {
+    const {auth,setAuth} = useContext(AuthContext);
     let session =  sessionStorage.getItem("token");
     const mssage = "ในกรณีที่ลูกค้าถูกทางเราจะจัดการโอนเงินให้ภายในหลัง 6 โมงเย็นเป็นต้นไป เลขดัง ต้องสามารถรอข้ามงวดได้ กรุณาแจ้งให้ลูกค้าของท่านได้ทราบ";
-    if(session === null || session === undefined || session ==="")
+    if(auth === null || auth === undefined || auth ==="")
     {
       window.location.assign("/login")
     }

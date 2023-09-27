@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef  } from "react";
+import React, { useEffect, useState,useRef, useContext  } from "react";
 import "../CSS/Lottary.css"
 import NumberModal from "./Modal/NumberModal"
 import * as urlConstant from "../components/Constant/UrlConstant"
@@ -17,9 +17,13 @@ import {useMessage} from './Constant/useMessage'
 import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import Loading from "./Constant/Loading";
+import  AuthContext from "../components/Authen/AuthenProvider"
+import {useAxiosProvider} from "./Axios/useAxios";
 function Lottary()
 {
     let navigate = useNavigate();
+    const {auth,setAuth} = useContext(AuthContext);
+    const useAxios = useAxiosProvider()
     const msgs = useRef(null);
     const blockRef = useRef(null)
     const addMessage = useMessage();
@@ -57,41 +61,41 @@ function Lottary()
     const [DataDelete,setDataDelete] = useState({})
     // let navigate = useNavigate()
    //console.log("check data = ",dataSet)
-    let session =  sessionStorage.getItem("token");
+    // let session =  sessionStorage.getItem("token");
     // console.log("test data = ",collectNumber);
-    axios.interceptors.request.use(
-        config =>{
-          config.headers.Authorization = `Bearer ${session}`;
-          return config;
-        }
-      )
+    // axios.interceptors.request.use(
+    //     config =>{
+    //       config.headers.Authorization = `Bearer ${auth}`;
+    //       return config;
+    //     }
+    //   )
 
-      axios.interceptors.response.use(undefined,(error) =>{
-        const {status,data,config} = error.response;
-        if(status === 404)
-        {
-          window.location.assign("/pagenotfound")
-        }
-        if(status === 400)
-        {
-            alert("BAD Request 400")
-        }
-        if(status ===500)
-        {
-          console.log("error server");
+    //   axios.interceptors.response.use(undefined,(error) =>{
+    //     const {status,data,config} = error.response;
+    //     if(status === 404)
+    //     {
+    //       window.location.assign("/pagenotfound")
+    //     }
+    //     if(status === 400)
+    //     {
+    //         alert("BAD Request 400")
+    //     }
+    //     if(status ===500)
+    //     {
+    //       console.log("error server");
            
-           window.location.assign("/internalserver")
-        }
-        if(status === 401)
-        {
-             window.location.assign("/login")
-        }
-        if(status ===403)
-        {
-          window.location.assign("/login")
-        }
-      })
-    if(session === null || session === undefined || session ==="")
+    //        window.location.assign("/internalserver")
+    //     }
+    //     if(status === 401)
+    //     {
+    //          window.location.assign("/login")
+    //     }
+    //     if(status ===403)
+    //     {
+    //       window.location.assign("/login")
+    //     }
+    //   })
+    if(auth === null || auth === undefined || auth ==="")
     {
       window.location.assign("/login")
     }
@@ -104,10 +108,7 @@ function Lottary()
                  
                         date = "lastdata";
                           try{
-                            const response = await axios.get(urlConstant.GET_LIST_LOTTARY+date,{
-                                headers: { 'Content-Type': 'application/json' }
-                                
-                            })
+                            const response = await useAxios.get(urlConstant.GET_LIST_LOTTARY+date)
                             // console.log("check response.data  = ",response );
                             // console.log("check response.data  = ",response.data );
                             if(response.data != undefined && response.status === 200)

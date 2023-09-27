@@ -1,8 +1,13 @@
 import React from "react";
 import "../../CSS/PageNotFound.css"
 import deleteimg from "../../Icons/delete.png"
+import  AuthContext from "../Authen/AuthenProvider"
+import { useContext } from "react";
+
 function PangeNotFound()
 {
+    const {auth} = useContext(AuthContext);
+    console.log('auth = ',auth)
     return(
        <div className="container"  style={{"position":"absolute","top":"35%","width":"30%","left":"35%"}}>
         {/* <div className="pageerror" style={{"margin":"0 auto"}}>

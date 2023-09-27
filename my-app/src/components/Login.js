@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useContext, useState } from "react";
 import "../CSS/Login.css"
 import * as urlConstant from "../components/Constant/UrlConstant"
@@ -6,15 +6,20 @@ import { useNavigate } from "react-router-dom";
 // import {useUser} from "../components/Authen/AuthenProvider"
 //  import {Authen} from "../components/Authen/Authen"
 import home from "../Icons/home.png"
-function Login({ setauth   })
+import  axios  from "./Axios/useAxios";
+import {AuthContext} from "../components/Authen/AuthenProvider"
+function Login()
 {
     
+    // const axiosProviver = axiosProvider();
+    // console.log("qq is = ",qq)
+    const {auth, setAuth} = useContext(AuthContext);
     const [user,setUser] = useState({})
     const [test,settest] = useState(false);
     // const {handleLogin} = useUser();
     // const data = [1,2,3,4]
    
-
+    // setAuth("20")
     // console.log(data);
     // console.log("check setIsLoggedIn  ",setIsLoggedIn )
     sessionStorage.setItem("token","");
@@ -65,55 +70,49 @@ function Login({ setauth   })
         }
         else{
             try{
-                await axios.post(urlConstant.LOGIN_USER,user,{
-                    headers: { 'Content-Type': 'application/json' }
-                }).then(res =>{
-                    console.log(res.data)
-                  //  console.log(res.data.header)
-                    if(res.data !== null && res.data !== undefined)
-                    {
-                     
-                       if(res.data.header.statusCode ==="01")
-                       {
-                         // window.location.assign("/dashbord")
-                         console.log(res.data[0])
-                         if(res.data.status == "L")
-                         {
-                            alert("บัญชีถูกล็อคการใช้งาน")
-                         }
-                         else if (res.data.status === "I")
-                         {
-                            alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
-                         }
-                         else{
-                            const accessToken = res.data.token;
-    
-                          //  setAuth = accessToken;
-                        //  Outlet
-                            // sessionStorage.setItem("token", res.data.token);
-                             setauth(res.data)
-                            //  handleLogin(res.data)
-                            // console.log("check session  = ",sessionStorage.getItem("token"))
-                            // setIsLoggedIn(true);
-                            navigate("/dashboard") 
-                         }
-                       }
-                       else{
-                            if(res.data.iduser != null  )
-                            {
-                            alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
-                            }
-                            else{
-                                alert("กรุณาสมัครสมาชิก")
-                            }
-                       }
-                    }
+
+                const reponse = await axios.post(urlConstant.LOGIN_USER,user)
+                console.log("check login  = ",reponse)
+             
+                    if(reponse.data !== null && reponse.data !== undefined)
+                        {
+                         
+                             // window.location.assign("/dashbord")
+                             console.log(reponse.data)
+                             if(reponse.data.status == "L")
+                             {
+                                alert("บัญชีถูกล็อคการใช้งาน")
+                             }
+                             else if (reponse.data.status === "I")
+                             {
+                                alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
+                             }
+                             else{
+                                const accessToken = reponse.data.accessToken;
+                                console.log("accessToken = ",auth)
+                                let a = {a:1,b:2}
+                                let b = {c:3,d:4}
+                                // console.log("check a ",)
+                                setAuth({...auth,accessToken:accessToken,role:reponse.data.role,refreshToken:reponse.data.refreshToken})
                    
-                }).catch((error)=>{
-                    console.log("Error = ",error.message)
-                    alert("Error "+error.message)
-                })
-            }catch(error)
+                                navigate("/dashboard") 
+                             }
+                        //    else{
+                        //         if(reponse.data.iduser != null  )
+                        //         {
+                        //         alert(" ไอดี หรือ รหัสผ่านไม่ถูกต้อง")
+                        //         }
+                        //         else{
+                        //             alert("กรุณาสมัครสมาชิก")
+                        //         }
+                        //    }
+                        }
+                
+            
+            
+               
+            }
+            catch(error)
             {
                 console.error(error);
                 console.log("check error = ",error)

@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import BackendLuckyNumber.Backend.GenJwt;
 import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
+import BackendLuckyNumber.Backend.Modal.RefreshToken;
+import BackendLuckyNumber.Backend.Modal.TokenModal;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 
 //import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
@@ -21,6 +23,7 @@ import BackendLuckyNumber.Backend.Repo.UserRepo;
 import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
+import BackendLuckyNumber.Backend.ResponseModel.UserLoginResModal;
 
 @Service
 public class LoginService {
@@ -30,15 +33,17 @@ public class LoginService {
 //	@Autowired private JwtUserDetailsService userDetailsService;
 	// @Autowired InfoUserRepo infoUserRepo;
 
-	public List<UserModal> validateLoginService(JwtRequestModel userLogin) {
+	public UserLoginResModal validateLoginService(JwtRequestModel userLogin) {
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
 //		InfoUserModal infoUser = new InfoUserModal();
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
 		UserModal dataUser = new UserModal();
+		UserLoginResModal res  = new UserLoginResModal();
+		TokenModal token = new TokenModal();
 		Boolean validatepass = false;
 		String status = "A";
 		String passUser = "";
-		String jwtToken = "";
+//		String jwtToken = "";
 		try {
 
 			dataUser = userRepo.findidUser(userLogin.getUsername());
@@ -49,35 +54,38 @@ public class LoginService {
 
 				validatepass = b.matches(userLogin.getPassword(), dataUser.getPassword());
 				if (validatepass) {
-					jwtToken = jwt.generateJwtToken(dataUser);
+					RefreshToken jwtToken = jwt.generateJwtToken(dataUser);
+//					token.setAccessToken(jwtToken);
 					LocalDateTime myDateObj = LocalDateTime.now();
 					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
-					System.out.println("check time = " + formattedDate);
+					System.out.println("token is " + jwtToken);
 					if (dataUser.getStatus().equals("I") || dataUser.getStatus().equals("A")) {
 
 						dataUser.setStatus(status);
 						dataUser.setTimelogin(formattedDate);
-						dataUser.setToken(jwtToken);
+						dataUser.setToken(jwtToken.getAccessToken());
 						userRepo.updateStatusLoginUser(status, formattedDate, dataUser.getToken(),userLogin.getUsername(),dataUser.getPassword());
-
+						res.setUsername(dataUser.getIduser());
+						res.setAccessToken(jwtToken.getAccessToken());
+						res.setRefreshToken(jwtToken.getRefreshToken());
+						res.setStatus("A");
+						res.setRole(dataUser.getRole());
 					}
 					// case status == lock, user will not be able to access web site
 					arrdataUser.add(dataUser);
 
 				} else {
-					dataUser.setPassword("invalid");
-					arrdataUser.add(dataUser);
+					res.setStatus("invalid");
+//					arrdataUser.add(dataUser);
 				}
 
-			} else {
-				arrdataUser.add(dataUser);
-			}
+			} 
 		} catch (Exception e) {
 			System.out.println("Service LoginUser " + e);
 		}
 
-		return arrdataUser;
+		return res;
 
 	}
 

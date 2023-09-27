@@ -8,8 +8,13 @@ import * as urlConstant from "./Constant/UrlConstant"
 import { Messages } from 'primereact/messages';
 import {useMessage} from './Constant/useMessage'
 import Loading from "./Constant/Loading";
+import  AuthContext from "../components/Authen/AuthenProvider"
+import { useContext } from "react";
+import {useAxiosProvider} from "./Axios/useAxios";
 function Report ()
 {
+    const {auth,setAuth} = useContext(AuthContext);
+    const useAxios = useAxiosProvider()
     const msgs = useRef(null);
     const blockRef = useRef(null)
     const addMessage = useMessage();
@@ -22,61 +27,58 @@ function Report ()
     const mykeysVAlues = window.location.search;
     const urlParams = new URLSearchParams(mykeysVAlues)
     const param = urlParams.get('date');
-    console.log("param =  ",param)
+    console.log("param =  ",auth)
 
     let session =  sessionStorage.getItem("token");
     // if(session === null || session === undefined || session ==="")
     // {
     //   window.location.assign("/login")
     // }
-    let config = {
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
-          }
-        }
-    axios.interceptors.request.use(
-        config =>{
-          config.headers.Authorization = `Bearer ${session}`;
-          return config;
-        }
-      )
-      axios.interceptors.response.use(undefined,(error) =>{
-        const {status,data,config} = error.response;
-        if(status === 404)
-        {
-          window.location.assign("pagenotfound")
-        }
-        if(status === 400)
-        {
-            alert("BAD Request 400")
-        }
-        if(status ===500)
-        {
-          console.log("error server");
+    // let config = {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       'Access-Control-Allow-Origin': '*',
+    //       }
+    //     }
+    // axios.interceptors.request.use(
+    //     config =>{
+    //       config.headers.Authorization = `Bearer ${auth}`;
+    //       return config;
+    //     }
+    //   )
+    //   axios.interceptors.response.use(undefined,(error) =>{
+    //     const {status,data,config} = error.response;
+    //     if(status === 404)
+    //     {
+    //       window.location.assign("pagenotfound")
+    //     }
+    //     if(status === 400)
+    //     {
+    //         alert("BAD Request 400")
+    //     }
+    //     if(status ===500)
+    //     {
+    //       console.log("error server");
            
-           window.location.assign("/internalserver")
-        }
-        if(status === 401)
-        {
-             window.location.assign("/login")
-        }
-        if(status ===403)
-        {
-          window.location.assign("/login")
-        }
-      })
+    //        window.location.assign("/internalserver")
+    //     }
+    //     if(status === 401)
+    //     {
+    //          window.location.assign("/login")
+    //     }
+    //     if(status ===403)
+    //     {
+    //       window.location.assign("/login")
+    //     }
+    //   })
 
     useEffect(()=>{
             async function GetReport()
             {
-                console.log("run useEffect")
-                console.log("url = ",urlConstant.GET_REPORT+{dateSelect})
+                // console.log("run useEffect")
+                // console.log("url = ",urlConstant.GET_REPORT+{dateSelect})
               try{
-                const response = await axios.get(urlConstant.GET_REPORT+dateSelect,{
-                    headers: { 'Content-Type': 'application/json' }   
-                }
-                )
+                const response = await useAxios.get(urlConstant.GET_REPORT+dateSelect)
                 console.log("check response = ",response)
                 if(response.status === 200 && response.data.datalist !==null && response.data.datalist !== undefined)
                 {  
