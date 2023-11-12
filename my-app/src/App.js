@@ -14,6 +14,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Management from "../src/components/Manamgent"
 import Report from "../src/components/Report"
 import InternalServer from './components/Error/InternalServer';
+import UseLocalStorage from './components/Constant/useLocalStore';
 
 
 
@@ -41,13 +42,14 @@ function App() {
           <Route path='login' element={< Login  />}></Route>
               {/* <Route path='/' element={< Outlet />}> */}
               {/* <PrivateRoute path="/dashboard" element={<Dashbord />} /> */}
-             <Route path='dashboard' element={<PrivateRoute>  <Dashbord /> </PrivateRoute>}  />
-             <Route path='calculate' element={<PrivateRoute>  <Lottary /></PrivateRoute>}  />
-             <Route path='manage' element={<PrivateRoute>  <Management /></PrivateRoute>}  />
-             <Route path='summary' element={<PrivateRoute>  <Summary /></PrivateRoute>}  />
-             <Route path='contactus' element={<PrivateRoute>  <ContactUs /></PrivateRoute>}  />
-             <Route path='report' element={<PrivateRoute>  <Report /></PrivateRoute>}  />
-            
+          \
+            <Route path='dashboard' element={<PrivateRoute>  <Dashbord /> </PrivateRoute>}  />
+            <Route path='calculate' element={<PrivateRoute>  <Lottary /></PrivateRoute>}  />
+            <Route path='manage' element={<PrivateRoute>  <Management /></PrivateRoute>}  />
+            <Route path='summary' element={<PrivateRoute>  <Summary /></PrivateRoute>}  />
+            <Route path='contactus' element={<PrivateRoute>  <ContactUs /></PrivateRoute>}  />
+            <Route path='report' element={<PrivateRoute>  <Report /></PrivateRoute>}  />
+         
           </Routes>
   
 

@@ -11,38 +11,13 @@ import { AuthContext } from "../components/Authen/AuthenProvider";
 function Login() {
   // const axiosProviver = axiosProvider();
   // console.log("qq is = ",qq)
-  const { auth, setAuth } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [test, settest] = useState(false);
+  const [authen, setAuthen] = useState({});
 
 
   let navigate = useNavigate();
-
-  // axios.interceptors.response.use(undefined,(error) =>{
-  //     const {status,data,config} = error.response;
-  //     console.log("check error =",data)
-  //     if(status === 404)
-  //     {
-  //       window.location.assign("pagenotfound")
-  //     }
-  //     if(status === 400)
-  //     {
-  //         alert("BAD Request 400")
-  //     }
-  //     if(status ===500)
-  //     {
-  //       console.log("error server");
-  //       alert("ERROR 500")
-  //     }
-  //     if(status === 401)
-  //     {
-  //          window.location.assign("/login")
-  //     }
-  //     if(status ===403)
-  //     {
-  //       window.location.assign("/login")
-  //     }
-  //   })
 
   function handleChange(e) {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -67,14 +42,13 @@ function Login() {
             alert("ไม่สามารถเข้าใช้งานบัญชีนี้ได้ในขณะนี้");
           } else {
             const accessToken = reponse.data.accessToken;
-            console.log("accessToken = ", auth);
-            // console.log("check a ",)
-            setAuth({
-              ...auth,
-              accessToken: accessToken,
-              role: reponse.data.role,
-              refreshToken: reponse.data.refreshToken,
-            });
+            // setAuthen({
+            //   ...authen,
+            //   accessToken: accessToken,
+            //   role: reponse.data.role,
+            //   refreshToken: reponse.data.refreshToken,
+            // });
+            login(reponse.data)
 
             navigate("/dashboard");
           }

@@ -7,14 +7,15 @@ import home from "../Icons/home.png"
 import  AuthContext from "../components/Authen/AuthenProvider"
 function Navbar()
 { 
-    // const {user} = useContext(Authen);
-    // const role = localStorage.getItem("userRole");
     const {auth,setAuth} = useContext(AuthContext);
-    const role = auth.role;
-    console.log("role  = ",role)
+    // console.log("local check = ",auth.value)
+    // const role = auth.role;
+    
+    const role = auth.role
     function logout(){
         // let session =  sessionStorage.getItem("token");
         // sessionStorage.removeItem("token");
+        localStorage.removeItem("authen")
         setAuth({})
         // localStorage.removeItem("userRole")
 {/* <label style={{"fontSize":"24px","marginLeft":"15px"}}>BAN HUAI</label> */}

@@ -24,7 +24,7 @@ export  const useAxiosProvider = ()=>{
         },
       });
         const {auth} = useContext(AuthContext)
-        console.log("auth check = ",auth)
+        // console.log("auth check = ",auth)
         useEffect(() => {
             // Create an Axios instance with your configurations
          
