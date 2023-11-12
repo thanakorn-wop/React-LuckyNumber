@@ -3,7 +3,10 @@ import React, { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState(()=>{
+        const storedAuth = localStorage.getItem("authen")
+        return storedAuth ? JSON.parse(storedAuth) : null;
+    });
     console.log("default = ",auth)
     const login = (authen) => {
         console.log("login authen = ", authen);

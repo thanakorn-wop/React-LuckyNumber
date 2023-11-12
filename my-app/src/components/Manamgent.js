@@ -8,7 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useContext } from "react";
 import {AuthContext} from "../components/Authen/AuthenProvider"
-import {useAxiosProvider} from "./Axios/useAxios";
+import useAxiosProvider from "./Axios/useAxios";
 function Management()
 {
     const auth = useContext(AuthContext);

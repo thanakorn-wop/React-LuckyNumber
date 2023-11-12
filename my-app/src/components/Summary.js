@@ -10,7 +10,7 @@ import {useMessage} from './Constant/useMessage'
 import Loading from "./Constant/Loading";
 import  AuthContext from "../components/Authen/AuthenProvider"
 import { useContext } from "react";
-import {useAxiosProvider} from "./Axios/useAxios";
+import useAxiosProvider from "./Axios/useAxios";
 function Report ()
 {
     const {auth,setAuth} = useContext(AuthContext);

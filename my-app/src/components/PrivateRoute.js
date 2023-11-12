@@ -7,7 +7,7 @@ function PrivateRoute({children}) {
   
   const {auth,setAuth} = useContext(AuthContext);
   const token = auth.accessToken
-  //  console.log("check token = ",auth)
+    // console.log("check token = ",auth)
   //  console.log("check isAuthenticated1 = ",isAuthenticated)
   return (
     token? <>{children}</> :<Navigate to="/login" />

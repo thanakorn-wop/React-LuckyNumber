@@ -18,7 +18,7 @@ import { BlockUI } from 'primereact/blockui';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import Loading from "./Constant/Loading";
 import  AuthContext from "../components/Authen/AuthenProvider"
-import {useAxiosProvider} from "./Axios/useAxios";
+import useAxiosProvider from "./Axios/useAxios";
 function Lottary()
 {
     let navigate = useNavigate();
@@ -285,7 +285,7 @@ function Lottary()
                     // console.log("check data new = ",newItem)
         
                     try{
-                        const response  = axios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
+                        const response  = useAxios.post(urlConstant.POST_UPDATE__STATUS_PAYMENT,dataUpdate,{
                             headers: { 'Content-Type': 'application/json' }
                         }).then(res =>{
                             console.log("payment res = ",res.data)
@@ -469,9 +469,10 @@ function Lottary()
                             
                     })
                     try{
-                        const Post_Insert_Number = await axios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
-                            headers: { 'Content-Type': 'application/json' }
-                        }).then(res =>{
+                        const Post_Insert_Number = await useAxios.post(urlConstant.POST_INSERT_NUMBER,dataNum,{
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${auth.accessToken}`, }
+                        })
+                        .then(res =>{
                                 // console.log("check response num = ",res.data)
                         if(res.status === 200)
                         {
@@ -908,7 +909,7 @@ function Lottary()
             <NumberModal  handleSavingNum={(isSave,dataNum,setUserData,mark,setmark,setRank,setTotalPrice) => HandleNumberModal(isSave,dataNum,setUserData,mark,setmark,setRank,setTotalPrice)}  show={popup}   />
 
             {/* {
-            // ! no use  this modal , if you want to use this , should  uncomment เลขถูก 
+            //! no use  this modal , if you want to use this , should  uncomment เลขถูก 
                 luckyModal && <InsertLuckyNumberModal  handleSaving = {(status_saving,DataLuckyNumber)=>HandleInsertLuckyNumber(status_saving,DataLuckyNumber)} luckyNumber ={(e)=>setDataLuckyNumber(e)}/>
             } */}
             {
