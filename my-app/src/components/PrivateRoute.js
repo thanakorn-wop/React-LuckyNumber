@@ -4,11 +4,13 @@ import { Route, Link, BrowserRouter,Routes,Navigate } from 'react-router-dom'
 import { useContext } from 'react';
 import AuthContext from './Authen/AuthenProvider';
 function PrivateRoute({children}) {
- 
+  
    const isAuthenticated = useContext(AuthContext);
-   console.log("check isAuthenticated = ",isAuthenticated)
+ const token =localStorage.getItem("accessToken");
+  //  console.log("check token = ",token)
+  //  console.log("check isAuthenticated1 = ",isAuthenticated)
   return (
-    isAuthenticated.auth.accessToken ? <>{children}</> : <Navigate to="/login" />
+    token? <>{children}</> : <Navigate to="/login" />
   
  
   );

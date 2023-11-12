@@ -33,7 +33,6 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Constant.ConstantData;
 //import BackendLuckyNumber.Backend.JWT.JWT;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
-import BackendLuckyNumber.Backend.Modal.TokenModal;
 //import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.UserModal;
 
@@ -162,12 +161,12 @@ public class LoginController extends ValidateUntil {
 	@PostMapping("/logout")
 	public ResponseEntity validatelogout(@RequestHeader("token") String token,@RequestBody LoginReqModel userLogin, HttpServletRequest req) {
 
-		Boolean validateToken = validateToken(req,token);
+//		Boolean validateToken = validateToken(req,token);
 		HttpStatus status = HttpStatus.OK;
 		LoginResModal resp = new LoginResModal();
 		Header header = new Header();
 		Boolean updateStatus = false;
-		if (validateToken) {
+		if (true) {
 			updateStatus = loginService.validateLogout(userLogin);
 			if (updateStatus) {
 				header.setStatusCode(ConstantData.STATUS_CODE_200);
@@ -231,5 +230,10 @@ public class LoginController extends ValidateUntil {
 		return new ResponseEntity(resp, status);
 	}
 
-
+	public  Boolean validateRequest(LoginReqModel userLogin)
+	{
+		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) 
+				&& StringUtils.isNotBlank(userLogin.getRole()) && StringUtils.isNotBlank(userLogin.getNickname()) ? true:false;
+		return validate;
+	}
 }

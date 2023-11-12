@@ -16,62 +16,16 @@ public class ValidateUntil {
 	
 
 	
-	public  Boolean validateRequest(LoginReqModel userLogin)
-	{
-		Boolean validate = StringUtils.isNotBlank(userLogin.getIduser()) && StringUtils.isNotBlank(userLogin.getPassword()) 
-				&& StringUtils.isNotBlank(userLogin.getRole()) && StringUtils.isNotBlank(userLogin.getNickname()) ? true:false;
-		return validate;
-	}
-	
-	public  Boolean validateRequestInsetNumberLucky(LuckyNumberReq req)
-	{
-		Boolean validate = StringUtils.isNotBlank(req.getThreetop()) && StringUtils.isNotBlank(req.getThreedown())
-							&& StringUtils.isNotBlank(req.getTwodown()) && StringUtils.isNotBlank(req.getTwotop())
-							&& StringUtils.isNotBlank(req.getDate())? true:false;
-		return validate;
-	}
-	
-	
-	public  Boolean validateToken(HttpServletRequest req, String token)
-	{
-		 Boolean statusToken = false;
-		String tokenDB = (String) req.getSession().getAttribute(ConstantData.KEY_WEB_TOKEN);
-//		String token = 	token;
-		try {
-			if(StringUtils.isNotEmpty(token) || StringUtils.isNotEmpty(tokenDB))
-			{
-//				 GenJwt genjwt = new GenJwt();
-//				 tokenDB = genjwt.deCode(tokenDB);
-//				 token = genjwt.deCode(token);
-				 if(tokenDB.equals(token))
-				 {
-					 statusToken = true;
-				 }
-			}
-		}catch(Exception e)
-		{
-			System.out.println("ERROR VALIDATE TOKEN  = "+e);
-		}
-		
-		
-		return statusToken;
-	}
-	
-	
-	public void createWebTokenGenerator(HttpServletRequest req, String functionName) throws Exception {
-		GenJwt genjwt = new GenJwt();
-		UserModal userDetail = getUserDetailFromSession(req);
-		String id = null != userDetail && null != userDetail.getId() && null != userDetail.getIduser() ? userDetail.getId() : null;
-		String token = genjwt.generateNewToken(id, functionName);;
-		req.getSession().setAttribute(ConstantData.KEY_WEB_TOKEN, token);
-	}
-	
-	public UserModal getUserDetailFromSession(HttpServletRequest request){
+	public void valdiateToken(String token) throws Exception {
 
-		if(request.getSession().getAttribute(ConstantData.USER_DETAILS) != null)
-			return (UserModal)request.getSession().getAttribute(ConstantData.USER_DETAILS);
-		else
-			return null;
+		if (!StringUtils.isEmpty(token)) {
+			throw new Exception("Error is token");
+		}
+
 	}
+	
+	
+	
+	
 	
 }

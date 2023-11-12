@@ -84,7 +84,7 @@ Object.keys(dataSet).map((key,index)=>{
      arr.push(dataSet[key])
    }
 })
-console.log("check arr = ",arr);
+// console.log("check arr = ",arr);
 // if(dataSet !== [] || dataSet !== null || dataSet !== undefined)
 // {
 //   //console.log("check data list = ",dataSet)

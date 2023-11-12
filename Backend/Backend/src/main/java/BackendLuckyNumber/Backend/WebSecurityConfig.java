@@ -39,7 +39,7 @@ public class WebSecurityConfig<JwtAuthenticationEntryPoint>  extends WebSecurity
 	   @Override
 	   protected void configure(HttpSecurity http) throws Exception {
 	      http.csrf().disable()
-	      .authorizeRequests().antMatchers("/api/test","/api/register","/api/validatelogin").permitAll()
+	      .authorizeRequests().antMatchers("/api/test","/api/register","/api/validatelogin","/refresh").permitAll()
 	      .anyRequest().authenticated()
 	      .and()
 	      .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)

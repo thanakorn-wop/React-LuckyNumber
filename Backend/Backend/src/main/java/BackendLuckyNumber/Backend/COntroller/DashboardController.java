@@ -47,7 +47,7 @@ public class DashboardController extends ValidateUntil {
 
 	@GetMapping("/getdashboard")
 	public ResponseEntity testget(Authentication auth) {
-
+//		valdiateToken(null)
 		UserdetailsIml user = (UserdetailsIml) auth.getPrincipal();
 		InfoUserRespModal resp = new InfoUserRespModal();
 		MonthModal Month = new MonthModal();

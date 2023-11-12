@@ -1,13 +1,14 @@
 package BackendLuckyNumber.Backend.ResponseModel;
 
 import BackendLuckyNumber.Backend.Modal.RefreshToken;
-import BackendLuckyNumber.Backend.Modal.TokenModal;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserLoginResModal extends TokenModal {
+public class UserLoginResModal extends TokenModalRespones {
 	private String username;
 	private String role;
 	private String status;

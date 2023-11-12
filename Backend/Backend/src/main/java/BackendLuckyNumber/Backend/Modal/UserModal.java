@@ -21,8 +21,6 @@ public class UserModal  {
 	private String iduser;
 	@Column(name = "password")
 	private String password;
-	@Column(name = "token")
-	private String token;
 	@Column(name = "timelogin")
 	private String timelogin;
 	@Column(name = "timelogout")
@@ -108,13 +106,7 @@ public class UserModal  {
 		this.password = password;
 	}
 
-	public String getToken() {
-		return token;
-	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}
 
 	public String getTimelogin() {
 		return timelogin;

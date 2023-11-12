@@ -16,13 +16,15 @@ import BackendLuckyNumber.Backend.TokenManager;
 import BackendLuckyNumber.Backend.Modal.InfoUserModal;
 import BackendLuckyNumber.Backend.Modal.RefreshToken;
 import BackendLuckyNumber.Backend.Modal.TokenModal;
-import BackendLuckyNumber.Backend.Modal.UserModal;
 
+import BackendLuckyNumber.Backend.Modal.UserModal;
+import BackendLuckyNumber.Backend.Repo.TokenRepo;
 //import BackendLuckyNumber.Backend.Repo.InfoUserRepo;
 import BackendLuckyNumber.Backend.Repo.UserRepo;
 import BackendLuckyNumber.Backend.RequestModel.JwtRequestModel;
 import BackendLuckyNumber.Backend.RequestModel.LoginReqModel;
 import BackendLuckyNumber.Backend.ResponseModel.LoginResModal;
+import BackendLuckyNumber.Backend.ResponseModel.TokenModalRespones;
 import BackendLuckyNumber.Backend.ResponseModel.UserLoginResModal;
 
 @Service
@@ -30,55 +32,69 @@ public class LoginService {
 
 	@Autowired UserRepo userRepo;
 	@Autowired TokenManager jwt;
-//	@Autowired private JwtUserDetailsService userDetailsService;
-	// @Autowired InfoUserRepo infoUserRepo;
+	@Autowired  TokenRepo tokenRepo;
+	
+
 
 	public UserLoginResModal validateLoginService(JwtRequestModel userLogin) {
 		List<UserModal> arrdataUser = new ArrayList<UserModal>();
 //		InfoUserModal infoUser = new InfoUserModal();
 		BCryptPasswordEncoder b = new BCryptPasswordEncoder();
-		UserModal dataUser = new UserModal();
+		List<UserModal> dataUser = new ArrayList<>();
 		UserLoginResModal res  = new UserLoginResModal();
-		TokenModal token = new TokenModal();
+		TokenModalRespones token = new TokenModalRespones();
+		TokenModal addToken = new TokenModal();
 		Boolean validatepass = false;
 		String status = "A";
-		String passUser = "";
+		
 //		String jwtToken = "";
+		Integer index = 0;
 		try {
 
 			dataUser = userRepo.findidUser(userLogin.getUsername());
 			// final UserDetails userDetails =
 			// userDetailsService.loadUserByUsername(userLogin.getUsername());
 
-			if (!StringUtils.isEmpty(dataUser)) {
+			if (!StringUtils.isEmpty(dataUser) && dataUser.size()>0) {
 
-				validatepass = b.matches(userLogin.getPassword(), dataUser.getPassword());
-				if (validatepass) {
-					RefreshToken jwtToken = jwt.generateJwtToken(dataUser);
-//					token.setAccessToken(jwtToken);
-					LocalDateTime myDateObj = LocalDateTime.now();
-					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-					String formattedDate = myDateObj.format(myFormatObj);
-					System.out.println("token is " + jwtToken);
-					if (dataUser.getStatus().equals("I") || dataUser.getStatus().equals("A")) {
+				for(UserModal data : dataUser)
+				{
+					validatepass = b.matches(userLogin.getPassword(), data.getPassword());
+					if (validatepass) {
+						RefreshToken jwtToken = jwt.generateJwtToken(dataUser.get(index).getIduser());
+//						token.setAccessToken(jwtToken);
+						LocalDateTime myDateObj = LocalDateTime.now();
+						DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+						String formattedDate = myDateObj.format(myFormatObj);
+						System.out.println("token is " + jwtToken);
+						if (dataUser.get(index).getStatus().equals("I") || dataUser.get(index).getStatus().equals("A")) {
+	
+							dataUser.get(index).setStatus(status);
+							dataUser.get(index).setTimelogin(formattedDate);
+//							dataUser.get(index).setToken(jwtToken.getAccessToken());
+							userRepo.updateStatusLoginUser(status, formattedDate,userLogin.getUsername(),dataUser.get(index).getPassword());
+							res.setUsername(dataUser.get(index).getIduser());
+							res.setAccessToken(jwtToken.getAccessToken());
+							res.setRefreshToken(jwtToken.getRefreshToken());
+							res.setStatus("A");
+							res.setRole(dataUser.get(index).getRole());
+							addToken.setToken(jwtToken.getAccessToken());
+							addToken.setRefreshToken(jwtToken.getRefreshToken());
+							addToken.setUser(dataUser.get(index).getId());
+							arrdataUser.add(dataUser.get(index));
+							tokenRepo.save(addToken);
+							break;
+						}
+						// case status == lock, user will not be able to access web site
+						
 
-						dataUser.setStatus(status);
-						dataUser.setTimelogin(formattedDate);
-						dataUser.setToken(jwtToken.getAccessToken());
-						userRepo.updateStatusLoginUser(status, formattedDate, dataUser.getToken(),userLogin.getUsername(),dataUser.getPassword());
-						res.setUsername(dataUser.getIduser());
-						res.setAccessToken(jwtToken.getAccessToken());
-						res.setRefreshToken(jwtToken.getRefreshToken());
-						res.setStatus("A");
-						res.setRole(dataUser.getRole());
+					} else {
+						res.setStatus("invalid");
+//						arrdataUser.add(dataUser);
 					}
-					// case status == lock, user will not be able to access web site
-					arrdataUser.add(dataUser);
-
-				} else {
-					res.setStatus("invalid");
-//					arrdataUser.add(dataUser);
+					index+=1;
 				}
+				
 
 			} 
 		} catch (Exception e) {
@@ -103,8 +119,20 @@ public class LoginService {
 //	}
 
 	public UserModal getUser(String username) {
-		UserModal userDetails = userRepo.findidUser(username);
-		return userDetails;
+		List<UserModal> userDetails = userRepo.findidUser(username);
+		UserModal data = new UserModal();
+		if(userDetails.size()>0)
+		{
+			
+			data.setId(userDetails.get(0).getId());
+			data.setIduser(userDetails.get(0).getIduser());
+			data.setNickname(userDetails.get(0).getNickname());
+			data.setPassword(userDetails.get(0).getPassword());
+			data.setPercent(userDetails.get(0).getPercent());
+			data.setRole(userDetails.get(0).getRole());
+			data.setStatus(userDetails.get(0).getStatus());
+		}
+		return data;
 	}
 
 	public Boolean validateLogout(LoginReqModel userLogin) {
@@ -115,14 +143,15 @@ public class LoginService {
 		Boolean updateStatus = false;
 		try {
 
-			dataUser = userRepo.findTokenUser(userLogin.getToken());
-			if (!StringUtils.isEmpty(dataUser)) {
-				validateToken = validateToken(userLogin.getToken(), dataUser.getToken());
-				if (validateToken) {
+			TokenModal token = tokenRepo.getToken(userLogin.getToken());
+			if (!StringUtils.isEmpty(token)) {
+//				validateToken = validateToken(userLogin.getToken(), dataUser.getToken());
+				if (true) {
 					LocalDateTime myDateObj = LocalDateTime.now();
 					DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String formattedDate = myDateObj.format(myFormatObj);
-					userRepo.updateStatusLogoutUser(status, formattedDate, dataUser.getToken());
+//					Integer resultDelete = tokenRepo.deleteToken(token.getIdToken());
+					userRepo.updateStatusLogoutUser(status, formattedDate,userLogin.getIduser());
 					updateStatus = true;
 				}
 
@@ -158,7 +187,7 @@ public class LoginService {
 	}
 
 	public UserModal register(LoginReqModel userLogin) {
-		UserModal dataUser = new UserModal();
+		List<UserModal> dataUser = new ArrayList<>();
 		GenJwt genjwt = new GenJwt();
 		UserModal usermodal = new UserModal();
 		String encodedPassword = new BCryptPasswordEncoder().encode(userLogin.getPassword());
@@ -167,18 +196,17 @@ public class LoginService {
 		// String encodedPassword = BCryptPasswordDecoder(userLogin.getPassword());
 		try {
 			dataUser = userRepo.findidUser(userLogin.getIduser());
-			if (!StringUtils.isEmpty(dataUser)) {
-				dataUser = null;
-				return dataUser;
-			} else {
-//				tokenpass = genjwt.encodeData(userLogin.getPassword());
+			if (!StringUtils.isEmpty(dataUser) && dataUser.size()<1) {
 				usermodal.setIduser(userLogin.getIduser());
 				usermodal.setPassword(encodedPassword);
 				usermodal.setRole(userLogin.getRole());
 				usermodal.setNickname(userLogin.getNickname());
 				usermodal.setStatus("I");
 				userRepo.save(usermodal);
-			}
+			} 
+//				tokenpass = genjwt.encodeData(userLogin.getPassword());
+				
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

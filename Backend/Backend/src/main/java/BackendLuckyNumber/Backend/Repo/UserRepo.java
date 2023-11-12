@@ -19,21 +19,27 @@ public interface   UserRepo  extends JpaRepository<UserModal,String>     {
 	
 	
 	@Query(value = " SELECT p FROM user p  WHERE p.iduser = ?1  ")
-	UserModal findidUser(String iduser);
+	List<UserModal> findidUser(String iduser);
 	
-	@Query(value = " SELECT p FROM user p  WHERE p.token = ?1  ")
-	UserModal findTokenUser(String token);
+	@Query(value = " SELECT p FROM user p  WHERE p.id = ?1  ")
+	UserModal findUserById(String id);
+	
+//	@Query(value = " SELECT p FROM user p  WHERE p.token = ?1  ")
+//	UserModal findidUserByToken(String token);
+//	
+//	@Query(value = " SELECT p FROM user p  WHERE p.token = ?1  ")
+//	UserModal findTokenUser(String token);
 	
 	@Query(value =  " SELECT * from user   ",nativeQuery = true)
 	List<UserModal> getUser();
 	
 	@Modifying
-	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogin = ?2, p.token = ?3 WHERE p.iduser = ?4 and p.password = ?5  ")
-	void updateStatusLoginUser(String status,String date,String token,String user,String pass);
+	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogin = ?2 WHERE p.iduser = ?3 and p.password = ?4  ")
+	void updateStatusLoginUser(String status,String date,String user,String pass);
 	
 	@Modifying
-	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogout = ?2 WHERE p.token = ?3 ")
-	void updateStatusLogoutUser(String status,String date,String token);
+	@Query(value = " UPDATE user p SET p.status = ?1, p.timelogout = ?2 WHERE p.iduser = ?3 ")
+	void updateStatusLogoutUser(String status,String date,String iduser);
 	
 	
 	@Modifying

@@ -27,7 +27,10 @@ public class JwtFilter extends OncePerRequestFilter {
 	private JwtUserDetailsService userDetailsService;
 	@Autowired
 	private TokenManager tokenManager;
-
+	
+	@Autowired
+	private Authentication authen;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -50,10 +53,11 @@ public class JwtFilter extends OncePerRequestFilter {
 			System.out.println("Bearer String not found in token");
 		}
 		if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
+			// take token to find the data on db 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 			if (tokenManager.validateJwtToken(token, userDetails)) {
-				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
+				(userDetails, null, userDetails.getAuthorities());
 
 				authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);

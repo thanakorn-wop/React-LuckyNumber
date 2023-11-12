@@ -23,10 +23,10 @@ public class JwtUserDetailsService implements UserDetailsService {
 	// @Autowired InfoUserRepo infoUser;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String idUser) throws UsernameNotFoundException {
 
 		try {
-			UserModal userDetails = loginService.getUser(username);
+			UserModal userDetails = loginService.getUser(idUser);
 		
 			if (null != userDetails ) {
 

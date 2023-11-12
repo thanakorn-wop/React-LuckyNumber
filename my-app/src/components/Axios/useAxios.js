@@ -39,6 +39,34 @@ export  const useAxiosProvider = ()=>{
               },
               (error) => Promise.reject(error)
             );
+
+          //   const responseIntercept = useAxios.interceptors.response.use(
+          //     response => response,
+          //     async (error) => {
+          //         const prevRequest = error?.config;
+          //         if(error?.response?.status === 401 && !prevRequest?.sent){ // Unauthorized
+          //             prevRequest.sent = true;
+          //             const newAccessToken = await refreshToken();
+          //             prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          //             return useAxios(prevRequest);
+          //         }
+          //         // else if(error?.response?.status === 403){ // Forbidden
+          //         //     console.log('Error 403');
+          //         //     navigate('/login', { state: { from: location }, replace: true });
+          //         // }else if(error?.response?.status === 404){ // Not Found
+          //         //     navigate('/noPageFound', { state: { from: location }, replace: true });
+          //         // }else if(error?.response?.status === 400){ // Bad Request
+          //         //     console.log('Error 400');
+          //         // }else if(error?.response?.status === 405){ // Method Not Allowed method
+          //         //     console.log('Error 405');
+          //         // }else if(error?.response?.status === 500){ // Internal server error
+          //         //     console.log('Error 500');
+          //         // }else{
+          //         //     console.log('Error Other');
+          //         // }
+          //         return Promise.reject(error);
+          //     }
+          // );
              //   axios.interceptors.response.use(undefined,(error) =>{
     //     const {status,data,config} = error.response;
     //     if(status === 404)
